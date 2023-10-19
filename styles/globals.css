@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+body {
+  margin: 0;
+  font-family: Montserrat, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+svg {
+  display: inline;
+  vertical-align: baseline;
+}
+span.anticon.ant-notification-notice-icon {
+  padding-top: 30px;
+  display: inline;
+  vertical-align: baseline;
+}
+a,
+Link {
+  cursor: pointer;
+}
+dl,
+ol,
+ul {
+  margin: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: Montserrat, sans-serif !important;
+  /* -webkit-touch-callout: none; /* iOS Safari */
+  /* -webkit-user-select: none; Safari */
+  /* -khtml-user-select: none; /* Konqueror HTML */
+  /* -moz-user-select: none; /* Old versions of Firefox */
+  /* -ms-user-select: none; /* Internet Explorer/Edge */
+  /* user-select: none; Non-prefixed version, currently */
+  /* supported by Chrome, Edge, Opera and Firefox */
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+body {
+  overscroll-behavior-y: contain;
+  background: transparent !important;
+}
+
+#__next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ant-app {
+  height: 100%;
+  width: 100%;
+}
+
+.ant-collapse-item {
+  border-radius: 0% !important;
+}
+
+.ant-collapse-header {
+  padding: 0px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  justify-items: center !important;
+}
+
+.ant-collapse-header > .ant-collapse-expand-icon > .anticon-right {
+  margin-right: 10px !important;
+}
+
+.ant-collapse-content-box, .ant-collapse-content, .ant-collapse-content-active {
+  padding: 0px !important;
+  width: 100% !important;
+}
+
+.ant-notification-notice-with-icon > .anticon {
+  padding: 0px !important;
+}
+
+.ant-notification-notice-message {
+  font-weight: 600 !important;
+}
