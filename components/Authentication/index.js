@@ -1,4 +1,4 @@
-import { useAuth } from "../Providers/AuthProvider";
+import { useAuth } from "../Provider/AuthProvider";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { AiOutlineLaptop } from "react-icons/ai";

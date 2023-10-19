@@ -1,6 +1,6 @@
 import { Spin } from "antd";
 import Login from "../Authentication";
-import { useAuth } from "../Providers/AuthProvider";
+import { useAuth } from "../Provider/AuthProvider";
 
 export default function PrivateWrapper({ children }) {
   const { user, loadingAuth } = useAuth();
