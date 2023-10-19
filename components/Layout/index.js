@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { AiOutlineLaptop } from "react-icons/ai";
 import { MdOutlineMenu, MdOutlineClose } from "react-icons/md";
-import { NavbarMenu, SidebarMenu } from "../Menus";
+import { NavbarMenu, SidebarMenu } from "./Menu";
 import { Avatar, Button } from "antd";
 
 const DefaultLayout = ({ children }) => {

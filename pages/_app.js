@@ -1,5 +1,5 @@
-import AuthProvider from "@/components/Providers/AuthProvider";
-import PrivateWrapper from "../components/Wrappers/index";
+import AuthProvider from "@/components/Provider/AuthProvider";
+import PrivateWrapper from "../components/Wrapper/index";
 import "../styles/globals.css";
 import { color } from "../theme/theme.config";
 import { App as AppProvider, ConfigProvider } from "antd";
