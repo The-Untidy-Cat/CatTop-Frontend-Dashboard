@@ -1,20 +1,13 @@
 import { api } from "@/utils/axios";
 import { useAuth } from "../Provider/AuthProvider";
 import { Button, Form, Input } from "antd";
-import axios from "axios";
 import Link from "next/link";
 import { AiOutlineLaptop } from "react-icons/ai";
 
 export default function Login() {
   const { login } = useAuth();
   const handleSubmit = async (values) => {
-    const csrf = await api.get("/auth/csrf");
-    console.log(csrf);
-    const response = await api.post("/auth/dash", values,  {
-      headers: {
-        "X-CSRF-Token":  "eyJpdiI6IkVKVEE4Szd4bGNnNi9SVGZ6UHEwRFE9PSIsInZhbHVlIjoibDZOR1ZqeVB4VStnbnUyemRFQ3IyWGNkN0hzR0VLeGsvZlphM0JWN0RHdUtLbTYxSUhyWkswNGZ6d2E1Y3p4WEFpaEJrNTYxMWxuRmFvZ2pYd3o3K3RycDBlRG1UY29xZElDS2RLbkl2bWJrRU9Ha0JJSnJ1MExEclBaT3ZKVUQiLCJtYWMiOiI3OTRjYTcyZTk5MjgyNDYwMGYxMTY0YmM3MGJmMGI3M2Y5Mzg5MzA2NTBmNTlkMGZhZGRhM2NlNzVjNTMxY2JjIiwidGFnIjoiIn0=",
-      },
-    });
+    const response = await api.post("/auth/dash", values);
     console.log(response);
   }
   const onFinish = (values) => {
