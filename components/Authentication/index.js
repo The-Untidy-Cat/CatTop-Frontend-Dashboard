@@ -1,3 +1,4 @@
+import { api } from "@/utils/axios";
 import { useAuth } from "../Provider/AuthProvider";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
@@ -5,6 +6,10 @@ import { AiOutlineLaptop } from "react-icons/ai";
 
 export default function Login() {
   const { login } = useAuth();
+  const handleSubmit = async (values) => {
+    const response = await api.post("/auth/dash", values);
+    console.log(response);
+  }
   const onFinish = (values) => {
     login(values);
   };
@@ -18,7 +23,7 @@ export default function Login() {
         <h1 className="text-lg md:text-xl font-bold">Đăng nhập</h1>
         <Form
           name="login"
-          onFinish={onFinish}
+          onFinish={handleSubmit}
           className="flex flex-col w-full gap-2"
         >
           <div className="flex flex-col gap-1">

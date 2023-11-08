@@ -25,9 +25,10 @@ export default function App({ Component, pageProps }) {
     <ConfigProvider theme={theme}>
       <AppProvider>
         <AuthProvider>
-          <PrivateWrapper>
+          {/* <PrivateWrapper>
             <Component {...pageProps} />
-          </PrivateWrapper>
+          </PrivateWrapper> */}
+          <Component {...pageProps} />
         </AuthProvider>
       </AppProvider>
     </ConfigProvider>
