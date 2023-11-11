@@ -1,6 +1,7 @@
 import { Collapse } from "antd";
 import Link from "next/link";
 import { AiOutlineHome } from "react-icons/ai";
+import {MdOutlinePeopleAlt} from "react-icons/md";
 import { BiRightArrow, BiDownArrow } from "react-icons/bi";
 
 const NAVBAR_MENU = [
@@ -34,10 +35,10 @@ const SIDEBAR_MENU = [
     type: "separator",
   },
   {
-    key: "section-1",
-    name: "Section 1",
+    key: "Khách hàng",
+    name: "Khách hàng",
     type: "section",
-    icon: <AiOutlineHome />,
+    icon: <MdOutlinePeopleAlt />,
     children: [
       {
         key: "home1",
