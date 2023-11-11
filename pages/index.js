@@ -42,7 +42,7 @@ export default function Home() {
       </div>
 
       {/* //Category */}
-      <div class="block border">
+      <div class="block border px-10 py-10">
         <div class="inline-block w-full">
           <div class="float-left">
             <p>
@@ -51,25 +51,97 @@ export default function Home() {
             </p>
           </div>
           <div class="float-right">
-             <DatePicker />
+            <DatePicker />
           </div>
         </div>
 
         <div>
-          <Tabs defaultActiveKey="1" items={items}/>
+          <Tabs defaultActiveKey="1" items={items} />
         </div>
 
-        <div class="border p-1 flex rounded-lg">
+        <div class="grid grid-flow-col auto-cols-auto	">
           <div>
-            <img class="w-16 mr-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfCLZkAAraT0TVTHzGz4kYUfP4eYb8Ljfvew&usqp=CAU" />
+            <p class="font-bold text-center py-2">#</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2">Order ID</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2">Product Name</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2" href="#">Customer_ID</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2" href="#">Address</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2">Date</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2">Price</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
+          </div>
+          <div>
+            <p class="font-bold text-center	py-2">Status</p>
+            <p class="text-center	py-2">1</p>
+            <p class="text-center	py-2">2</p>
+            <p class="text-center	py-2">3</p>
+            <p class="text-center	py-2">4</p>
+            <p class="text-center	py-2">5</p>
+            <p class="text-center	py-2">6</p>
+            <p class="text-center	py-2">7</p>
           </div>
         </div>
 
-        <div class="border p-1 flex rounded-lg">
-          <div>
-            <img class="w-16 mr-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfCLZkAAraT0TVTHzGz4kYUfP4eYb8Ljfvew&usqp=CAU" />
-          </div>
-        </div>
       </div>
     </DefaultLayout>
   );
