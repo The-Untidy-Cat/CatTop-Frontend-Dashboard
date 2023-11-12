@@ -63,7 +63,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách khách hàng",
         name: "Danh sách khách hàng",
-        path: "/",
+        path: "/customer_list",
         type: "sub-menu",
       }
     ],
