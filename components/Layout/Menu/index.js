@@ -1,8 +1,8 @@
 import { Collapse } from "antd";
 import Link from "next/link";
-import { AiOutlineHome } from "react-icons/ai";
+import { AiOutlineHome, AiFillShopping } from "react-icons/ai";
 import {MdOutlinePeopleAlt} from "react-icons/md";
-import { BiRightArrow, BiDownArrow } from "react-icons/bi";
+import { BiRightArrow, BiDownArrow, BiShoppingBag } from "react-icons/bi";
 
 const NAVBAR_MENU = [
   {
@@ -35,17 +35,37 @@ const SIDEBAR_MENU = [
     type: "separator",
   },
   {
+    key: "Đơn hàng",
+    name: "Đơn hàng",
+    type: "section",
+    icon: <BiShoppingBag />,
+    children: [
+      {
+        key: "Danh sách đơn hàng",
+        name: "Danh sách đơn hàng",
+        path: "/",
+        type: "sub-menu",
+      },
+      {
+        key: "Thống kê đơn hàng",
+        name: "Thống kê đơn hàng",
+        path: "/",
+        type: "sub-menu",
+      }
+    ],
+  },
+  {
     key: "Khách hàng",
     name: "Khách hàng",
     type: "section",
     icon: <MdOutlinePeopleAlt />,
     children: [
       {
-        key: "home1",
-        name: "Home",
+        key: "Danh sách khách hàng",
+        name: "Danh sách khách hàng",
         path: "/",
         type: "sub-menu",
-      },
+      }
     ],
   },
 ];

@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
-import { DatePicker, Tabs } from "antd";
+import { DatePicker, Divider, Tabs, Pagination } from "antd";
 export default function Home() {
   const items = [
     {
@@ -62,86 +62,173 @@ export default function Home() {
         <div class="grid grid-flow-col auto-cols-auto	">
           <div>
             <p class="font-bold text-center py-2">#</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">1</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">2</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">3</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">4</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">5</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">6</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">7</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">8</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">9</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">10</p>
+            <Divider />
           </div>
           <div>
             <p class="font-bold text-center	py-2">Order ID</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">1</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">2</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">3</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">4</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">5</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">6</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">7</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">8</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">9</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">10</p>
+            <Divider />
           </div>
           <div>
             <p class="font-bold text-center	py-2">Product Name</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <Divider />
+            <p class="text-center	py-2 my-4">1</p> <Divider />
+            <p class="text-center	py-2 my-4">2</p> <Divider />
+            <p class="text-center	py-2 my-4">3</p> <Divider />
+            <p class="text-center	py-2 my-4">4</p> <Divider />
+            <p class="text-center	py-2 my-4">5</p> <Divider />
+            <p class="text-center	py-2 my-4">6</p> <Divider />
+            <p class="text-center	py-2 my-4">7</p> <Divider />
+            <p class="text-center	py-2 my-4">8</p> <Divider />
+            <p class="text-center	py-2 my-4">9</p> <Divider />
+            <p class="text-center	py-2 my-4">10</p> <Divider />
           </div>
           <div>
-            <p class="font-bold text-center	py-2" href="#">Customer_ID</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <p class="font-bold text-center	py-2" href="#">Customer_ID</p> <Divider />
+            <p class="text-center	py-2 my-4">1</p> <Divider />
+            <p class="text-center	py-2 my-4">2</p> <Divider />
+            <p class="text-center	py-2 my-4">3</p> <Divider />
+            <p class="text-center	py-2 my-4">4</p> <Divider />
+            <p class="text-center	py-2 my-4">5</p> <Divider />
+            <p class="text-center	py-2 my-4">6</p> <Divider />
+            <p class="text-center	py-2 my-4">7</p> <Divider />
+            <p class="text-center	py-2 my-4">8</p> <Divider />
+            <p class="text-center	py-2 my-4">9</p> <Divider />
+            <p class="text-center	py-2 my-4">10</p> <Divider />
           </div>
           <div>
-            <p class="font-bold text-center	py-2" href="#">Address</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <p class="font-bold text-center	py-2" href="#">Address</p> <Divider />
+            <p class="text-center	py-2 my-4">1</p> <Divider />
+            <p class="text-center	py-2 my-4">2</p> <Divider />
+            <p class="text-center	py-2 my-4">3</p> <Divider />
+            <p class="text-center	py-2 my-4">4</p> <Divider />
+            <p class="text-center	py-2 my-4">5</p> <Divider />
+            <p class="text-center	py-2 my-4">6</p> <Divider />
+            <p class="text-center	py-2 my-4">7</p> <Divider />
+            <p class="text-center	py-2 my-4">8</p> <Divider />
+            <p class="text-center	py-2 my-4">9</p> <Divider />
+            <p class="text-center	py-2 my-4">10</p> <Divider />
           </div>
           <div>
-            <p class="font-bold text-center	py-2">Date</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <p class="font-bold text-center	py-2">Date</p> <Divider />
+            <p class="text-center	py-2 my-4">1</p> <Divider />
+            <p class="text-center	py-2 my-4">2</p> <Divider />
+            <p class="text-center	py-2 my-4">3</p> <Divider />
+            <p class="text-center	py-2 my-4">4</p> <Divider />
+            <p class="text-center	py-2 my-4">5</p> <Divider />
+            <p class="text-center	py-2 my-4">6</p> <Divider />
+            <p class="text-center	py-2 my-4">7</p> <Divider />
+            <p class="text-center	py-2 my-4">8</p> <Divider />
+            <p class="text-center	py-2 my-4">9</p> <Divider />
+            <p class="text-center	py-2 my-4">10</p> <Divider />
           </div>
           <div>
-            <p class="font-bold text-center	py-2">Price</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <p class="font-bold text-center	py-2">Price</p> <Divider />
+            <p class="text-center	py-2 my-4">1</p> <Divider />
+            <p class="text-center	py-2 my-4">2</p> <Divider />
+            <p class="text-center	py-2 my-4">3</p> <Divider />
+            <p class="text-center	py-2 my-4">4</p> <Divider />
+            <p class="text-center	py-2 my-4">5</p> <Divider />
+            <p class="text-center	py-2 my-4">6</p> <Divider />
+            <p class="text-center	py-2 my-4">7</p> <Divider />
+            <p class="text-center	py-2 my-4">8</p> <Divider />
+            <p class="text-center	py-2 my-4">9</p> <Divider />
+            <p class="text-center	py-2 my-4">10</p> <Divider />
           </div>
           <div>
             <p class="font-bold text-center	py-2">Status</p>
-            <p class="text-center	py-2">1</p>
-            <p class="text-center	py-2">2</p>
-            <p class="text-center	py-2">3</p>
-            <p class="text-center	py-2">4</p>
-            <p class="text-center	py-2">5</p>
-            <p class="text-center	py-2">6</p>
-            <p class="text-center	py-2">7</p>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full my-4 bg-green-100 font-bold text-green-500	">
+              Complete
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-green-100 font-bold text-green-500	">
+              Complete
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-amber-100	 font-bold text-amber-500	">
+              Pending
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-green-100 font-bold text-green-500	">
+              Complete
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-red-100 font-bold text-red-500	">
+              Cancel
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-green-100 font-bold text-green-500	">
+              Complete
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-green-100 font-bold text-green-500	">
+              Complete
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-red-100 font-bold text-red-500	">
+              Cancel
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-amber-100	 font-bold text-amber-500	">
+              Pending
+            </div>
+            <Divider />
+            <div class="text-center	py-2 my-4 rounded-full bg-amber-100	 font-bold text-amber-500	">
+              Pending
+            </div>
+            <Divider />
           </div>
         </div>
 
+        <div>
+          <p class="font-bold float-left">
+            Showing 1 to 10 of 100 entries
+          </p>
+
+          <div class="float-right">
+            <Pagination defaultCurrent={1} total={100} />
+          </div>
+        </div>
       </div>
     </DefaultLayout>
   );
