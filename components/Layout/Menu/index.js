@@ -43,7 +43,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách đơn hàng",
         name: "Danh sách đơn hàng",
-        path: "/",
+        path: "/order_list",
         type: "sub-menu",
       },
       {
