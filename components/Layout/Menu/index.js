@@ -51,7 +51,19 @@ const SIDEBAR_MENU = [
         name: "Thống kê đơn hàng",
         path: "/",
         type: "sub-menu",
-      }
+      },
+      {
+        key: "Bảo hành",
+        name: "Bào hành",
+        path: "/",
+        type: "sub-menu",
+      },
+      {
+        key: "Đổi trả",
+        name: "Đổi trả",
+        path: "/",
+        type: "sub-menu",
+      },
     ],
   },
   {

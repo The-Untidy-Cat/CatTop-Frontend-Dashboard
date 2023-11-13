@@ -5,11 +5,6 @@ import { DatePicker, Divider, Tabs, Pagination,Table } from "antd";
 
 const  columns = [
     {
-      title: "#",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
       title: "Mã đơn hàng",
       dataIndex: "order_id",
       key: "order_id",
@@ -48,7 +43,6 @@ const  columns = [
 
 const data = [
   {
-    key: "1",
     id: "1",
     order_id: "1",
     product_name: "John Brown",
@@ -59,7 +53,6 @@ const data = [
     status: "Đã hoàn thành",
   },
   {
-    key: "2",
     id: "2",
     order_id: "2",
     product_name: "John Brown",
@@ -70,7 +63,6 @@ const data = [
     status: "Đã hoàn thành",
   },
   {
-    key: "3",
     id: "3",
     order_id: "3",
     product_name: "John Brown",
@@ -81,7 +73,6 @@ const data = [
     status: "Đang xử lý",
   },
   {
-    key: "4",
     id: "4",
     order_id: "4",
     product_name: "John Brown",
@@ -108,7 +99,7 @@ const table_filter = (status) => {
   );
 }
 
-export default function Home() {
+export default function Order() {
   const items = [
     {
       key: '1',
