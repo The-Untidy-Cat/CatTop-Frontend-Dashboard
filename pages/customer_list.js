@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
-
+import {TableTemplate} from "./table_template";
 
 const columns = [
   {
@@ -84,46 +84,11 @@ const data = [
   },
 ];
 
-export default function Customer() {
+export default function CustomerList() {
   return (
     <DefaultLayout>
-      {/* //Search bar */}
-      <div class="relative w-80 mb-7">
-        <input
-          class="border w-full border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-xs font-bold focus:outline-none"
-          type="search"
-          name="search"
-          placeholder="Tìm kiếm khách hàng"
-
-        />
-
-        <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
-          <AiOutlineSearch class="text-slate-400 text-lg" />
-        </button>
-      </div>
-
-      {/* //Category */}
-      <div class="block border px-10 py-10">
-        <div class="inline-block w-full">
-          <div class="float-left">
-            <p>
-              <span class="text-2xl font-bold mr-3">Khách hàng</span>
-              <span class="font-bold text-slate-500	">Có 15 khách hàng</span>
-            </p>
-          </div>
-          <div class="float-right">
-            <DatePicker />
-          </div>
-        </div>
-
-        <div>
-          <Table dataSource={data} columns={columns} />
-        </div>
-
-
-
-
-      </div>
+      <TableTemplate />
+      
     </DefaultLayout>
   );
 }

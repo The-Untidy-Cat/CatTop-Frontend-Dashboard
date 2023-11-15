@@ -53,14 +53,14 @@ const SIDEBAR_MENU = [
         type: "sub-menu",
       },
       {
-        key: "Bảo hành",
-        name: "Bào hành",
+        key: "Danh sách bảo hành",
+        name: "Danh sách bảo hành",
         path: "/",
         type: "sub-menu",
       },
       {
-        key: "Đổi trả",
-        name: "Đổi trả",
+        key: "Danh sách đổi trả",
+        name: "Danh sách đổi trả",
         path: "/",
         type: "sub-menu",
       },
