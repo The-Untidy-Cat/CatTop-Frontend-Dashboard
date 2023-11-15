@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
-import {TableTemplate} from "./table_template";
+import TableTemplate from "./table_template";
 
 const columns = [
   {
@@ -87,8 +87,7 @@ const data = [
 export default function CustomerList() {
   return (
     <DefaultLayout>
-      <TableTemplate />
-      
+      <TableTemplate data={data} columns={columns} title={"Khách hàng"}/>
     </DefaultLayout>
   );
 }

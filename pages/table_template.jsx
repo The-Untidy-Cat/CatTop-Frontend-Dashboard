@@ -4,13 +4,14 @@ import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 
-export const TableTemplate = (data, columns, title) => {
+export default function TableTemplate(data, columns, title)
+{
     return (
-        <DefaultLayout>
+        <div>
             <div class="float-left">
                 <p>
                     <span class="text-2xl font-bold mr-3">{title}</span>
-                    <span class="font-bold text-slate-500	">15 {title} được tìm thấy</span>
+                    <span class="font-bold text-slate-500">15 {title} được tìm thấy</span>
                 </p>
             </div>
 
@@ -40,14 +41,14 @@ export const TableTemplate = (data, columns, title) => {
                     <button class="rounded-lg w-24 h-9 mr-7">
                         <p>
                             <span><FaPlus class="text-white mr-2 w-2.5 align-middle	" /></span>
-                            <span class="text-white font-bold align-middle		">Thêm</span>
+                            <span class="text-white font-bold align-middle	">Thêm</span>
                         </p>
                     </button>
 
                     <button class="rounded-lg w-24 h-9 bg-yellow-400">
                         <p>
                             <span><RiPencilFill class="text-white mr-2 align-middle	" /></span>
-                            <span class="text-white font-bold align-middle		">Sửa</span>
+                            <span class="text-white font-bold align-middle	">Sửa</span>
                         </p>
                     </button>
                 </div>
@@ -55,6 +56,6 @@ export const TableTemplate = (data, columns, title) => {
                     <Table dataSource={data} columns={columns} />
                 </div>
             </div>
-        </DefaultLayout>
+        </div>
     );
 }
