@@ -4,18 +4,10 @@ import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 
-export default function TableTemplate(data, columns, title)
+export default function TableTemplate({data, columns, title})
 {
     return (
         <div>
-            <div class="float-left">
-                <p>
-                    <span class="text-2xl font-bold mr-3">{title}</span>
-                    <span class="font-bold text-slate-500">15 {title} được tìm thấy</span>
-                </p>
-            </div>
-
-
             {/* //Category */}
             <div class="block border px-10 py-10">
                 {/* //Search bar */}

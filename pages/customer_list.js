@@ -87,7 +87,13 @@ const data = [
 export default function CustomerList() {
   return (
     <DefaultLayout>
-      <TableTemplate data={data} columns={columns} title={"Khách hàng"}/>
+      <div class="float-left">
+                <p>
+                    <span class="text-2xl font-bold mr-3">Khách hàng</span>
+                    <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
+                </p>
+            </div>
+      <TableTemplate data={data} columns={columns} title={"khách hàng"}/>
     </DefaultLayout>
   );
 }
