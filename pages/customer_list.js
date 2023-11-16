@@ -93,7 +93,7 @@ export default function CustomerList() {
                     <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
                 </p>
             </div>
-      <TableTemplate data={data} columns={columns} title={"khách hàng"}/>
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"}/>
     </DefaultLayout>
   );
 }

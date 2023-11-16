@@ -17,7 +17,7 @@ export default function TableTemplate({data, columns, title})
                             class="border w-full border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-xs focus:outline-none"
                             type="search"
                             name="search"
-                            placeholder="Tìm kiếm"
+                            placeholder={title}
                         />
 
                         <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
