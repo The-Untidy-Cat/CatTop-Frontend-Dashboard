@@ -1,11 +1,11 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
-import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
+import { DatePicker, Divider, Tabs, Pagination, Table, Button } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 
-export default function TableTemplate({data, columns, title})
-{
+
+export default function TableTemplate({ data, columns, title, action }) {
     return (
         <div>
             {/* //Category */}
@@ -30,19 +30,14 @@ export default function TableTemplate({data, columns, title})
                 </div>
 
                 <div class="inline-block w-full">
-                    <button class="rounded-lg w-24 h-9 mr-7">
-                        <p>
-                            <span><FaPlus class="text-white mr-2 w-2.5 align-middle	" /></span>
-                            <span class="text-white font-bold align-middle	">Thêm</span>
-                        </p>
-                    </button>
+                    {action?.map((item) => {
+                        return (
+                            <Button type={item.type} class="rounded-lg w-24 h-9 mr-7" onClick={item.onClick} icon={item.onClick}>
+                                {item.text}
+                            </Button>
+                        )
+                    })}
 
-                    <button class="rounded-lg w-24 h-9 bg-yellow-400">
-                        <p>
-                            <span><RiPencilFill class="text-white mr-2 align-middle	" /></span>
-                            <span class="text-white font-bold align-middle	">Sửa</span>
-                        </p>
-                    </button>
                 </div>
                 <div>
                     <Table dataSource={data} columns={columns} />

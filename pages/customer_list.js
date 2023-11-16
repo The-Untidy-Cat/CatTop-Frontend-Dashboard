@@ -2,6 +2,8 @@ import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
 import TableTemplate from "./table_template";
+import { useState } from "react";
+import { Modal } from "antd";
 
 const columns = [
   {
@@ -85,15 +87,43 @@ const data = [
 ];
 
 export default function CustomerList() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const action = [
+    {
+      text: "Thêm mới",
+      icon: <AiOutlineSearch />,
+      onClick: () => {
+        Modal.info({
+          title: "test",
+          content: "test"
+        })
+      }
+    }
+  ]
   return (
     <DefaultLayout>
       <div class="float-left">
-                <p>
-                    <span class="text-2xl font-bold mr-3">Khách hàng</span>
-                    <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
-                </p>
-            </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"}/>
+        <p>
+          <span class="text-2xl font-bold mr-3">Khách hàng</span>
+          <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
+        </p>
+      </div>
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"} action={action} />
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
+
     </DefaultLayout>
   );
 }
