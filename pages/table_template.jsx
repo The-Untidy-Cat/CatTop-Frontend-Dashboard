@@ -123,9 +123,9 @@ const NewCustomerForm = () => {
 const acitons = [
     {
         key: "add",
-        buttonLabel: "Thêm",
+        buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
         buttonType: "primary",
-        // buttonIcon: <AiFillPlusCircle />,
+        buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle	"/></span>,
         title: "Thêm mới",
         children: <NewCustomerForm />,
         modalProps: {
@@ -134,9 +134,9 @@ const acitons = [
     },
     {
         key: "edit",
-        buttonLabel: "Sửa",
+        buttonLabel: <span class="text-white font-bold align-middle	">Sửa</span>,
         buttonType: "default",
-        // buttonIcon: <AiFillPlusCircle />,
+        buttonIcon: <RiPencilFill class ="text-white mr-2 w-2.5 align-middle"/>,
         title: "Sửa",
         children: <NewCustomerForm />,
         modalProps: {

@@ -5,7 +5,7 @@ export const ModalToggle = ({children, title, buttonType, buttonLabel, buttonIco
     const [visible, setVisible] = useState(false);
     return (
         <>
-            <Button type={buttonType} onClick={() => setVisible(true)} icon={buttonIcon}>
+            <Button class="rounded-lg w-24 h-9 mr-7 bg-lime-500	" type={buttonType} onClick={() => setVisible(true)} icon={buttonIcon}>
                 {buttonLabel}
             </Button>
             <Modal
