@@ -7,12 +7,12 @@ import { Modal } from "antd";
 
 const columns = [
   {
-    title: "Mã khách hàng",
+    title: "Mã nhân viên",
     dataIndex: "customer_id",
     key: "customer_id",
   },
   {
-    title: "Tên khách hàng",
+    title: "Tên nhân viên",
     dataIndex: "customer_name",
     key: "customer_name",
     // render: (_, record) => {
@@ -113,12 +113,12 @@ export default function CustomerList() {
     <DefaultLayout>
       <div class="float-left">
         <p>
-          <span class="text-2xl font-bold mr-3">Khách hàng</span>
-          <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
+          <span class="text-2xl font-bold mr-3">Nhân viên</span>
+          <span class="font-bold text-slate-500">15 nhân viên được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"} action={action} />
-   
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm nhân viên"} action={action} />
+ 
 
     </DefaultLayout>
   );

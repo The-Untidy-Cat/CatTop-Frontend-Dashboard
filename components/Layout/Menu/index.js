@@ -111,7 +111,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách nhân viên",
         name: "Danh sách nhân viên",
-        path: "/product_list",
+        path: "/employee_list",
         type: "sub-menu",
       },
     ],

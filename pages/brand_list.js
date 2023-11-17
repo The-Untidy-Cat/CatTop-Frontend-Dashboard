@@ -7,12 +7,12 @@ import { Modal } from "antd";
 
 const columns = [
   {
-    title: "Mã khách hàng",
+    title: "Mã thương hiệu",
     dataIndex: "customer_id",
     key: "customer_id",
   },
   {
-    title: "Tên khách hàng",
+    title: "Tên thương hiệu",
     dataIndex: "customer_name",
     key: "customer_name",
     // render: (_, record) => {
@@ -49,7 +49,7 @@ const columns = [
 const data = [
   {
     customer_id: "0001",
-    customer_name: <a>John Brown</a>,
+    customer_name: "John Brown",
     customer_email: "johnbrown@gmail.com",
     customer_phone: "0901234567",
     customer_address: "New York No. 1 Lake Park",
@@ -58,7 +58,7 @@ const data = [
   },
   {
     customer_id: "0002",
-    customer_name: <a>John Brown</a>,
+    customer_name: "John Brown",
     customer_email: "johnbrown@gmail.com",
     customer_phone: "0901234567",
     customer_address: "New York No. 1 Lake Park",
@@ -68,7 +68,7 @@ const data = [
   },
   {
     customer_id: "0003",
-    customer_name: <a>John Brown</a>,
+    customer_name: "John Brown",
     customer_email: "johnbrown@gmail.com",
     customer_phone: "0901234567",
     customer_address: "New York No. 1 Lake Park",
@@ -77,7 +77,7 @@ const data = [
   },
   {
     customer_id: "0004",
-    customer_name: <a>John Brown</a>,
+    customer_name: "John Brown",
     customer_email: "johnbrown@gmail.com",
     customer_phone: "0901234567",
     customer_address: "New York No. 1 Lake Park",
@@ -113,12 +113,12 @@ export default function CustomerList() {
     <DefaultLayout>
       <div class="float-left">
         <p>
-          <span class="text-2xl font-bold mr-3">Khách hàng</span>
-          <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
+          <span class="text-2xl font-bold mr-3">Thương hiệu</span>
+          <span class="font-bold text-slate-500">15 thương hiệu được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"} action={action} />
-   
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm thương hiệu"} action={action} />
+ 
 
     </DefaultLayout>
   );
