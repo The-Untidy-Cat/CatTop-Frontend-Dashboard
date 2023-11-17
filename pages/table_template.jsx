@@ -125,7 +125,7 @@ const acitons = [
         key: "add",
         buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
         buttonType: "primary",
-        buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle	"/></span>,
+        buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
         title: "Thêm mới",
         children: <NewCustomerForm />,
         modalProps: {
@@ -134,9 +134,9 @@ const acitons = [
     },
     {
         key: "edit",
-        buttonLabel: <span class="text-white font-bold align-middle	">Sửa</span>,
+        buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
         buttonType: "default",
-        buttonIcon: <RiPencilFill class ="text-white mr-2 w-2.5 align-middle"/>,
+        buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
         title: "Sửa",
         children: <NewCustomerForm />,
         modalProps: {
@@ -169,7 +169,7 @@ export default function TableTemplate({ data, columns, title, action }) {
                     </div>
                 </div>
 
-                <div class="inline-block w-full">
+                <div class="flex flex-wrap gap-2 justify-start items-center align-center p-5">
                     {acitons.map((action) => {
                         return (
                             <ModalToggle

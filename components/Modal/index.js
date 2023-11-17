@@ -26,7 +26,7 @@ export const ModalToggle = ({
         onCancel={() => setVisible(false)}
         footer={null}
         centered
-        
+
       >
         {children}
       </Modal>
