@@ -8,31 +8,36 @@ import { Modal } from "antd";
 const columns = [
   {
     title: "Mã nhân viên",
-    dataIndex: "customer_id",
-    key: "customer_id",
+    dataIndex: "employee_id",
+    key: "employee_id",
   },
   {
     title: "Tên nhân viên",
-    dataIndex: "customer_name",
-    key: "customer_name",
+    dataIndex: "employee_name",
+    key: "employee_name",
     // render: (_, record) => {
     //   return <>{record.first_name + " " + record.last_name}</>
     // }
   },
   {
     title: "Email",
-    dataIndex: "customer_email",
-    key: "customer_email",
+    dataIndex: "employee_email",
+    key: "employee_email",
   },
   {
     title: "Số điện thoại",
-    dataIndex: "customer_phone",
-    key: "customer_phone",
+    dataIndex: "employee_phone",
+    key: "employee_phone",
   },
   {
-    title: "Địa chỉ",
-    dataIndex: "customer_address",
-    key: "customer_address",
+    title: "Cơ sở làm việc",
+    dataIndex: "employee_department",
+    key: "employee_department",
+  },
+  {
+    title: "Chức vụ",
+    dataIndex: "employee_position",
+    key: "employee_position",
   },
   {
     title: "Ngày khởi tạo",
@@ -41,52 +46,55 @@ const columns = [
   },
   {
     title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
+    dataIndex: "employee_status",
+    key: "employee_status",
   },
 ];
 
 const data = [
   {
-    customer_id: "0001",
-    customer_name: <a>John Brown</a>,
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
+    employee_id: "0001",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Nhân viên",
     initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    employee_status: "Đang hoạt động",
   },
   {
-    customer_id: "0002",
-    customer_name: <a>John Brown</a>,
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
+    employee_id: "0002",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Quản lý",
     initial_date: "2021-10-10",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    employee_status: "Đang hoạt động",
   },
   {
-    customer_id: "0003",
-    customer_name: <a>John Brown</a>,
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
+    employee_id: "0003",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Nhân viên",
     initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    employee_status: "Đang hoạt động",
   },
   {
-    customer_id: "0004",
-    customer_name: <a>John Brown</a>,
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
+    employee_id: "0004",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Nhân viên",
     initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    employee_status: "Đang hoạt động",
   },
 ];
 
-export default function CustomerList() {
+export default function employeeList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);

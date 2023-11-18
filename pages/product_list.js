@@ -8,85 +8,76 @@ import { Modal } from "antd";
 const columns = [
   {
     title: "Mã sản phẩm",
-    dataIndex: "customer_id",
-    key: "customer_id",
+    dataIndex: "product_id",
+    key: "product_id",
   },
   {
     title: "Tên sản phẩm",
-    dataIndex: "customer_name",
-    key: "customer_name",
+    dataIndex: "product_name",
+    key: "product_name",
     // render: (_, record) => {
     //   return <>{record.first_name + " " + record.last_name}</>
     // }
   },
   {
-    title: "Email",
-    dataIndex: "customer_email",
-    key: "customer_email",
+    title: "Thương hiệu",
+    dataIndex: "product_brand",
+    key: "product_brand",
   },
   {
-    title: "Số điện thoại",
-    dataIndex: "customer_phone",
-    key: "customer_phone",
+    title: "Mô tả",
+    dataIndex: "product_description",
+    key: "product_description",
   },
   {
-    title: "Địa chỉ",
-    dataIndex: "customer_address",
-    key: "customer_address",
-  },
-  {
-    title: "Ngày khởi tạo",
-    dataIndex: "initial_date",
-    key: "initial_date",
+    title: "Giá bán",
+    dataIndex: "product_price",
+    key: "product_price",
   },
   {
     title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
+    dataIndex: "product_status",
+    key: "product_status",
   },
 ];
 
 const data = [
   {
-    customer_id: "0001",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    product_id: "0001",
+    product_name: <a>Asus Vivibook Flip 14 TP470(Intel)</a>,
+    product_brand: "ASUS VIVOBOOK",
+    product_description: "",
+    product_price: "15.000.000",
+    product_status: "Đang bán",
   },
   {
-    customer_id: "0002",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    product_id: "0002",
+    product_name: <a>Microsoft Surface Pro 9</a>,
+    product_brand: "MICROSOFT SURFACE PRO",
+    product_description: "",
+    product_price: "21.990.000",
+    product_status: "Ngừng kinh doanh",
   },
   {
-    customer_id: "0003",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    product_id: "0003",
+    product_name: <a>HP ProBook 440 G8</a>,
+    product_brand: "HP PROBOOK",
+    product_description: "",
+    product_price: "12.990.000",
+    product_status: "Sản phẩm đang hết hàng",
   },
   {
-    customer_id: "0004",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    product_id: "0005",
+    product_name: <a>Dell XPS 13 9315</a>,
+    product_brand: "DELL XPS",
+    product_description: "",
+    product_price: "26.990.000",
+    product_status: "Đang bán",
   },
+  
 ];
 
-export default function CustomerList() {
+export default function productList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);

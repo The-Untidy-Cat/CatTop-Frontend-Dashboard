@@ -38,8 +38,8 @@ const columns = [
   },
   {
     title: "Tình trạng",
-    dataIndex: "status",
-    key: "status",
+    dataIndex: "order_status",
+    key: "order_status",
   },
 ];
 
@@ -52,7 +52,7 @@ const data = [
     address: "New York No. 1 Lake Park",
     date: "2021-10-10",
     price: "1000",
-    status: "Đã hoàn thành",
+    order_status: "Đã hoàn thành",
   },
   {
     id: "2",
@@ -62,7 +62,7 @@ const data = [
     address: "New York No. 1 Lake Park",
     date: "2021-10-10",
     price: "1000",
-    status: "Đã hoàn thành",
+    order_status: "Đã hoàn thành",
   },
   {
     id: "3",
@@ -72,7 +72,7 @@ const data = [
     address: "New York No. 1 Lake Park",
     date: "2021-10-10",
     price: "1000",
-    status: "Đang xử lý",
+    order_status: "Đang xử lý",
   },
   {
     id: "4",
@@ -82,7 +82,7 @@ const data = [
     address: "New York No. 1 Lake Park",
     date: "2021-10-10",
     price: "1000",
-    status: "Đã huỷ",
+    order_status: "Đã huỷ",
   },
 ];
 
@@ -94,8 +94,8 @@ const table_template = () => {
   );
 }
 
-const table_filter = (status) => {
-  const result = data.filter((item) => item.status == status);
+const table_filter = (order_status) => {
+  const result = data.filter((item) => item.order_status == order_status);
   return (
     <Table dataSource={result} columns={columns} />
   );

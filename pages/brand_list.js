@@ -8,85 +8,78 @@ import { Modal } from "antd";
 const columns = [
   {
     title: "Mã thương hiệu",
-    dataIndex: "customer_id",
-    key: "customer_id",
+    dataIndex: "brand_id",
+    key: "brand_id",
   },
   {
     title: "Tên thương hiệu",
-    dataIndex: "customer_name",
-    key: "customer_name",
+    dataIndex: "brand_name",
+    key: "brand_name",
     // render: (_, record) => {
     //   return <>{record.first_name + " " + record.last_name}</>
     // }
   },
   {
-    title: "Email",
-    dataIndex: "customer_email",
-    key: "customer_email",
-  },
-  {
-    title: "Số điện thoại",
-    dataIndex: "customer_phone",
-    key: "customer_phone",
-  },
-  {
-    title: "Địa chỉ",
-    dataIndex: "customer_address",
-    key: "customer_address",
-  },
-  {
-    title: "Ngày khởi tạo",
-    dataIndex: "initial_date",
-    key: "initial_date",
-  },
-  {
-    title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
+    title: "Mô tả",
+    dataIndex: "brand_description",
+    key: "brand_description",
   },
 ];
 
 const data = [
   {
-    customer_id: "0001",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    brand_id: "0001",
+    brand_name: "DELL",
+    brand_description: "",
   },
   {
-    customer_id: "0002",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    brand_id: "0002",
+    brand_name: "LENOVO",
+    brand_description: "",
   },
   {
-    customer_id: "0003",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    brand_id: "0003",
+    brand_name: "LG",
+    brand_description: "",
   },
   {
-    customer_id: "0004",
-    customer_name: "John Brown",
-    customer_email: "johnbrown@gmail.com",
-    customer_phone: "0901234567",
-    customer_address: "New York No. 1 Lake Park",
-    initial_date: "2021-10-10",
-    status: "Đang hoạt động",
+    brand_id: "0005",
+    brand_name: "ASUS",
+    brand_description: "",
+  },
+  {
+    brand_id: "0006",
+    brand_name: "HP",
+    brand_description: "",
+  },
+  {
+    brand_id: "0007",
+    brand_name: "APPLE",
+    brand_description: "",
+  },
+  {
+    brand_id: "0008",
+    brand_name: "ACER",
+    brand_description: "",
+  },
+  {
+    brand_id: "0009",
+    brand_name: "GIGABYTE",
+    brand_description: "",
+  },
+  {
+    brand_id: "0010",
+    brand_name: "VAIO",
+    brand_description: "",
+  },
+  {
+    brand_id: "0011",
+    brand_name: "MSI",
+    brand_description: "",
   },
 ];
 
-export default function CustomerList() {
+export default function brandList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
