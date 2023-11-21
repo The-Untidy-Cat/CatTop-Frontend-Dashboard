@@ -1,9 +1,169 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
-import { DatePicker, Divider, Tabs, Pagination, Table } from "antd";
+import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import TableTemplate from "./table_template";
 
+const NeworderForm = () => {
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+  return (
+    <Form
+      name="registration"
+      onFinish={handleSubmit}
+      autoComplete="off"
+      className="flex flex-col w-full gap-2"
+    >
+      <div className="flex flex-row justify-between gap-2">
+        <div className="flex flex-col gap-2 w-1/2">
+          <p className="m-0">Tên sản phẩm</p>
+          <Form.Item
+            name="order_product_name"
+            rules={[
+              {
+                required: true,
+                pattern:
+                  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*$/u,
+                message: "Không hợp lệ",
+              },
+            ]}
+            className="m-0"
+          >
+            <Input />
+          </Form.Item>
+        </div>
+        <div className="flex flex-col gap-2 w-1/2">
+          <p className="m-0">Mã khách hàng</p>
+          <Form.Item
+            name="order_customer"
+            rules={[
+              {
+                required: true,
+                pattern:
+                  /[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+/u,
+                message: "Không hợp lệ",
+              },
+            ]}
+            className="m-0"
+          >
+            <Input />
+          </Form.Item>
+        </div>
+      </div>
+
+      <p className="m-0">Địa chỉ</p>
+      <Form.Item
+        label=""
+        name="order_address"
+        rules={[
+          {
+            required: true,
+            type: "order_phone",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+
+      <div className="flex flex-row justify-between gap-2">
+        <div className="flex flex-col gap-2 w-1/2">
+          <p className="m-0">Giá</p>
+          <Form.Item
+            name="order_price"
+            rules={[
+              {
+                required: true,
+                pattern:
+                  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*$/u,
+                message: "Không hợp lệ",
+              },
+            ]}
+            className="m-0"
+          >
+            <Input />
+          </Form.Item>
+        </div>
+        <div className="flex flex-col gap-2 w-1/2">
+          <p className="m-0">Ngày đặt hàng</p>
+          <Form.Item
+            name="order_date"
+            rules={[
+              {
+                required: true,
+                pattern:
+                  /[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+/u,
+                message: "Không hợp lệ",
+              },
+            ]}
+            className="m-0"
+          >
+            <DatePicker />
+          </Form.Item>
+        </div>
+      </div>
+      {/* <p className="m-0">Tên đăng nhập</p>
+      <Form.Item
+        label=""
+        name="username"
+        rules={[
+          {
+            required: true,
+            pattern: /^[a-zA-Z0-9.\S]+$/,
+            message: "Chỉ nhập chữ, số và dấu chấm!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+      <p className="m-0">Mật khẩu</p>
+      <Form.Item
+        label=""
+        name="password"
+        rules={[
+          { required: true, message: "Vui lòng nhập Mật khẩu!" },
+          { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự!" },
+        ]}
+        className="m-0"
+      >
+        <Input.Password />
+      </Form.Item> */}
+      <Form.Item className="m-0 mt-2">
+        <Button type="primary" className="w-full" htmlType="submit">
+          Hoàn thành
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+const actions = [
+  {
+      key: "add",
+      buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
+      buttonType: "primary",
+      buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
+      title: "Thêm mới",
+      children: <NeworderForm />,
+      modalProps: {
+          centered: true,
+      },
+  },
+  {
+      key: "edit",
+      buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
+      buttonType: "default",
+      buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
+      title: "Sửa",
+      children: <NeworderForm />,
+      modalProps: {
+          centered: true,
+      },
+  },
+];
 
 const columns = [
   {
@@ -87,43 +247,7 @@ const data = [
 ];
 
 
-
-const table_template = () => {
-  return (
-    <Table dataSource={data} columns={columns} />
-  );
-}
-
-const table_filter = (order_status) => {
-  const result = data.filter((item) => item.order_status == order_status);
-  return (
-    <Table dataSource={result} columns={columns} />
-  );
-}
-
 export default function Order() {
-  const items = [
-    {
-      key: '1',
-      label: 'Tất cả đơn hàng',
-      children: table_template(),
-    },
-    {
-      key: '2',
-      label: 'Đã hoàn thành',
-      children: table_filter("Đã hoàn thành"),
-    },
-    {
-      key: '3',
-      label: 'Đang giao hàng',
-      children: table_filter("Đang xử lý"),
-    },
-    {
-      key: '4',
-      label: 'Đã hủy',
-      children: table_filter("Đã huỷ"),
-    },
-  ];
   return (
     <DefaultLayout>
       <div class="float-left">
@@ -134,51 +258,9 @@ export default function Order() {
       </div>
 
 
-      {/* //Category */}
-      <div class="block border px-10 py-10">
-        {/* //Search bar */}
-        <div class="inline-block w-full">
-          <div class="relative float-left w-80 mb-5">
-            <input
-              class="border w-full border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-xs focus:outline-none"
-              type="search"
-              name="search"
-              placeholder="Tìm kiếm đơn hàng"
-            />
-
-            <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
-              <AiOutlineSearch class="text-slate-400 text-lg" />
-            </button>
-          </div>
-          <div class="float-right">
-              <DatePicker />
-            </div>
-        </div>
-
-        <div class="inline-block w-full">
-            <button class="rounded-lg w-24 h-9 mr-7">
-              <p>
-                <span><FaPlus class ="text-white mr-2 w-2.5 align-middle	"/></span>
-                <span class="text-white font-bold align-middle		">Thêm</span>
-              </p>
-            </button>
-
-            <button class="rounded-lg w-24 h-9 bg-yellow-400">
-              <p>
-                <span><RiPencilFill class ="text-white mr-2 align-middle	"/></span>
-                <span class="text-white font-bold align-middle		">Sửa</span>
-              </p>
-            </button>
-        </div>
-
-        <div>
-          <Tabs defaultActiveKey="1" items={items} />
-        </div>
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm nhân viên"} actions={actions} />
 
 
-
-
-      </div>
-    </DefaultLayout>
+    </DefaultLayout >
   );
 }
