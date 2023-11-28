@@ -3,9 +3,10 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
-import TableTemplate from "./table_template";
+import TableTemplate from "../table_template";
 import { useState } from "react";
 import { Modal } from "antd";
+import { useRouter } from "next/router";
 
 const columns = [
   {
@@ -184,28 +185,10 @@ const actions = [
 ];
 
 export default function brandList() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const router = useRouter();
+  const onSelectedRow = (data) => {
+    router.push("/brands/" + data.brand_id);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const action = [
-    {
-      text: "Thêm mới",
-      icon: <AiOutlineSearch />,
-      onClick: () => {
-        Modal.info({
-          title: "test",
-          content: "test"
-        })
-      }
-    }
-  ]
   return (
     <DefaultLayout>
       <div class="float-left">
@@ -214,7 +197,7 @@ export default function brandList() {
           <span class="font-bold text-slate-500">15 thương hiệu được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm thương hiệu"} actions={actions} />
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm thương hiệu"} actions={actions} onSelectedRow={onSelectedRow}/>
  
 
     </DefaultLayout>

@@ -1,101 +1,85 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
-import TableTemplate from "./table_template";
+import TableTemplate from "../table_template";
 import { useState } from "react";
 import { Modal } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import { useRouter } from "next/router";
 const columns = [
   {
-    title: "Mã nhân viên",
-    dataIndex: "employee_id",
-    key: "employee_id",
+    title: "Mã sản phẩm",
+    dataIndex: "product_id",
+    key: "product_id",
   },
   {
-    title: "Tên nhân viên",
-    dataIndex: "employee_name",
-    key: "employee_name",
+    title: "Tên sản phẩm",
+    dataIndex: "product_name",
+    key: "product_name",
     // render: (_, record) => {
     //   return <>{record.first_name + " " + record.last_name}</>
     // }
   },
   {
-    title: "Email",
-    dataIndex: "employee_email",
-    key: "employee_email",
+    title: "Thương hiệu",
+    dataIndex: "product_brand",
+    key: "product_brand",
   },
   {
-    title: "Số điện thoại",
-    dataIndex: "employee_phone",
-    key: "employee_phone",
+    title: "Mô tả",
+    dataIndex: "product_description",
+    key: "product_description",
   },
   {
-    title: "Cơ sở làm việc",
-    dataIndex: "employee_department",
-    key: "employee_department",
-  },
-  {
-    title: "Chức vụ",
-    dataIndex: "employee_position",
-    key: "employee_position",
-  },
-  {
-    title: "Ngày khởi tạo",
-    dataIndex: "initial_date",
-    key: "initial_date",
+    title: "Giá bán",
+    dataIndex: "product_price",
+    key: "product_price",
   },
   {
     title: "Trạng thái",
-    dataIndex: "employee_status",
-    key: "employee_status",
+    dataIndex: "product_status",
+    key: "product_status",
   },
 ];
 
 const data = [
   {
-    employee_id: "0001",
-    employee_name: <a>John Brown</a>,
-    employee_email: "johnbrown@gmail.com",
-    employee_phone: "0901234567",
-    employee_department: "New York No. 1 Lake Park",
-    employee_position: "Nhân viên",
-    initial_date: "2021-10-10",
-    employee_status: "Đang hoạt động",
+    product_id: "0001",
+    product_name: <a>Asus Vivibook Flip 14 TP470(Intel)</a>,
+    product_brand: "ASUS VIVOBOOK",
+    product_description: "",
+    product_price: "15.000.000",
+    product_status: "Đang bán",
   },
   {
-    employee_id: "0002",
-    employee_name: <a>John Brown</a>,
-    employee_email: "johnbrown@gmail.com",
-    employee_phone: "0901234567",
-    employee_department: "New York No. 1 Lake Park",
-    employee_position: "Quản lý",
-    initial_date: "2021-10-10",
-    employee_status: "Đang hoạt động",
+    product_id: "0002",
+    product_name: <a>Microsoft Surface Pro 9</a>,
+    product_brand: "MICROSOFT SURFACE PRO",
+    product_description: "",
+    product_price: "21.990.000",
+    product_status: "Ngừng kinh doanh",
   },
   {
-    employee_id: "0003",
-    employee_name: <a>John Brown</a>,
-    employee_email: "johnbrown@gmail.com",
-    employee_phone: "0901234567",
-    employee_department: "New York No. 1 Lake Park",
-    employee_position: "Nhân viên",
-    initial_date: "2021-10-10",
-    employee_status: "Đang hoạt động",
+    product_id: "0003",
+    product_name: <a>HP ProBook 440 G8</a>,
+    product_brand: "HP PROBOOK",
+    product_description: "",
+    product_price: "12.990.000",
+    product_status: "Sản phẩm đang hết hàng",
   },
   {
-    employee_id: "0004",
-    employee_name: <a>John Brown</a>,
-    employee_email: "johnbrown@gmail.com",
-    employee_phone: "0901234567",
-    employee_department: "New York No. 1 Lake Park",
-    employee_position: "Nhân viên",
-    initial_date: "2021-10-10",
-    employee_status: "Đang hoạt động",
+    product_id: "0005",
+    product_name: <a>Dell XPS 13 9315</a>,
+    product_brand: "DELL XPS",
+    product_description: "",
+    product_price: "26.990.000",
+    product_status: "Đang bán",
   },
+
 ];
 
-const NewEmployeeForm = () => {
+const NewProductForm = () => {
   const handleSubmit = (values) => {
     console.log(values);
   };
@@ -108,9 +92,9 @@ const NewEmployeeForm = () => {
     >
       <div className="flex flex-row justify-between gap-2">
         <div className="flex flex-col gap-2 w-1/3">
-          <p className="m-0">Tên nhân viên</p>
+          <p className="m-0">Mã sản phẩm</p>
           <Form.Item
-            name="employee_name"
+            name="product_id"
             rules={[
               {
                 required: true,
@@ -125,9 +109,9 @@ const NewEmployeeForm = () => {
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 w-2/3">
-          <p className="m-0">Email</p>
+          <p className="m-0">Tên sản phẩm</p>
           <Form.Item
-            name="employee_email"
+            name="product_name"
             rules={[
               {
                 required: true,
@@ -143,14 +127,14 @@ const NewEmployeeForm = () => {
         </div>
       </div>
 
-      <p className="m-0">Số điện thoại</p>
+      <p className="m-0">Thương hiệu</p>
       <Form.Item
         label=""
-        name="employee_phone"
+        name="product_brand"
         rules={[
           {
             required: true,
-            type: "employee_phone",
+            type: "email",
             message: "Email không hợp lệ!",
           },
         ]}
@@ -158,10 +142,10 @@ const NewEmployeeForm = () => {
       >
         <Input />
       </Form.Item>
-      <p className="m-0">Cơ sở làm việc</p>
+      <p className="m-0">Giá</p>
       <Form.Item
         label=""
-        name="employee_department"
+        name="product_price"
         rules={[
           {
             required: true,
@@ -174,10 +158,10 @@ const NewEmployeeForm = () => {
       >
         <Input />
       </Form.Item>
-      <p className="m-0">Chức vụ</p>
+      <p className="m-0">Mô tả</p>
       <Form.Item
         label=""
-        name="employee_position"
+        name="product_description"
         rules={[
           {
             required: true,
@@ -216,7 +200,7 @@ const NewEmployeeForm = () => {
       </Form.Item> */}
       <Form.Item className="m-0 mt-2">
         <Button type="primary" className="w-full" htmlType="submit">
-          Hoàn thành
+          Thêm
         </Button>
       </Form.Item>
     </Form>
@@ -230,7 +214,7 @@ const actions = [
       buttonType: "primary",
       buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
       title: "Thêm mới",
-      children: <NewEmployeeForm />,
+      children: <NewProductForm />,
       modalProps: {
           centered: true,
       },
@@ -241,46 +225,28 @@ const actions = [
       buttonType: "default",
       buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
       title: "Sửa",
-      children: <NewEmployeeForm />,
+      children: <NewProductForm />,
       modalProps: {
           centered: true,
       },
   },
 ];
 
-export default function employeeList() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const action = [
-    {
-      text: "Thêm mới",
-      icon: <AiOutlineSearch />,
-      onClick: () => {
-        Modal.info({
-          title: "test",
-          content: "test"
-        })
-      }
-    }
-  ]
+export default function productList() {
+  const router = useRouter();
+  const onSelectedRow = (data) => {
+    router.push("/products/" + data.product_id);
+  }
   return (
     <DefaultLayout>
       <div class="float-left">
         <p>
-          <span class="text-2xl font-bold mr-3">Nhân viên</span>
-          <span class="font-bold text-slate-500">15 nhân viên được tìm thấy</span>
+          <span class="text-2xl font-bold mr-3">Sản phẩm</span>
+          <span class="font-bold text-slate-500">15 sản phẩm được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm nhân viên"} actions={actions} />
- 
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm sản phẩm"} actions={actions} onSelectedRow={onSelectedRow}/>
+
 
     </DefaultLayout>
   );

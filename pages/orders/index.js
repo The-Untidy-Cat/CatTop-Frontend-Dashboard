@@ -1,9 +1,9 @@
 import DefaultLayout from "@/components/Layout";
-import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
-import TableTemplate from "./table_template";
+import TableTemplate from "../table_template";
+import { useRouter } from "next/router";
 
 const NeworderForm = () => {
   const handleSubmit = (values) => {
@@ -248,6 +248,10 @@ const data = [
 
 
 export default function Order() {
+  const router = useRouter();
+  const onSelectedRow = (data) => {
+    router.push("/orders/" + data.id);
+  }
   return (
     <DefaultLayout>
       <div class="float-left">
@@ -256,11 +260,7 @@ export default function Order() {
           <span class="font-bold text-slate-500	">15 đơn hàng được tìm thấy</span>
         </p>
       </div>
-
-
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm nhân viên"} actions={actions} />
-
-
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm đơn hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
     </DefaultLayout >
   );
 }

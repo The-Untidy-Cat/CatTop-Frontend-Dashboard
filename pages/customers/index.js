@@ -1,11 +1,9 @@
 import DefaultLayout from "@/components/Layout";
-import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
-import TableTemplate from "./table_template";
-import { useState } from "react";
-import { Modal } from "antd";
+import TableTemplate from "../table_template";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const columns = [
   {
@@ -245,28 +243,10 @@ const actions = [
 ];
 
 export default function CustomerList() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const action = [
-    {
-      text: "Thêm mới",
-      icon: <AiOutlineSearch />,
-      onClick: () => {
-        Modal.info({
-          title: "test",
-          content: "test"
-        })
-      }
-    }
-  ]
+  const router = useRouter();
+  const onSelectedRow = (data) => {
+    router.push("/customers/" + data.customer_id);
+  }
   return (
     <DefaultLayout>
       <div class="float-left">
@@ -275,7 +255,7 @@ export default function CustomerList() {
           <span class="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"} actions={actions} />
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm khách hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
    
 
     </DefaultLayout>

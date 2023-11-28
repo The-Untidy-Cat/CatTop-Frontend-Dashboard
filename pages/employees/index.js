@@ -1,84 +1,102 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
-import TableTemplate from "./table_template";
+import TableTemplate from "../table_template";
 import { useState } from "react";
 import { Modal } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import { useRouter } from "next/router";
 const columns = [
   {
-    title: "Mã sản phẩm",
-    dataIndex: "product_id",
-    key: "product_id",
+    title: "Mã nhân viên",
+    dataIndex: "employee_id",
+    key: "employee_id",
   },
   {
-    title: "Tên sản phẩm",
-    dataIndex: "product_name",
-    key: "product_name",
+    title: "Tên nhân viên",
+    dataIndex: "employee_name",
+    key: "employee_name",
     // render: (_, record) => {
     //   return <>{record.first_name + " " + record.last_name}</>
     // }
   },
   {
-    title: "Thương hiệu",
-    dataIndex: "product_brand",
-    key: "product_brand",
+    title: "Email",
+    dataIndex: "employee_email",
+    key: "employee_email",
   },
   {
-    title: "Mô tả",
-    dataIndex: "product_description",
-    key: "product_description",
+    title: "Số điện thoại",
+    dataIndex: "employee_phone",
+    key: "employee_phone",
   },
   {
-    title: "Giá bán",
-    dataIndex: "product_price",
-    key: "product_price",
+    title: "Cơ sở làm việc",
+    dataIndex: "employee_department",
+    key: "employee_department",
+  },
+  {
+    title: "Chức vụ",
+    dataIndex: "employee_position",
+    key: "employee_position",
+  },
+  {
+    title: "Ngày khởi tạo",
+    dataIndex: "initial_date",
+    key: "initial_date",
   },
   {
     title: "Trạng thái",
-    dataIndex: "product_status",
-    key: "product_status",
+    dataIndex: "employee_status",
+    key: "employee_status",
   },
 ];
 
 const data = [
   {
-    product_id: "0001",
-    product_name: <a>Asus Vivibook Flip 14 TP470(Intel)</a>,
-    product_brand: "ASUS VIVOBOOK",
-    product_description: "",
-    product_price: "15.000.000",
-    product_status: "Đang bán",
+    employee_id: "0001",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Nhân viên",
+    initial_date: "2021-10-10",
+    employee_status: "Đang hoạt động",
   },
   {
-    product_id: "0002",
-    product_name: <a>Microsoft Surface Pro 9</a>,
-    product_brand: "MICROSOFT SURFACE PRO",
-    product_description: "",
-    product_price: "21.990.000",
-    product_status: "Ngừng kinh doanh",
+    employee_id: "0002",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Quản lý",
+    initial_date: "2021-10-10",
+    employee_status: "Đang hoạt động",
   },
   {
-    product_id: "0003",
-    product_name: <a>HP ProBook 440 G8</a>,
-    product_brand: "HP PROBOOK",
-    product_description: "",
-    product_price: "12.990.000",
-    product_status: "Sản phẩm đang hết hàng",
+    employee_id: "0003",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Nhân viên",
+    initial_date: "2021-10-10",
+    employee_status: "Đang hoạt động",
   },
   {
-    product_id: "0005",
-    product_name: <a>Dell XPS 13 9315</a>,
-    product_brand: "DELL XPS",
-    product_description: "",
-    product_price: "26.990.000",
-    product_status: "Đang bán",
+    employee_id: "0004",
+    employee_name: <a>John Brown</a>,
+    employee_email: "johnbrown@gmail.com",
+    employee_phone: "0901234567",
+    employee_department: "New York No. 1 Lake Park",
+    employee_position: "Nhân viên",
+    initial_date: "2021-10-10",
+    employee_status: "Đang hoạt động",
   },
-
 ];
 
-const NewProductForm = () => {
+const NewEmployeeForm = () => {
   const handleSubmit = (values) => {
     console.log(values);
   };
@@ -91,9 +109,9 @@ const NewProductForm = () => {
     >
       <div className="flex flex-row justify-between gap-2">
         <div className="flex flex-col gap-2 w-1/3">
-          <p className="m-0">Mã sản phẩm</p>
+          <p className="m-0">Tên nhân viên</p>
           <Form.Item
-            name="product_id"
+            name="employee_name"
             rules={[
               {
                 required: true,
@@ -108,9 +126,9 @@ const NewProductForm = () => {
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 w-2/3">
-          <p className="m-0">Tên sản phẩm</p>
+          <p className="m-0">Email</p>
           <Form.Item
-            name="product_name"
+            name="employee_email"
             rules={[
               {
                 required: true,
@@ -126,14 +144,14 @@ const NewProductForm = () => {
         </div>
       </div>
 
-      <p className="m-0">Thương hiệu</p>
+      <p className="m-0">Số điện thoại</p>
       <Form.Item
         label=""
-        name="product_brand"
+        name="employee_phone"
         rules={[
           {
             required: true,
-            type: "email",
+            type: "employee_phone",
             message: "Email không hợp lệ!",
           },
         ]}
@@ -141,10 +159,10 @@ const NewProductForm = () => {
       >
         <Input />
       </Form.Item>
-      <p className="m-0">Giá</p>
+      <p className="m-0">Cơ sở làm việc</p>
       <Form.Item
         label=""
-        name="product_price"
+        name="employee_department"
         rules={[
           {
             required: true,
@@ -157,10 +175,10 @@ const NewProductForm = () => {
       >
         <Input />
       </Form.Item>
-      <p className="m-0">Mô tả</p>
+      <p className="m-0">Chức vụ</p>
       <Form.Item
         label=""
-        name="product_description"
+        name="employee_position"
         rules={[
           {
             required: true,
@@ -199,7 +217,7 @@ const NewProductForm = () => {
       </Form.Item> */}
       <Form.Item className="m-0 mt-2">
         <Button type="primary" className="w-full" htmlType="submit">
-          Thêm
+          Hoàn thành
         </Button>
       </Form.Item>
     </Form>
@@ -213,7 +231,7 @@ const actions = [
       buttonType: "primary",
       buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
       title: "Thêm mới",
-      children: <NewProductForm />,
+      children: <NewEmployeeForm />,
       modalProps: {
           centered: true,
       },
@@ -224,46 +242,28 @@ const actions = [
       buttonType: "default",
       buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
       title: "Sửa",
-      children: <NewProductForm />,
+      children: <NewEmployeeForm />,
       modalProps: {
           centered: true,
       },
   },
 ];
 
-export default function productList() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-  const action = [
-    {
-      text: "Thêm mới",
-      icon: <AiOutlineSearch />,
-      onClick: () => {
-        Modal.info({
-          title: "test",
-          content: "test"
-        })
-      }
-    }
-  ]
+export default function employeeList() {
+  const router = useRouter();
+  const onSelectedRow = (data) =>{
+    router.push(`/employees/${data.employee_id}`)
+  }
   return (
     <DefaultLayout>
       <div class="float-left">
         <p>
-          <span class="text-2xl font-bold mr-3">Sản phẩm</span>
-          <span class="font-bold text-slate-500">15 sản phẩm được tìm thấy</span>
+          <span class="text-2xl font-bold mr-3">Nhân viên</span>
+          <span class="font-bold text-slate-500">15 nhân viên được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm sản phẩm"} actions={actions} />
-
+      <TableTemplate data={data} columns={columns} title={"Tìm kiếm nhân viên"} actions={actions} onSelectedRow={onSelectedRow}/>
+ 
 
     </DefaultLayout>
   );

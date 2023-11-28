@@ -45,7 +45,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách đơn hàng",
         name: "Danh sách đơn hàng",
-        path: "/order_list",
+        path: "/orders",
         type: "sub-menu",
       },
       {
@@ -77,7 +77,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách khách hàng",
         name: "Danh sách khách hàng",
-        path: "/customer_list",
+        path: "/customers",
         type: "sub-menu",
       }
     ],
@@ -91,13 +91,13 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách sản phẩm",
         name: "Danh sách sản phẩm",
-        path: "/product_list",
+        path: "/products",
         type: "sub-menu",
       },
       {
         key: "Danh sách thương hiệu",
         name: "Danh sách thương hiệu",
-        path: "/brand_list",
+        path: "/brands",
         type: "sub-menu",
       },
     ],
@@ -111,7 +111,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách nhân viên",
         name: "Danh sách nhân viên",
-        path: "/employee_list",
+        path: "/employees",
         type: "sub-menu",
       },
     ],
