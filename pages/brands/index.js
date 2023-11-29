@@ -7,6 +7,7 @@ import TableTemplate from "../table_template";
 import { useState } from "react";
 import { Modal } from "antd";
 import { useRouter } from "next/router";
+import { api } from "@/utils/axios";
 
 const columns = [
   {
@@ -189,6 +190,11 @@ export default function brandList() {
   const onSelectedRow = (data) => {
     router.push("/brands/" + data.brand_id);
   };
+  const [brands, setBrands] = useState([]);
+  const api_brand = () => {
+    const data = api.get("https://test.ait.id.vn/v1/dashboard/brands");
+    setBrands(data.data.result);
+  }
   return (
     <DefaultLayout>
       <div class="float-left">
@@ -198,8 +204,6 @@ export default function brandList() {
         </p>
       </div>
       <TableTemplate data={data} columns={columns} title={"Tìm kiếm thương hiệu"} actions={actions} onSelectedRow={onSelectedRow}/>
- 
-
     </DefaultLayout>
   );
 }

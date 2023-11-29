@@ -1,3 +1,4 @@
+import { api } from "@/utils/axios";
 import { notification } from "antd";
 import { useState } from "react";
 
@@ -9,7 +10,9 @@ export const useAuthController = () => {
         setLoadingAuth(true);
         try {
             // Login logic here
+            const data_admin = await api.post("/auth/dash", account);
             setUser(account);
+            console.log(data_admin);
         } catch (error) {
             notification.error({
                 message: 'Error',

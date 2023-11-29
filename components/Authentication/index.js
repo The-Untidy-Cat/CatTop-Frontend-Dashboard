@@ -7,7 +7,7 @@ import { AiOutlineLaptop } from "react-icons/ai";
 export default function Login() {
   const { login } = useAuth();
   const handleSubmit = async (values) => {
-    const response = await api.post("/auth/dash", values);
+    const response = await login(values);
     console.log(response);
   }
   const onFinish = (values) => {
