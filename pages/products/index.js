@@ -126,7 +126,20 @@ const NewProductForm = () => {
           </Form.Item>
         </div>
       </div>
-
+      <p className="m-0">Link hình ảnh</p>
+      <Form.Item
+        label=""
+        name="product_img_url"
+        rules={[
+          {
+            required: true,
+            type: "url",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
       <p className="m-0">Thương hiệu</p>
       <Form.Item
         label=""
