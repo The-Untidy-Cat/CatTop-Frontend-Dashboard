@@ -4,10 +4,11 @@ import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } fro
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import TableTemplate from "../table_template";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { useRouter } from "next/router";
 import { api } from "@/utils/axios";
+import { getAllBrand } from "@/services/brand";
 
 const columns = [
   {
@@ -24,64 +25,12 @@ const columns = [
     // }
   },
   {
-    title: "Mô tả",
-    dataIndex: "brand_description",
-    key: "brand_description",
+    title: "Trạng thái",
+    dataIndex: "brand_state",
+    key: "brand_state",
   },
 ];
 
-const data = [
-  {
-    brand_id: "0001",
-    brand_name: "DELL",
-    brand_description: "",
-  },
-  {
-    brand_id: "0002",
-    brand_name: "LENOVO",
-    brand_description: "",
-  },
-  {
-    brand_id: "0003",
-    brand_name: "LG",
-    brand_description: "",
-  },
-  {
-    brand_id: "0005",
-    brand_name: "ASUS",
-    brand_description: "",
-  },
-  {
-    brand_id: "0006",
-    brand_name: "HP",
-    brand_description: "",
-  },
-  {
-    brand_id: "0007",
-    brand_name: "APPLE",
-    brand_description: "",
-  },
-  {
-    brand_id: "0008",
-    brand_name: "ACER",
-    brand_description: "",
-  },
-  {
-    brand_id: "0009",
-    brand_name: "GIGABYTE",
-    brand_description: "",
-  },
-  {
-    brand_id: "0010",
-    brand_name: "VAIO",
-    brand_description: "",
-  },
-  {
-    brand_id: "0011",
-    brand_name: "MSI",
-    brand_description: "",
-  },
-];
 
 const NeworderForm = () => {
   const handleSubmit = (values) => {
@@ -117,7 +66,7 @@ const NeworderForm = () => {
         rules={[
           {
             required: true,
-            type: "brand_description",
+            type: "brand_state",
           },
         ]}
         className="m-0"
@@ -162,26 +111,26 @@ const NeworderForm = () => {
 
 const actions = [
   {
-      key: "add",
-      buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
-      buttonType: "primary",
-      buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
-      title: "Thêm mới",
-      children: <NeworderForm />,
-      modalProps: {
-          centered: true,
-      },
+    key: "add",
+    buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
+    buttonType: "primary",
+    buttonIcon: <span><FaPlus class="text-white mr-2 w-2.5 align-middle" /></span>,
+    title: "Thêm mới",
+    children: <NeworderForm />,
+    modalProps: {
+      centered: true,
+    },
   },
   {
-      key: "edit",
-      buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
-      buttonType: "default",
-      buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
-      title: "Sửa",
-      children: <NeworderForm />,
-      modalProps: {
-          centered: true,
-      },
+    key: "edit",
+    buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
+    buttonType: "default",
+    buttonIcon: <RiPencilFill class="mr-2 w-2.5 align-middle" />,
+    title: "Sửa",
+    children: <NeworderForm />,
+    modalProps: {
+      centered: true,
+    },
   },
 ];
 
@@ -191,10 +140,27 @@ export default function brandList() {
     router.push("/brands/" + data.brand_id);
   };
   const [brands, setBrands] = useState([]);
-  const api_brand = () => {
-    const data = api.get("https://test.ait.id.vn/v1/dashboard/brands");
-    setBrands(data.data.result);
+
+  const getData = async () => {
+    try {
+      const response = await getAllBrand();
+      setBrands(response.records.map?.((item) => {
+        return {
+          brand_id: item.id,
+          brand_name: item.name,
+          brand_state: item.state,
+        };  
+      }));
+    } catch (error) {
+      console.log("error", error);
+    }
   }
+
+  useEffect(() => {
+    console.log("useEffect");
+    getData();
+  }, []);
+
   return (
     <DefaultLayout>
       <div class="float-left">
@@ -203,7 +169,9 @@ export default function brandList() {
           <span class="font-bold text-slate-500">15 thương hiệu được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm thương hiệu"} actions={actions} onSelectedRow={onSelectedRow}/>
+      
+      <Pagination className="float-right" defaultCurrent={1} total={brands.length} />
+      <TableTemplate data={brands} columns={columns} title={"Tìm kiếm thương hiệu"} actions={actions} onSelectedRow={onSelectedRow} />
     </DefaultLayout>
   );
 }

@@ -3,8 +3,8 @@ const { notification } = require("antd");
 
 const getAllBrand = async () => {
   try {
-    const response = await api.get(`/web/brands`);
-    return response.data.data;
+    const response = await api.get(`/dashboard/brands`);
+    return response?.data?.data;
   } catch (error) {
     notification.error({
       message: "Error",

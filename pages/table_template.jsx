@@ -5,7 +5,7 @@ import { App } from "@/pages/test"
 import { ModalToggle } from "@/components/Modal";
 
 
-export default function TableTemplate({ data, columns, title, actions, onSelectedRow }) {
+export default function TableTemplate({ data, columns, title, actions, onSelectedRow, length }) {
     return (
         <div>
             {/* //Category */}
@@ -48,7 +48,8 @@ export default function TableTemplate({ data, columns, title, actions, onSelecte
 
                 </div>
                 <div>
-                    <Table dataSource={data} columns={columns} onRow={(data, index) => {
+                    <Pagination className="float-right" defaultCurrent={1} total={length} />
+                    <Table dataSource={data} columns={columns} pagination={Pagination} onRow={(data, index) => {
                         return {
                             onClick: () => {
                                 onSelectedRow(data)
