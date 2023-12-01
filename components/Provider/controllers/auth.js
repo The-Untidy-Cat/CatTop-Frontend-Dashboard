@@ -1,15 +1,15 @@
 import { notification } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useAuthController = () => {
     const [user, setUser] = useState(null);
-    const [loadingAuth, setLoadingAuth] = useState(false);
+    const [loadingAuth, setLoadingAuth] = useState(true);
 
     const login = async (account) => {
         setLoadingAuth(true);
         try {
-            // Login logic here
-            setUser(account);
+            const response = await api.post('/auth/dash', account);
+            console.log(response);
         } catch (error) {
             notification.error({
                 message: 'Error',
@@ -32,6 +32,10 @@ export const useAuthController = () => {
         }
         setLoadingAuth(false);
     }
+
+    useEffect(() => {
+
+    }, []);
 
     return {
         user,
