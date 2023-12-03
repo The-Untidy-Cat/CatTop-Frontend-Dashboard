@@ -1,5 +1,5 @@
 import { Button, Modal } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export const ModalToggle = ({
   children,
@@ -10,6 +10,11 @@ export const ModalToggle = ({
   ...modalProps
 }) => {
   const [visible, setVisible] = useState(false);
+  const clonedChildren = React.cloneElement(children, {
+    onClose: () => {
+      setVisible(false);
+    },
+  });
   return (
     <>
       <Button
@@ -29,7 +34,7 @@ export const ModalToggle = ({
         footer={null}
         centered
       >
-        {children}
+        {clonedChildren}
       </Modal>
     </>
   );

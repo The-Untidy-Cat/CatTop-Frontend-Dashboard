@@ -1,78 +1,80 @@
-const NewBrandForm = () => {
-    const handleSubmit = (values) => {
-      console.log(values);
-    };
-    return (
-      <Form
-        name="registration"
-        onFinish={handleSubmit}
-        autoComplete="off"
-        className="flex flex-col w-full gap-2"
-      >
-  
-        <p className="m-0">Tên thương hiệu</p>
-        <Form.Item
-          label=""
-          name="brand_name"
-          rules={[
-            {
-              required: true,
-              type: "brand_name",
-            },
-          ]}
-          className="m-0"
-        >
-          <Input />
-        </Form.Item>
-  
-        <p className="m-0">Mô tả</p>
-        <Form.Item
-          label=""
-          name="brand_name"
-          rules={[
-            {
-              required: true,
-              type: "brand_state",
-            },
-          ]}
-          className="m-0"
-        >
-          <Input />
-        </Form.Item>
-        {/* <p className="m-0">Tên đăng nhập</p>
-        <Form.Item
-          label=""
-          name="username"
-          rules={[
-            {
-              required: true,
-              pattern: /^[a-zA-Z0-9.\S]+$/,
-              message: "Chỉ nhập chữ, số và dấu chấm!",
-            },
-          ]}
-          className="m-0"
-        >
-          <Input />
-        </Form.Item>
-        <p className="m-0">Mật khẩu</p>
-        <Form.Item
-          label=""
-          name="password"
-          rules={[
-            { required: true, message: "Vui lòng nhập Mật khẩu!" },
-            { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự!" },
-          ]}
-          className="m-0"
-        >
-          <Input.Password />
-        </Form.Item> */}
-        <Form.Item className="m-0 mt-2">
-          <Button type="primary" className="w-full" htmlType="submit">
-            Hoàn thành
-          </Button>
-        </Form.Item>
-      </Form>
-    );
-  };
+import { createBrand } from "@/services/brand";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-export { NewBrandForm}
+export function NewBrandForm({ onSuccess, onClose }) {
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
+  const router = useRouter();
+  const handleSubmit = async (values) => {
+    setLoading(true);
+    console.log(values);
+    createBrand({ ...values, view_on_create: undefined })
+      .then((res) => {
+        Modal.destroyAll();
+        form.resetFields();
+        onClose && onClose();
+        if (values.view_on_create) {
+          router.push(`/products/brands/${res.id}`);
+        } else {
+          onSuccess && onSuccess();
+        }
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  return (
+    <Form
+      onFinish={handleSubmit}
+      autoComplete="off"
+      className="flex flex-col w-full gap-2"
+      disabled={loading}
+      form={form}
+    >
+      <p className="m-0">Tên thương hiệu</p>
+      <Form.Item
+        name="name"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập tên thương hiệu!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+      <p className="m-0">Đường dẫn Logo</p>
+      <Form.Item
+        name="image"
+        rules={[
+          {
+            required: true,
+            type: "url",
+            message: "Vui lòng nhập đường dẫn hợp lệ!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item name="view_on_create" valuePropName="checked" className="m-0">
+        <Checkbox>Xem sau khi tạo</Checkbox>
+      </Form.Item>
+      <Form.Item className="m-0 mt-2">
+        <Button
+          className="w-full bg-primary text-white"
+          htmlType="submit"
+          loading={loading}
+        >
+          Hoàn thành
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+}
+
+export default NewBrandForm;

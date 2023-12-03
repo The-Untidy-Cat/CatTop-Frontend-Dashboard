@@ -6,12 +6,17 @@ import { useState } from "react";
 
 export default function Login() {
   const { login } = useAuth();
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const onFinish = (values) => {
     setLoading(true);
     login(values)
       .catch((error) => {
         console.log(error);
+        form.setFields([{
+          name: "password",
+          errors: ["Tên đăng nhập hoặc mật khẩu không đúng"],
+        }]);
       })
       .finally(() => {
         setLoading(false);
@@ -26,11 +31,13 @@ export default function Login() {
         </h2>
         <h1 className="text-lg md:text-xl font-bold">Đăng nhập</h1>
         <Form
+          form={form}
           name="login"
           onFinish={onFinish}
           className="flex flex-col w-full gap-2"
           disabled={loading}
         >
+          <Form.ErrorList/>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium" htmlFor="username">
               Tên đăng nhập

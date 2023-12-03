@@ -5,7 +5,7 @@ import TableView from "../../../components/View/table";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { searchRead } from "@/services/search_read";
-import { NewBrandForm } from "@/components/Form/Brand";
+import NewBrandForm from "@/components/Form/brands";
 
 const columns = [
   {
@@ -22,20 +22,6 @@ const columns = [
     title: "Trạng thái",
     dataIndex: "state",
     key: "state",
-  },
-];
-
-const actions = [
-  {
-    key: "add",
-    buttonLabel: "Thêm",
-    buttonType: "primary",
-    buttonIcon: <FaPlus />,
-    title: "Thêm mới",
-    children: <NewBrandForm />,
-    modalProps: {
-      centered: true,
-    },
   },
 ];
 
@@ -80,6 +66,20 @@ export default function brandList() {
     router.push("/brands/" + data.id);
   };
 
+  const actions = [
+    {
+      key: "add",
+      buttonLabel: "Thêm",
+      buttonType: "primary",
+      buttonIcon: <FaPlus />,
+      title: "Thêm mới",
+      children: <NewBrandForm onSuccess={getData} />,
+      modalProps: {
+        centered: true,
+      },
+    },
+  ];
+  
   useEffect(() => {
     getData();
   }, [keyword, offset]);
