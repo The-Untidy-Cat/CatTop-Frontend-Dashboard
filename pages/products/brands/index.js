@@ -1,24 +1,11 @@
 import DefaultLayout from "@/components/Layout";
-import { AiOutlineSearch } from "react-icons/ai";
-import {
-  DatePicker,
-  Divider,
-  Tabs,
-  Pagination,
-  Table,
-  Form,
-  Input,
-  Button,
-} from "antd";
+import { Form, Input, Button } from "antd";
 import { FaPlus } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
-import TableView from "../../components/View/table";
+import TableView from "../../../components/View/table";
 import { useEffect, useState } from "react";
-import { Modal } from "antd";
 import { useRouter } from "next/router";
-import { api } from "@/utils/axios";
-import { getAllBrand } from "@/services/brand";
 import { searchRead } from "@/services/search_read";
+import { NewBrandForm } from "@/components/Form/Brand";
 
 const columns = [
   {
@@ -38,55 +25,6 @@ const columns = [
   },
 ];
 
-const NeworderForm = () => {
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
-  return (
-    <Form
-      name="registration"
-      onFinish={handleSubmit}
-      autoComplete="off"
-      className="flex flex-col w-full gap-2"
-    >
-      <p className="m-0">Tên thương hiệu</p>
-      <Form.Item
-        label=""
-        name="brand_name"
-        rules={[
-          {
-            required: true,
-            type: "brand_name",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-
-      <p className="m-0">Mô tả</p>
-      <Form.Item
-        label=""
-        name="brand_name"
-        rules={[
-          {
-            required: true,
-            type: "brand_state",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item className="m-0 mt-2">
-        <Button type="primary" className="w-full" htmlType="submit">
-          Hoàn thành
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-};
-
 const actions = [
   {
     key: "add",
@@ -94,7 +32,7 @@ const actions = [
     buttonType: "primary",
     buttonIcon: <FaPlus />,
     title: "Thêm mới",
-    children: <NeworderForm />,
+    children: <NewBrandForm />,
     modalProps: {
       centered: true,
     },
@@ -147,19 +85,39 @@ export default function brandList() {
   }, [keyword, offset]);
 
   return (
-    <DefaultLayout>
+    <DefaultLayout
+      title={"Thương hiệu"}
+      breadcrumb={[
+        {
+          href: "/products",
+          title: "Sản phẩm",
+        },
+        {
+          href: "/products/brands",
+          title: "Thương hiệu",
+        },
+      ]}
+    >
       <TableView
         title="Thương hiệu"
-        data={brands}
-        columns={columns}
         actions={actions}
-        length={length}
-        loading={loading}
-        pageSize={limit}
-        current={offset / limit + 1}
-        onPaginationChange={onPaginationChange}
-        onSelectedRow={onSelectedRow}
-        onSearch={onSearch}
+        table={{
+          bordered: true,
+          loading: loading,
+          data: brands,
+          columns: columns,
+          onSelectedRow: onSelectedRow,
+        }}
+        search={{
+          placeholder: "Tìm kiếm",
+          onSearch: onSearch,
+        }}
+        pagination={{
+          length,
+          pageSize: limit,
+          current: offset / limit + 1,
+          onChange: onPaginationChange,
+        }}
       />
     </DefaultLayout>
   );
