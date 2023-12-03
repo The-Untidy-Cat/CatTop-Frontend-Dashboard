@@ -1,12 +1,10 @@
 import DefaultLayout from "@/components/Layout";
-import { DatePicker, Divider, Tabs, Pagination, Table, Row, Col, Statistic, Button, Input, Form } from "antd";
-import { App } from "@/pages/test.js";
-import { LikeOutlined } from '@ant-design/icons';
-import { FaPlus, FaShoppingBag, FaUserPlus } from "react-icons/fa";
-import { MdAttachMoney, MdOutlineProductionQuantityLimits } from "react-icons/md";
-import TableTemplate from "./table_template";
+import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
+import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
+import TableTemplate from "../table_template";
 import { useRouter } from "next/router";
+
 const NeworderForm = () => {
   const handleSubmit = (values) => {
     console.log(values);
@@ -142,7 +140,6 @@ const NeworderForm = () => {
   );
 };
 
-
 const actions = [
   {
       key: "add",
@@ -215,7 +212,7 @@ const data = [
     address: "New York No. 1 Lake Park",
     date: "2021-10-10",
     price: "1000",
-    order_status: "Đang xử lý",
+    order_status: "Đã hoàn thành",
   },
   {
     id: "2",
@@ -225,7 +222,7 @@ const data = [
     address: "New York No. 1 Lake Park",
     date: "2021-10-10",
     price: "1000",
-    order_status: "Đang xử lý",
+    order_status: "Đã hoàn thành",
   },
   {
     id: "3",
@@ -237,38 +234,33 @@ const data = [
     price: "1000",
     order_status: "Đang xử lý",
   },
+  {
+    id: "4",
+    order_id: "4",
+    product_name: "John Brown",
+    customer_id: "32",
+    address: "New York No. 1 Lake Park",
+    date: "2021-10-10",
+    price: "1000",
+    order_status: "Đã huỷ",
+  },
 ];
 
-export default function Home() {
+
+export default function Order() {
   const router = useRouter();
   const onSelectedRow = (data) => {
     router.push("/orders/" + data.id);
   }
   return (
     <DefaultLayout>
-      <Row gutter={16}>
-        <Col span={6}>
-          <Statistic title="Khách hàng" value={1128} prefix={<FaUserPlus />} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="Đơn hàng" value={1128} prefix={<FaShoppingBag />} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="Sản phẩm" value={1128} prefix={<MdOutlineProductionQuantityLimits />} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="Doanh thu" value={1128} prefix={<MdAttachMoney />} />
-        </Col>
-      </Row>
-      <Divider />
-      
       <div class="float-left">
         <p>
           <span class="text-2xl font-bold mr-3">Đơn hàng</span>
-          <span class="font-bold text-slate-500	">3 đơn hàng đang chờ được xử lý</span>
+          <span class="font-bold text-slate-500	">15 đơn hàng được tìm thấy</span>
         </p>
       </div>
       <TableTemplate data={data} columns={columns} title={"Tìm kiếm đơn hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
-    </DefaultLayout>
+    </DefaultLayout >
   );
 }

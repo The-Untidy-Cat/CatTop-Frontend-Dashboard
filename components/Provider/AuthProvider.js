@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
 //   const auth = useAuthController();
-    const auth = useFakeAuthController();
+    const auth = useAuthController();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
