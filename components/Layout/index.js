@@ -55,8 +55,8 @@ const DefaultLayout = ({ children, title, breadcrumb = [] }) => {
                 items={[
                   {
                     title: (
-                      <Link href={"/"}>
-                        <AiOutlineHome />
+                      <Link href={"/"} className="flex items-center align-center">
+                        <AiOutlineHome className="text-lg" />
                       </Link>
                     ),
                   },
@@ -64,14 +64,14 @@ const DefaultLayout = ({ children, title, breadcrumb = [] }) => {
                     title: (
                       <Link
                         href={item?.href}
-                        className="flex items-center align-center gap-1 text-gray-600"
+                        className="flex items-center align-center gap-1"
                       >
                         {item.title}
                       </Link>
                     ),
                   })),
                 ]}
-                className="flex items-center align-center gap-1 text-gray-600 mb-2"
+                className="flex items-center align-center gap-1 mb-2"
               />
               {children}
             </div>
