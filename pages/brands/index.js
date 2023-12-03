@@ -32,7 +32,7 @@ const columns = [
 ];
 
 
-const NeworderForm = () => {
+const NewBrandForm = () => {
   const handleSubmit = (values) => {
     console.log(values);
   };
@@ -116,7 +116,7 @@ const actions = [
     buttonType: "primary",
     buttonIcon: <span><FaPlus class="text-white mr-2 w-2.5 align-middle" /></span>,
     title: "Thêm mới",
-    children: <NeworderForm />,
+    children: <NewBrandForm />,
     modalProps: {
       centered: true,
     },
@@ -127,7 +127,7 @@ const actions = [
     buttonType: "default",
     buttonIcon: <RiPencilFill class="mr-2 w-2.5 align-middle" />,
     title: "Sửa",
-    children: <NeworderForm />,
+    children: <NewBrandForm />,
     modalProps: {
       centered: true,
     },
