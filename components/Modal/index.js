@@ -16,7 +16,9 @@ export const ModalToggle = ({
         type={buttonType}
         onClick={() => setVisible(true)}
         icon={buttonIcon}
-        className="flex items-center align-center"
+        className={`flex items-center align-center font-medium ${
+          buttonType === "primary" && "text-white bg-primary"
+        }`}
       >
         {buttonLabel}
       </Button>
@@ -26,7 +28,6 @@ export const ModalToggle = ({
         onCancel={() => setVisible(false)}
         footer={null}
         centered
-
       >
         {children}
       </Modal>

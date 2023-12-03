@@ -1,36 +1,42 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
-import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
+import {
+  DatePicker,
+  Divider,
+  Tabs,
+  Pagination,
+  Table,
+  Form,
+  Input,
+  Button,
+} from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
-import TableTemplate from "../table_template";
+import TableView from "../../components/View/table";
 import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { useRouter } from "next/router";
 import { api } from "@/utils/axios";
 import { getAllBrand } from "@/services/brand";
+import { searchRead } from "@/services/search_read";
 
 const columns = [
   {
     title: "Mã thương hiệu",
-    dataIndex: "brand_id",
-    key: "brand_id",
+    dataIndex: "id",
+    key: "id",
   },
   {
     title: "Tên thương hiệu",
-    dataIndex: "brand_name",
-    key: "brand_name",
-    // render: (_, record) => {
-    //   return <>{record.first_name + " " + record.last_name}</>
-    // }
+    dataIndex: "name",
+    key: "name",
   },
   {
     title: "Trạng thái",
-    dataIndex: "brand_state",
-    key: "brand_state",
+    dataIndex: "state",
+    key: "state",
   },
 ];
-
 
 const NeworderForm = () => {
   const handleSubmit = (values) => {
@@ -43,7 +49,6 @@ const NeworderForm = () => {
       autoComplete="off"
       className="flex flex-col w-full gap-2"
     >
-
       <p className="m-0">Tên thương hiệu</p>
       <Form.Item
         label=""
@@ -73,33 +78,6 @@ const NeworderForm = () => {
       >
         <Input />
       </Form.Item>
-      {/* <p className="m-0">Tên đăng nhập</p>
-      <Form.Item
-        label=""
-        name="username"
-        rules={[
-          {
-            required: true,
-            pattern: /^[a-zA-Z0-9.\S]+$/,
-            message: "Chỉ nhập chữ, số và dấu chấm!",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-      <p className="m-0">Mật khẩu</p>
-      <Form.Item
-        label=""
-        name="password"
-        rules={[
-          { required: true, message: "Vui lòng nhập Mật khẩu!" },
-          { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự!" },
-        ]}
-        className="m-0"
-      >
-        <Input.Password />
-      </Form.Item> */}
       <Form.Item className="m-0 mt-2">
         <Button type="primary" className="w-full" htmlType="submit">
           Hoàn thành
@@ -112,21 +90,10 @@ const NeworderForm = () => {
 const actions = [
   {
     key: "add",
-    buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
+    buttonLabel: "Thêm",
     buttonType: "primary",
-    buttonIcon: <span><FaPlus class="text-white mr-2 w-2.5 align-middle" /></span>,
+    buttonIcon: <FaPlus />,
     title: "Thêm mới",
-    children: <NeworderForm />,
-    modalProps: {
-      centered: true,
-    },
-  },
-  {
-    key: "edit",
-    buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
-    buttonType: "default",
-    buttonIcon: <RiPencilFill class="mr-2 w-2.5 align-middle" />,
-    title: "Sửa",
     children: <NeworderForm />,
     modalProps: {
       centered: true,
@@ -136,42 +103,64 @@ const actions = [
 
 export default function brandList() {
   const router = useRouter();
-  const onSelectedRow = (data) => {
-    router.push("/brands/" + data.brand_id);
-  };
+
+  const limit = 5;
   const [brands, setBrands] = useState([]);
+  const [keyword, setKeyword] = useState(null);
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
+    setLoading(true);
     try {
-      const response = await getAllBrand();
-      setBrands(response.records.map?.((item) => {
-        return {
-          brand_id: item.id,
-          brand_name: item.name,
-          brand_state: item.state,
-        };  
-      }));
+      const response = await searchRead(
+        "Brand",
+        keyword ? [["name", "=", keyword]] : [],
+        ["id", "name", "state"],
+        limit,
+        offset
+      );
+      setBrands(response?.records.map((item) => ({ ...item, key: item.id })));
+      setLength(response?.length);
+      setOffset(response?.offset);
     } catch (error) {
       console.log("error", error);
     }
-  }
+    setLoading(false);
+  };
+
+  const onSearch = (value) => {
+    setKeyword(value);
+  };
+
+  const onPaginationChange = (page, pageSize) => {
+    setOffset((page - 1) * pageSize);
+  };
+
+  const onSelectedRow = (data) => {
+    router.push("/brands/" + data.id);
+  };
 
   useEffect(() => {
-    console.log("useEffect");
     getData();
-  }, []);
+  }, [keyword, offset]);
 
   return (
     <DefaultLayout>
-      <div class="float-left">
-        <p>
-          <span class="text-2xl font-bold mr-3">Thương hiệu</span>
-          <span class="font-bold text-slate-500">15 thương hiệu được tìm thấy</span>
-        </p>
-      </div>
-      
-      <Pagination className="float-right" defaultCurrent={1} total={brands.length} />
-      <TableTemplate data={brands} columns={columns} title={"Tìm kiếm thương hiệu"} actions={actions} onSelectedRow={onSelectedRow} />
+      <TableView
+        title="Thương hiệu"
+        data={brands}
+        columns={columns}
+        actions={actions}
+        length={length}
+        loading={loading}
+        pageSize={limit}
+        current={offset / limit + 1}
+        onPaginationChange={onPaginationChange}
+        onSelectedRow={onSelectedRow}
+        onSearch={onSearch}
+      />
     </DefaultLayout>
   );
 }

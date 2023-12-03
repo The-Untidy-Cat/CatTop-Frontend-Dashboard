@@ -1,17 +1,21 @@
-import { api } from "@/utils/axios";
 import { useAuth } from "../Provider/AuthProvider";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { AiOutlineLaptop } from "react-icons/ai";
+import { useState } from "react";
 
 export default function Login() {
   const { login } = useAuth();
-  const handleSubmit = async (values) => {
-    const response = await login(values);
-    console.log(response);
-  }
+  const [loading, setLoading] = useState(false);
   const onFinish = (values) => {
-    login(values);
+    setLoading(true);
+    login(values)
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <div className="flex w-full h-full justify-center align-center items-center p-5 md:p-0 bg-primary">
@@ -23,8 +27,9 @@ export default function Login() {
         <h1 className="text-lg md:text-xl font-bold">Đăng nhập</h1>
         <Form
           name="login"
-          onFinish={handleSubmit}
+          onFinish={onFinish}
           className="flex flex-col w-full gap-2"
+          disabled={loading}
         >
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium" htmlFor="username">
@@ -69,7 +74,7 @@ export default function Login() {
           <div className="flex flex-wrap items-center justify-end gap-3 mt-2">
             <Link href="#forgot-password">Quên mật khẩu?</Link>
             <Form.Item className="m-0 p-0">
-              <Button type="primary" htmlType="submit">
+              <Button htmlType="submit" className="bg-primary text-white">
                 Xác thực
               </Button>
             </Form.Item>

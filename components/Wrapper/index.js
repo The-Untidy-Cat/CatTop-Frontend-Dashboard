@@ -7,7 +7,7 @@ export default function PrivateWrapper({ children }) {
   return (
     <>
       {loadingAuth && (
-        <Spin spinning={true} className="fixed w-screen h-screen z-50" />
+        <Spin spinning={true} className="flex w-full h-full items-center align-center justify-center" />
       )}
       {!loadingAuth && !user && <Login/>}
       {!loadingAuth && user && children}

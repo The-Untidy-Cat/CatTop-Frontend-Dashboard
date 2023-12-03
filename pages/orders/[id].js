@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layout";
 import { useRouter } from "next/router";
-import TableTemplate from "../table_template";
+import TableView from "../../components/View/table";
 import { Table } from "antd";
 
 const columns = [

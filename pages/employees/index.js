@@ -1,7 +1,7 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
-import TableTemplate from "../table_template";
+import TableView from "../../components/View/table";
 import { useState } from "react";
 import { Modal } from "antd";
 import { FaPlus } from "react-icons/fa";
@@ -227,7 +227,7 @@ const NewEmployeeForm = () => {
 const actions = [
   {
       key: "add",
-      buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
+      buttonLabel: <span className="text-white font-bold align-middle	">Thêm</span>,
       buttonType: "primary",
       buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
       title: "Thêm mới",
@@ -238,7 +238,7 @@ const actions = [
   },
   {
       key: "edit",
-      buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
+      buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
       buttonType: "default",
       buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
       title: "Sửa",
@@ -256,13 +256,13 @@ export default function employeeList() {
   }
   return (
     <DefaultLayout>
-      <div class="float-left">
+      <div className="float-left">
         <p>
-          <span class="text-2xl font-bold mr-3">Nhân viên</span>
-          <span class="font-bold text-slate-500">15 nhân viên được tìm thấy</span>
+          <span className="text-2xl font-bold mr-3">Nhân viên</span>
+          <span className="font-bold text-slate-500">15 nhân viên được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm nhân viên"} actions={actions} onSelectedRow={onSelectedRow}/>
+      <TableView data={data} columns={columns} title={"Tìm kiếm nhân viên"} actions={actions} onSelectedRow={onSelectedRow}/>
  
 
     </DefaultLayout>

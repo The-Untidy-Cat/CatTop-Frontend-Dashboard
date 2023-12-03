@@ -2,7 +2,7 @@ import DefaultLayout from "@/components/Layout";
 import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
-import TableTemplate from "../table_template";
+import TableView from "../../components/View/table";
 import { useRouter } from "next/router";
 
 const NeworderForm = () => {
@@ -143,7 +143,7 @@ const NeworderForm = () => {
 const actions = [
   {
       key: "add",
-      buttonLabel: <span class="text-white font-bold align-middle	">Thêm</span>,
+      buttonLabel: <span className="text-white font-bold align-middle	">Thêm</span>,
       buttonType: "primary",
       buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
       title: "Thêm mới",
@@ -154,7 +154,7 @@ const actions = [
   },
   {
       key: "edit",
-      buttonLabel: <span class="font-bold align-middle	">Sửa</span>,
+      buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
       buttonType: "default",
       buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
       title: "Sửa",
@@ -254,13 +254,13 @@ export default function Order() {
   }
   return (
     <DefaultLayout>
-      <div class="float-left">
+      <div className="float-left">
         <p>
-          <span class="text-2xl font-bold mr-3">Đơn hàng</span>
-          <span class="font-bold text-slate-500	">15 đơn hàng được tìm thấy</span>
+          <span className="text-2xl font-bold mr-3">Đơn hàng</span>
+          <span className="font-bold text-slate-500	">15 đơn hàng được tìm thấy</span>
         </p>
       </div>
-      <TableTemplate data={data} columns={columns} title={"Tìm kiếm đơn hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
+      <TableView data={data} columns={columns} title={"Tìm kiếm đơn hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
     </DefaultLayout >
   );
 }

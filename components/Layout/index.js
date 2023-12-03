@@ -8,7 +8,7 @@ import { Avatar, Button } from "antd";
 const DefaultLayout = ({ children }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
   return (
-    <main className="flex flex-col bg-gray-100/[.2] h-full w-full over-hidden m-0 p-0">
+    <main className="flex flex-col bg-gray-100/[.3] h-full w-full over-hidden m-0 p-0">
       <header className="flex w-full h-fit border-b bg-white justify-between items-center align-center px-2 shrink-0 grow-0">
         <nav className="flex items-center align-center gap-2 h-12 ml-2 md:ml-5">
           <Button
