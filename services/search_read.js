@@ -1,6 +1,7 @@
 import { api } from "@/utils/axios";
 
-const searchRead = async ({ model,
+const searchRead = async ({
+  model,
   domain,
   fields,
   limit,

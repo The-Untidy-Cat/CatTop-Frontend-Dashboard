@@ -1,16 +1,6 @@
 import DefaultLayout from "@/components/Layout";
 import { AiOutlineSearch } from "react-icons/ai";
-import {
-  DatePicker,
-  Divider,
-  Tabs,
-  Pagination,
-  Table,
-  Form,
-  Input,
-  Button,
-  Breadcrumb,
-} from "antd";
+import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button, Breadcrumb } from "antd";
 import TableView from "../../components/View/table";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -49,6 +39,9 @@ const columns = [
   },
 ];
 
+
+
+
 // {
 //   key: "edit",
 //   buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
@@ -60,6 +53,7 @@ const columns = [
 //     centered: true,
 //   },
 // },
+
 
 export default function productList() {
   const router = useRouter();
@@ -75,19 +69,14 @@ export default function productList() {
     try {
       const response = await searchRead({
         model: "Product",
-        domain: keyword ? [["name", "=", keyword]] : [],
+        domain: keyword ? [["name", "like", `%${keyword}%`]] : [],
         fields: ["id", "name", "brand_id", "description", "state"],
         limit,
         offset,
         relation: ["brand:id,name"],
-      });
-      setProducts(
-        response?.records.map((item) => ({
-          ...item,
-          key: item.id,
-          brand_name: item.brand.name,
-        }))
+      }
       );
+      setProducts(response?.records.map((item) => ({ ...item, key: item.id, brand_name: item.brand.name })));
       setLength(response?.length);
       setOffset(response?.offset);
     } catch (error) {
@@ -105,27 +94,20 @@ export default function productList() {
   };
   const onSelectedRow = (data) => {
     router.push("/products/" + data.product_id);
-  };
+  }
 
   const actions = [
     {
       key: "add",
-      buttonLabel: (
-        <span className="text-white font-bold align-middle	">Thêm</span>
-      ),
+      buttonLabel: <span className="text-white font-bold align-middle	">Thêm</span>,
       buttonType: "primary",
-      buttonIcon: (
-        <span>
-          <FaPlus className="text-white mr-2 w-2.5 align-middle" />
-        </span>
-      ),
+      buttonIcon: <span><FaPlus className="text-white mr-2 w-2.5 align-middle" /></span>,
       title: "Thêm mới",
       children: <NewProductForm onSuccess={getData} />,
       modalProps: {
         centered: true,
       },
-    },
-  ];
+    },]
 
   useEffect(() => {
     getData();
@@ -144,9 +126,7 @@ export default function productList() {
       <div className="float-left">
         <p>
           <span className="text-2xl font-bold mr-3">Sản phẩm</span>
-          <span className="font-bold text-slate-500">
-            15 sản phẩm được tìm thấy
-          </span>
+          <span className="font-bold text-slate-500">15 sản phẩm được tìm thấy</span>
         </p>
       </div>
       <TableView
@@ -170,6 +150,7 @@ export default function productList() {
           onChange: onPaginationChange,
         }}
       />
-    </DefaultLayout>
+
+    </DefaultLayout >
   );
 }

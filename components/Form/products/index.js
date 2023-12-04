@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 
 export function NewProductForm({ onSuccess, onClose }) {
+  const limit = 10;
+  const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [brandList, setBrandList] = useState([]); // [
   const [form] = Form.useForm();
@@ -36,12 +38,14 @@ export function NewProductForm({ onSuccess, onClose }) {
 
   const handleSearchBrand = async (value) => {
     try {
-      const response = await searchRead(
-        "Brand",
-        [["name", "like", `%${value}%`]],
-        ["id", "name"],
-        10,
-        0
+      const response = await searchRead({
+        model: "Brand",
+        domain: [["name", "like", `%${value}%`]],
+        fields: ["id", "name"],
+        limit,
+        offset,
+      }
+        
       );
       setBrandList(response?.records.map((item) => { return { value: item.id, label: item.name } }));
     } catch (e) {
@@ -66,7 +70,7 @@ export function NewProductForm({ onSuccess, onClose }) {
       <p className="m-0">Tên sản phẩm</p>
       <Form.Item
         label=""
-        name="product_img_url"
+        name="name"
         rules={[
           {
             required: true,
@@ -77,10 +81,24 @@ export function NewProductForm({ onSuccess, onClose }) {
       >
         <Input />
       </Form.Item>
+      <p className="m-0">slug sản phẩm</p>
+      <Form.Item
+        label=""
+        name="slug"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập slug sản phẩm!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
       <p className="m-0">Link hình ảnh</p>
       <Form.Item
         label=""
-        name="product_img_url"
+        name="image"
         rules={[
           {
             required: true,
@@ -94,7 +112,7 @@ export function NewProductForm({ onSuccess, onClose }) {
       <p className="m-0">Thương hiệu</p>
       <Form.Item
         label=""
-        name="product_brand"
+        name="brand_id"
         rules={[
           {
             required: true,
@@ -128,7 +146,7 @@ export function NewProductForm({ onSuccess, onClose }) {
       <p className="m-0">Mô tả</p>
       <Form.Item
         label=""
-        name="product_description"
+        name="description"
         rules={[
           {
             required: true,
@@ -139,8 +157,13 @@ export function NewProductForm({ onSuccess, onClose }) {
       >
         <Input />
       </Form.Item>
+      <Form.Item name="view_on_create" valuePropName="checked" className="m-0">
+        <Checkbox>Xem sau khi tạo</Checkbox>
+      </Form.Item>
       <Form.Item className="m-0 mt-2">
-        <Button type="primary" className="w-full" htmlType="submit">
+        <Button className="w-full bg-primary text-white"
+          htmlType="submit"
+          loading={loading}>
           Hoàn thành
         </Button>
       </Form.Item>
