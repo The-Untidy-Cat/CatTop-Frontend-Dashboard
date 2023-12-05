@@ -1,5 +1,5 @@
 import { Button, Modal } from "antd";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export const ModalToggle = ({
   children,
@@ -10,13 +10,20 @@ export const ModalToggle = ({
   ...modalProps
 }) => {
   const [visible, setVisible] = useState(false);
+  const clonedChildren = React.cloneElement(children, {
+    onClose: () => {
+      setVisible(false);
+    },
+  });
   return (
     <>
       <Button
         type={buttonType}
         onClick={() => setVisible(true)}
         icon={buttonIcon}
-        className="flex items-center align-center"
+        className={`flex items-center align-center font-medium ${
+          buttonType === "primary" && "text-white bg-primary"
+        }`}
       >
         {buttonLabel}
       </Button>
@@ -26,9 +33,8 @@ export const ModalToggle = ({
         onCancel={() => setVisible(false)}
         footer={null}
         centered
-
       >
-        {children}
+        {clonedChildren}
       </Modal>
     </>
   );

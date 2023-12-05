@@ -8,16 +8,6 @@ import { FiUser } from "react-icons/fi";
 
 const NAVBAR_MENU = [
   {
-    key: "home",
-    name: "Home",
-    path: "/",
-  },
-  {
-    key: "chat",
-    name: "Chat",
-    path: "#",
-  },
-  {
     key: "order",
     name: "Đơn hàng",
     path: "#",
@@ -97,7 +87,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách thương hiệu",
         name: "Danh sách thương hiệu",
-        path: "/brands",
+        path: "/products/brands",
         type: "sub-menu",
       },
     ],

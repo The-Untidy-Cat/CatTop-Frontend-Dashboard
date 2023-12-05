@@ -1,9 +1,9 @@
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 
-const getAllBrand = async () => {
+const getAllProduct = async () => {
   try {
-    const response = await api.get(`/dashboard/brands`);
+    const response = await api.get(`/dashboard/products`);
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -14,9 +14,9 @@ const getAllBrand = async () => {
   }
 };
 
-const createBrand = async (data) => {
+const createProduct = async (data) => {
   try {
-    const response = await api.post(`/dashboard/brands`, data);
+    const response = await api.post(`/dashboard/products`, data);
     return response?.data?.data;
   } catch (error) {
     // notification.error({
@@ -27,4 +27,4 @@ const createBrand = async (data) => {
   }
 }
 
-export { getAllBrand, createBrand };
+export { getAllProduct, createProduct };
