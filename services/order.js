@@ -27,4 +27,4 @@ const createOrder = async (data) => {
   }
 }
 
-export { getAllBrand, createBrand };
+export { getAllOrder, createOrder };
