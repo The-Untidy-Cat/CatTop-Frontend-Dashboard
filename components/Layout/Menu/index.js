@@ -41,7 +41,7 @@ const SIDEBAR_MENU = [
       {
         key: "Thống kê đơn hàng",
         name: "Thống kê đơn hàng",
-        path: "/",
+        path: "/statistic",
         type: "sub-menu",
       },
       {
