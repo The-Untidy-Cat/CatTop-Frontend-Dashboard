@@ -53,7 +53,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách đổi trả",
         name: "Danh sách đổi trả",
-        path: "/",
+        path: "/return",
         type: "sub-menu",
       },
     ],
