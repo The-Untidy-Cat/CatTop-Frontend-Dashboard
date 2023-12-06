@@ -2,6 +2,7 @@ import { ModalToggle } from "@/components/Modal";
 import { Button, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
+import Return from "./return/index";
 
 const NewCustomerForm = () => {
   const handleSubmit = (values) => {
@@ -82,33 +83,6 @@ const NewCustomerForm = () => {
       >
         <Input />
       </Form.Item>
-      {/* <p className="m-0">Tên đăng nhập</p>
-      <Form.Item
-        label=""
-        name="username"
-        rules={[
-          {
-            required: true,
-            pattern: /^[a-zA-Z0-9.\S]+$/,
-            message: "Chỉ nhập chữ, số và dấu chấm!",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-      <p className="m-0">Mật khẩu</p>
-      <Form.Item
-        label=""
-        name="password"
-        rules={[
-          { required: true, message: "Vui lòng nhập Mật khẩu!" },
-          { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự!" },
-        ]}
-        className="m-0"
-      >
-        <Input.Password />
-      </Form.Item> */}
       <Form.Item className="m-0 mt-2">
         <Button type="primary" className="w-full" htmlType="submit">
           Đăng ký
@@ -145,23 +119,10 @@ const acitons = [
 
 // trong table template gì đó
 const App = () => {
-  return (
-    <div className="flex flex-wrap gap-2 justify-start items-center align-center p-5">
-      {acitons.map((action) => {
-        return (
-          <ModalToggle
-            {...action.modalProps}
-            buttonIcon={action.buttonIcon}
-            buttonLabel={action.buttonLabel}
-            buttonType={action.buttonType}
-            title={action.title}
-            key={action.key}
-          >
-            {action.children}
-          </ModalToggle>
-        );
-      })}
-    </div>
+  return(
+    // <div>
+      <Return/>
+    // </div>
   );
 };
 export default App;
