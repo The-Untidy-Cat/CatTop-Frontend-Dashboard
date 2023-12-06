@@ -47,7 +47,7 @@ const SIDEBAR_MENU = [
       {
         key: "Danh sách bảo hành",
         name: "Danh sách bảo hành",
-        path: "/Warranty",
+        path: "/orders/warranty",
         type: "sub-menu",
       },
       {

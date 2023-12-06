@@ -1,7 +1,7 @@
-import ModalToggle from "@/components/Wrapper/index"
+import { getAllOrder } from "@/services/order";
+import { Button } from "antd";
 
-const App = () => {
-    return <ModalToggle></ModalToggle>
+export default function Apps() {
+
+  return (<Button onClick={getAllOrder}>ABC</Button>);
 }
-
-export default App;

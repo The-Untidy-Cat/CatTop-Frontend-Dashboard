@@ -4,6 +4,7 @@ const { notification } = require("antd");
 const getAllOrder = async () => {
   try {
     const response = await api.get(`/dashboard/orders`);
+    console.log(response?.data?.data);
     return response?.data?.data;
   } catch (error) {
     notification.error({
