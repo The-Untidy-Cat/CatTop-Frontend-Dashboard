@@ -9,7 +9,7 @@ import NewBrandForm from "@/components/Form/brands";
 
 const columns = [
   {
-    title: "Mã thương hiệu",
+    title: "#",
     dataIndex: "id",
     key: "id",
   },
@@ -38,12 +38,14 @@ export default function brandList() {
   const getData = async () => {
     setLoading(true);
     try {
-      const response = await searchRead(
-        "Brand",
-        keyword ? [["name", "=", keyword]] : [],
-        ["id", "name", "state"],
+      const response = await searchRead({
+        model: "Brand",
+        domain: keyword ? [["name", "=", keyword]] : [],
+        fields: ["id", "name", "state"],
         limit,
-        offset
+        offset,
+        }
+        
       );
       setBrands(response?.records.map((item) => ({ ...item, key: item.id })));
       setLength(response?.length);

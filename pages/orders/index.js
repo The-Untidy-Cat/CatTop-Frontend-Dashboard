@@ -1,169 +1,21 @@
 import DefaultLayout from "@/components/Layout";
-import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
+import {
+  DatePicker,
+  Divider,
+  Tabs,
+  Pagination,
+  Table,
+  Form,
+  Input,
+  Button,
+} from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import TableView from "../../components/View/table";
 import { useRouter } from "next/router";
-
-const NeworderForm = () => {
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
-  return (
-    <Form
-      name="registration"
-      onFinish={handleSubmit}
-      autoComplete="off"
-      className="flex flex-col w-full gap-2"
-    >
-      <div className="flex flex-row justify-between gap-2">
-        <div className="flex flex-col gap-2 w-1/2">
-          <p className="m-0">Tên sản phẩm</p>
-          <Form.Item
-            name="order_product_name"
-            rules={[
-              {
-                required: true,
-                pattern:
-                  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*$/u,
-                message: "Không hợp lệ",
-              },
-            ]}
-            className="m-0"
-          >
-            <Input />
-          </Form.Item>
-        </div>
-        <div className="flex flex-col gap-2 w-1/2">
-          <p className="m-0">Mã khách hàng</p>
-          <Form.Item
-            name="order_customer"
-            rules={[
-              {
-                required: true,
-                pattern:
-                  /[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+/u,
-                message: "Không hợp lệ",
-              },
-            ]}
-            className="m-0"
-          >
-            <Input />
-          </Form.Item>
-        </div>
-      </div>
-
-      <p className="m-0">Địa chỉ</p>
-      <Form.Item
-        label=""
-        name="order_address"
-        rules={[
-          {
-            required: true,
-            type: "order_phone",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-
-      <div className="flex flex-row justify-between gap-2">
-        <div className="flex flex-col gap-2 w-1/2">
-          <p className="m-0">Giá</p>
-          <Form.Item
-            name="order_price"
-            rules={[
-              {
-                required: true,
-                pattern:
-                  /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*$/u,
-                message: "Không hợp lệ",
-              },
-            ]}
-            className="m-0"
-          >
-            <Input />
-          </Form.Item>
-        </div>
-        <div className="flex flex-col gap-2 w-1/2">
-          <p className="m-0">Ngày đặt hàng</p>
-          <Form.Item
-            name="order_date"
-            rules={[
-              {
-                required: true,
-                pattern:
-                  /[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+/u,
-                message: "Không hợp lệ",
-              },
-            ]}
-            className="m-0"
-          >
-            <DatePicker />
-          </Form.Item>
-        </div>
-      </div>
-      {/* <p className="m-0">Tên đăng nhập</p>
-      <Form.Item
-        label=""
-        name="username"
-        rules={[
-          {
-            required: true,
-            pattern: /^[a-zA-Z0-9.\S]+$/,
-            message: "Chỉ nhập chữ, số và dấu chấm!",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-      <p className="m-0">Mật khẩu</p>
-      <Form.Item
-        label=""
-        name="password"
-        rules={[
-          { required: true, message: "Vui lòng nhập Mật khẩu!" },
-          { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự!" },
-        ]}
-        className="m-0"
-      >
-        <Input.Password />
-      </Form.Item> */}
-      <Form.Item className="m-0 mt-2">
-        <Button type="primary" className="w-full" htmlType="submit">
-          Hoàn thành
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-};
-
-const actions = [
-  {
-      key: "add",
-      buttonLabel: <span className="text-white font-bold align-middle	">Thêm</span>,
-      buttonType: "primary",
-      buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
-      title: "Thêm mới",
-      children: <NeworderForm />,
-      modalProps: {
-          centered: true,
-      },
-  },
-  {
-      key: "edit",
-      buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
-      buttonType: "default",
-      buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
-      title: "Sửa",
-      children: <NeworderForm />,
-      modalProps: {
-          centered: true,
-      },
-  },
-];
+import NewOrderForm from "@/components/Form/orders";
+import { useEffect, useState } from "react";
+import { searchRead } from "@/services/search_read";
 
 const columns = [
   {
@@ -172,95 +24,138 @@ const columns = [
     key: "order_id",
   },
   {
-    title: "Tên sản phẩm",
-    dataIndex: "product_name",
-    key: "product_name",
+    title: "Tên khách hàng",
+    dataIndex: "customer_name",
+    key: "customer_name",
   },
   {
-    title: "Mã khách hàng",
-    dataIndex: "customer_id",
-    key: "customer_id",
+    title: "Mã nhân viên",
+    dataIndex: "employee_name",
+    key: "employee_name",
   },
   {
-    title: "Địa chỉ",
-    dataIndex: "address",
-    key: "address",
+    title: "Trạng thái thanh toán",
+    dataIndex: "payment_state",
+    key: "payment_state",
   },
   {
     title: "Ngày đặt hàng",
-    dataIndex: "date",
-    key: "date",
-  },
-  {
-    title: "Giá sản phẩm",
-    dataIndex: "price",
-    key: "price",
+    dataIndex: "created_at",
+    key: "created_at",
   },
   {
     title: "Tình trạng",
-    dataIndex: "order_status",
-    key: "order_status",
+    dataIndex: "state",
+    key: "state",
   },
 ];
-
-const data = [
-  {
-    id: "1",
-    order_id: "1",
-    product_name: "John Brown",
-    customer_id: "32",
-    address: "New York No. 1 Lake Park",
-    date: "2021-10-10",
-    price: "1000",
-    order_status: "Đã hoàn thành",
-  },
-  {
-    id: "2",
-    order_id: "2",
-    product_name: "John Brown",
-    customer_id: "32",
-    address: "New York No. 1 Lake Park",
-    date: "2021-10-10",
-    price: "1000",
-    order_status: "Đã hoàn thành",
-  },
-  {
-    id: "3",
-    order_id: "3",
-    product_name: "John Brown",
-    customer_id: "32",
-    address: "New York No. 1 Lake Park",
-    date: "2021-10-10",
-    price: "1000",
-    order_status: "Đang xử lý",
-  },
-  {
-    id: "4",
-    order_id: "4",
-    product_name: "John Brown",
-    customer_id: "32",
-    address: "New York No. 1 Lake Park",
-    date: "2021-10-10",
-    price: "1000",
-    order_status: "Đã huỷ",
-  },
-];
-
 
 export default function Order() {
   const router = useRouter();
+  const limit = 5;
+  const [orders, setOrders] = useState([]);
+  const [keyword, setKeyword] = useState(null);
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const response = await searchRead({
+        model: "Order",
+        domain: keyword ? [["name", "=", keyword]] : [],
+        fields: ["order_id", "customer_id","employee_id", "create_at","payment_state","state"],
+        limit,
+        offset,
+        relation: ["customer:id, first_name","employee:id, first_name"],
+
+      });
+      setOrders(response?.records.map((item) => ({ ...item, key: item.id })));
+      setLength(response?.length);
+      setOffset(response?.offset);
+    } catch (error) {
+      console.log("error", error);
+    }
+    setLoading(false);
+  };
+
+  const onSearch = (value) => {
+    setKeyword(value);
+  };
+
+  const onPaginationChange = (page, pageSize) => {
+    setOffset((page - 1) * pageSize);
+  };
+
   const onSelectedRow = (data) => {
     router.push("/orders/" + data.id);
-  }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [keyword, offset]);
+  const actions = [
+    {
+      key: "add",
+      buttonLabel: (
+        <span className="text-white font-bold align-middle	">Thêm</span>
+      ),
+      buttonType: "primary",
+      buttonIcon: (
+        <span>
+          <FaPlus class="text-white mr-2 w-2.5 align-middle" />
+        </span>
+      ),
+      title: "Thêm mới",
+      children: <NewOrderForm onSuccess={getData} />,
+      modalProps: {
+        centered: true,
+      },
+    },
+    // {
+    //   key: "edit",
+    //   buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
+    //   buttonType: "default",
+    //   buttonIcon: <RiPencilFill class="mr-2 w-2.5 align-middle" />,
+    //   title: "Sửa",
+    //   children: <NewOrderForm />,
+    //   modalProps: {
+    //     centered: true,
+    //   },
+    // },
+  ];
   return (
-    <DefaultLayout>
-      <div className="float-left">
-        <p>
-          <span className="text-2xl font-bold mr-3">Đơn hàng</span>
-          <span className="font-bold text-slate-500	">15 đơn hàng được tìm thấy</span>
-        </p>
-      </div>
-      <TableView data={data} columns={columns} title={"Tìm kiếm đơn hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
-    </DefaultLayout >
+    <DefaultLayout
+      title={"Thương hiệu"}
+      breadcrumb={[
+        {
+          href: "/orders",
+          title: "Đơn hàng",
+        },
+      ]}
+    >
+      <TableView
+        title="Đơn hàng"
+        actions={actions}
+        table={{
+          bordered: true,
+          loading: loading,
+          data: orders,
+          columns: columns,
+          onSelectedRow: onSelectedRow,
+        }}
+        search={{
+          placeholder: "Tìm kiếm",
+          onSearch: onSearch,
+        }}
+        pagination={{
+          length,
+          pageSize: limit,
+          current: offset / limit + 1,
+          onChange: onPaginationChange,
+        }}
+      />
+    </DefaultLayout>
   );
 }
