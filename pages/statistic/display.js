@@ -24,15 +24,13 @@ export default function StatisticBody() {
     ];
 
     return (
-        <div className="mt-5 flex flex-col gap-4 overflow-x-auto">
-            <div className="flex gap-4">
-                <div>
-                    <DatePicker 
-                        picker="month" 
-                        format="MM/YYYY" 
-                        placeholder="Chọn tháng-năm"
-                        className="w-44"/>
-                </div>
+        <div className="mt-5 flex flex-col gap-4">
+            <div>
+                <DatePicker 
+                    picker="month" 
+                    format="MM/YYYY" 
+                    placeholder="Chọn tháng-năm"
+                    className="w-44"/>
             </div>
             <div>
                 <Table columns={cols} />
