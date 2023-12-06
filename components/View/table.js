@@ -1,9 +1,4 @@
-import {
-  DatePicker,
-  Pagination,
-  Table,
-  Input,
-} from "antd";
+import { DatePicker, Pagination, Table, Input } from "antd";
 import { ModalToggle } from "@/components/Modal";
 
 const { Search } = Input;
@@ -20,6 +15,7 @@ export default function TableView({
   },
   search = {
     placeholder: "Tìm kiếm",
+    show: true,
     onSearch: (value) => {},
   },
   datePicker = {
@@ -45,11 +41,16 @@ export default function TableView({
         {actions.map((action) => {
           return (
             <ModalToggle
-              {...action.modalProps}
-              buttonIcon={action.buttonIcon}
-              buttonLabel={action.buttonLabel}
-              buttonType={action.buttonType}
-              title={action.title}
+              button={{
+                size: action.buttonSize,
+                label: action.buttonLabel,
+                type: action.buttonType,
+                icon: action.buttonIcon,
+              }}
+              modal={{
+                title: action.title,
+                ...action.modalProps,
+              }}
               key={action.key}
             >
               {action.children}
@@ -58,13 +59,15 @@ export default function TableView({
         })}
       </div>
       <div className="flex flex-col gap-2 md:flex-row justify-between items-center align-center">
-        <Search
-          type="search"
-          name="search"
-          placeholder={search?.placeholder}
-          onSearch={search?.onSearch}
-          className="w-full max-w-sm"
-        />
+        {search.show && (
+          <Search
+            type="search"
+            name="search"
+            placeholder={search?.placeholder}
+            onSearch={search?.onSearch}
+            className="w-full max-w-sm"
+          />
+        )}
         <Pagination
           showLessItems={true}
           showTotal={(total, range) => `${range[0]}-${range[1]}/${total}`}
