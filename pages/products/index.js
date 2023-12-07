@@ -1,13 +1,12 @@
 import DefaultLayout from "@/components/Layout";
-import { AiOutlineSearch } from "react-icons/ai";
-import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button, Breadcrumb } from "antd";
+
 import TableView from "../../components/View/table";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
 import { useRouter } from "next/router";
 import NewProductForm from "@/components/Form/products";
 import { searchRead } from "@/services/search_read";
+
 const columns = [
   {
     title: "Mã sản phẩm",
@@ -39,23 +38,7 @@ const columns = [
   },
 ];
 
-
-
-
-// {
-//   key: "edit",
-//   buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
-//   buttonType: "default",
-//   buttonIcon: <RiPencilFill className="mr-2 w-2.5 align-middle" />,
-//   title: "Sửa",
-//   children: <NewProductForm />,
-//   modalProps: {
-//     centered: true,
-//   },
-// },
-
-
-export default function productList() {
+export default function ProductList() {
   const router = useRouter();
   const limit = 5;
   const [products, setProducts] = useState([]);
@@ -63,7 +46,7 @@ export default function productList() {
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
- 
+
   const getData = async () => {
     setLoading(true);
     try {
@@ -74,9 +57,14 @@ export default function productList() {
         limit,
         offset,
         relation: ["brand:id,name"],
-      }
+      });
+      setProducts(
+        response?.records.map((item) => ({
+          ...item,
+          key: item.id,
+          brand_name: item.brand.name,
+        }))
       );
-      setProducts(response?.records.map((item) => ({ ...item, key: item.id, brand_name: item.brand.name })));
       setLength(response?.length);
       setOffset(response?.offset);
     } catch (error) {
@@ -94,20 +82,21 @@ export default function productList() {
   };
   const onSelectedRow = (data) => {
     router.push("/products/" + data.id);
-  }
+  };
 
   const actions = [
     {
       key: "add",
-      buttonLabel: <span className="text-white font-bold align-middle	">Thêm</span>,
+      buttonLabel:"Thêm",
       buttonType: "primary",
-      buttonIcon: <span><FaPlus className="text-white mr-2 w-2.5 align-middle" /></span>,
+      buttonIcon: <FaPlus/>,
       title: "Thêm mới",
       children: <NewProductForm onSuccess={getData} />,
       modalProps: {
         centered: true,
       },
-    },]
+    },
+  ];
 
   useEffect(() => {
     getData();
@@ -122,15 +111,10 @@ export default function productList() {
           title: "Sản phẩm",
         },
       ]}
+      activeKey={"product-list"}
     >
-      <div className="float-left">
-        <p>
-          <span className="text-2xl font-bold mr-3">Sản phẩm</span>
-          <span className="font-bold text-slate-500">15 sản phẩm được tìm thấy</span>
-        </p>
-      </div>
       <TableView
-        title="Sản phẩm"
+        title="Danh sách sản phẩm"
         actions={actions}
         table={{
           bordered: true,
@@ -140,6 +124,7 @@ export default function productList() {
           onSelectedRow: onSelectedRow,
         }}
         search={{
+          show: true,
           placeholder: "Tìm kiếm",
           onSearch: onSearch,
         }}
@@ -150,7 +135,6 @@ export default function productList() {
           onChange: onPaginationChange,
         }}
       />
-
-    </DefaultLayout >
+    </DefaultLayout>
   );
 }

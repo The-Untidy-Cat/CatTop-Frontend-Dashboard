@@ -142,7 +142,6 @@ const NeworderForm = () => {
   );
 };
 
-
 const actions = [
   {
       key: "add",
@@ -245,7 +244,7 @@ export default function Home() {
     router.push("/orders/" + data.id);
   }
   return (
-    <DefaultLayout>
+    <DefaultLayout activeKey={"home"}>
       <Row gutter={16}>
         <Col span={6}>
           <Statistic title="Khách hàng" value={1128} prefix={<FaUserPlus />} />
