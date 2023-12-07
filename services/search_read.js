@@ -16,7 +16,7 @@ const searchRead = async ({
       model,
       domain,
       fields,
-      limit: limit ? limit : 10,
+      limit: limit ? limit : undefined,
       offset: offset ? offset : 0,
       order: sort ? sort : "asc",
       order_by: order_by ? order_by : "id",

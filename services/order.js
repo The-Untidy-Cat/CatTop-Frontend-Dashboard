@@ -1,10 +1,13 @@
+import { searchRead } from "./search_read";
+
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 
+// đừng có đụng vào cái này, cái này api của Ngọc
+// lúc merge vào bị lỗi tùm lum nữa
 const getAllOrder = async () => {
   try {
     const response = await api.get(`/dashboard/orders`);
-    console.log(response?.data?.data);
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -14,6 +17,29 @@ const getAllOrder = async () => {
     return null;
   }
 };
+// đợi xíu t fix api
+// ok
+const getUnlimitAllOrder = async ({
+  domain =  [],
+  fields =  [],
+}) => {
+  try {
+    const response = await searchRead(
+      {
+        model: "Order",
+        domain: domain,
+        fields: fields,
+        relation: [
+          "items:order_id,amount,total"
+        ]
+      }
+    )
+    return response?.records;
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
 
 const createOrder = async (data) => {
   try {
@@ -28,4 +54,4 @@ const createOrder = async (data) => {
   }
 }
 
-export { getAllOrder, createOrder };
+export { getAllOrder, createOrder, getUnlimitAllOrder };
