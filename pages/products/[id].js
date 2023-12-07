@@ -1,9 +1,11 @@
 import NewProductForm from "@/components/Form/products";
+import NewProductVariantForm from "@/components/Form/product_variant";
 import DefaultLayout from "@/components/Layout";
+import { ModalToggle } from "@/components/Modal";
 import TableView from "@/components/View/table";
 import { getAllProductVariant } from "@/services/product_variant";
 import { searchRead } from "@/services/search_read";
-import { Table } from "antd";
+import { Space, Table } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -52,6 +54,20 @@ const columns = [
     dataIndex: "state",
     key: "state",
   },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <ModalToggle
+      button={{
+        label: "Edit",
+        type: "text",
+      }}
+      >
+        <NewProductVariantForm />
+      </ModalToggle>
+    ),
+  },
 ];
 
 export default function Products() {
@@ -63,6 +79,7 @@ export default function Products() {
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
+
 
   const getData = async () => {
     setLoading(true);
@@ -84,7 +101,7 @@ export default function Products() {
   };
 
   const onSelectedRow = (data) => {
-    router.push("/products/variant/" + data.id);
+    
   }
 
   const onPaginationChange = (page, pageSize) => {
@@ -103,7 +120,7 @@ export default function Products() {
         </span>
       ),
       title: "Thêm mới",
-      children: <NewProductForm onSuccess={getData} />,
+      children: <NewProductVariantForm onSuccess={getData} id={id}/>,
       modalProps: {
         centered: true,
       },
@@ -116,17 +133,25 @@ export default function Products() {
   return (
     <DefaultLayout>
       <h1>Product {id}</h1>
-      <Table
-        dataSource={productVariant}
-        columns={columns}
-        onRow={(data, index) => {
-          return {
-            onClick: () => {
-              onSelectedRow(data);
-            },
-          };
+      <TableView
+        title="Biến thể"
+        actions={actions}
+        table={{
+          bordered: true,
+          loading: loading,
+          data: productVariant,
+          columns: columns,
+          onSelectedRow: onSelectedRow,
         }}
-        loading={loading}
+        search={{
+          show: false,
+        }}
+        pagination={{
+          length,
+          pageSize: limit,
+          current: offset / limit + 1,
+          onChange: onPaginationChange,
+        }}
       />
     </DefaultLayout>
   );
