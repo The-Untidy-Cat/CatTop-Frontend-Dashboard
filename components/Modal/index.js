@@ -3,11 +3,17 @@ import React, { useState } from "react";
 
 export const ModalToggle = ({
   children,
-  title,
-  buttonType,
-  buttonLabel,
-  buttonIcon,
-  ...modalProps
+  modal = {
+    title: "Modal",
+    className: null,
+  },
+  button = {
+    size: "default", // "small", "large"
+    label: "Modal",
+    type: "default",
+    icon: null,
+    className: null,
+  },
 }) => {
   const [visible, setVisible] = useState(false);
   const clonedChildren = React.cloneElement(children, {
@@ -18,20 +24,22 @@ export const ModalToggle = ({
   return (
     <>
       <Button
-        type={buttonType}
+        type={button.type}
         onClick={() => setVisible(true)}
-        icon={buttonIcon}
+        icon={button.icon}
         className={`flex items-center align-center font-medium ${
-          buttonType === "primary" && "text-white bg-primary"
-        }`}
+          button.type === "primary" && "text-white bg-primary"
+        } ${button.className}`}
+        size={button.size}
       >
-        {buttonLabel}
+        {button.label}
       </Button>
       <Modal
-        title={title}
+        title={modal.title}
         open={visible}
         onCancel={() => setVisible(false)}
         footer={null}
+        className={modal.className}
         centered
       >
         {clonedChildren}
