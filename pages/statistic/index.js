@@ -1,33 +1,21 @@
 import DefaultLayout from "@/components/Layout";
-import { FaPlus } from "react-icons/fa";
-import TableView from "../../components/View/table";
-
-import ReturnForm from "@/pages/return/form";
-import { useRouter } from "next/router";
 import StatisticBody from "./display";
-
+import { useEffect } from "react";
+import { api } from "@/utils/axios";
+import { getAllOrder } from "@/services/order";
 export default function Statistic() {
-    const router = useRouter();
 
-    const selectedRowFunc = (data) => {
-      router.push("");
-    };
-  
-  const actions = [
-    {
-      key: "add",
-      buttonLabel: "Thêm",
-      buttonType: "primary",
-      buttonIcon: <FaPlus />,
-      title: "Thêm mới",
-      children: <ReturnForm />,
-    },
-  ];
-  
-
+  // const handleAxios = async () => {
+  //   const response = await api.get(`/dashboard/orders`);
+  //   console.log(response);
+  // }
+  // useEffect(() => {
+  //   console.log("App");
+  //   handleAxios();
+  // }, []);
   return (
     <DefaultLayout
-      title={"Đổi trả"}
+      title={"Thống kê"}
       breadcrumb={[
         {
           href: "/statistic",
