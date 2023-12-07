@@ -32,8 +32,6 @@ export default function StatisticBody() {
     ];
 
     const [loading, setLoading] = useState(false);
-    // const [keyword, setKeyword] = useState(null);
-    // const [offset, setOffset] = useState(0);
     const [orders, setOrders] = useState()
 
     const getData = async (
@@ -55,8 +53,6 @@ export default function StatisticBody() {
                     ["created_at", "like", `%${current.format("YYYY-MM-DD")}%`]
                 )
             }
-            console.log("- Xuất 1:")
-            console.log(rangeDate)
             const response = await getUnlimitAllOrder(
                 {
                     domain: [
@@ -66,8 +62,7 @@ export default function StatisticBody() {
                 }
             );
             setOrders(response || [])
-            console.log("- Xuất 2:")
-            console.log(response)
+           
 
         }
         catch (err) {
@@ -82,7 +77,7 @@ export default function StatisticBody() {
 
     const getTotalOrder = (state) => {
         let d = 0;
-        orders?.records?.map(
+        orders?.map(
             (item) => {
                 if (item?.state === state)
                     d++;
@@ -93,12 +88,12 @@ export default function StatisticBody() {
     const getTotalProduct = (state) => {
         let d = 0;
         if (state === "") {
-            orders?.records?.map(
+            orders?.map(
                 (item) => { d = d + item.items.length }
             )
         }
         else {
-            orders?.records?.map(
+            orders?.map(
                 (item) => {
                     if (item?.state === state)
                         d = d + item.items.length
@@ -110,12 +105,12 @@ export default function StatisticBody() {
     const getRevenue = (state) => {
         let total = 0;
         if (state === "") {
-            orders?.records?.map(
+            orders?.map(
                 (item) => { total = total + Number(item.total) }
             )
         }
         else {
-            orders?.records?.map(
+            orders?.map(
                 (item) => {
                     if (item?.state === state)
                         total = total + Number(item.total)
