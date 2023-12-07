@@ -23,6 +23,7 @@ export default function TableView({
     onChange: (date, dateString) => {},
   },
   pagination = {
+    show: true,
     length,
     pageSize: 10,
     current: 1,
@@ -30,19 +31,13 @@ export default function TableView({
   },
 }) {
   return (
-    <div className="flex flex-col gap-2 md:gap-4 bg-white p-5 w-full h-full border rounded">
-      <div className="flex flex-col md:flex-row justify-between items-center align-center md:gap-5">
-        <h1 className="text-2xl font-semibold shrink-0">{title}</h1>
-        <div className="flex flex-col justify-between gap-1 w-full">
-          {datePicker?.show && <DatePicker onChange={datePicker?.onChange} />}
-        </div>
-      </div>
-      <div className="flex flex-wrap gap-2 justify-start items-center align-center">
-        {actions.map((action) => {
+    <>
+      <div className="flex flex-wrap gap-2 justify-start items-center align-center mb-2">
+        {actions?.map((action) => {
           return (
             <ModalToggle
               button={{
-                size: action.buttonSize,
+                size: action.buttonSize || "small",
                 label: action.buttonLabel,
                 type: action.buttonType,
                 icon: action.buttonIcon,
@@ -58,40 +53,48 @@ export default function TableView({
           );
         })}
       </div>
-      <div className="flex flex-col gap-2 md:flex-row justify-between items-center align-center">
-        {search.show && (
-          <Search
-            type="search"
-            name="search"
-            placeholder={search?.placeholder}
-            onSearch={search?.onSearch}
-            className="w-full max-w-sm"
+      <div className="flex flex-col gap-1 bg-white p-5 w-full h-fit min-h-full border rounded">
+        {title && <h2 className="text-lg font-semibold shrink-0">{title}</h2>}
+        <div className="flex flex-col gap-2 md:flex-row justify-between items-center align-center">
+          {search?.show && (
+            <Search
+              type="search"
+              name="search"
+              placeholder={search?.placeholder}
+              onSearch={search?.onSearch}
+              className="w-full max-w-sm"
+            />
+          )}
+          {datePicker?.show && <DatePicker onChange={datePicker?.onChange} />}
+          <Pagination
+            size="small"
+            showLessItems={true}
+            showTotal={(total, range) => `${range[0]}-${range[1]}/${total}`}
+            total={pagination?.length}
+            pageSize={pagination?.pageSize}
+            current={pagination?.current}
+            onChange={pagination?.onChange}
+            className="w-fit shrink-0 grow-0"
           />
-        )}
-        <Pagination
-          showLessItems={true}
-          showTotal={(total, range) => `${range[0]}-${range[1]}/${total}`}
-          total={pagination?.length}
-          pageSize={pagination?.pageSize}
-          current={pagination?.current}
-          onChange={pagination?.onChange}
-          className="w-fit shrink-0 grow-0"
+        </div>
+        <Table
+          size="small"
+          sticky={true}
+          scroll={{ x: true }}
+          dataSource={table?.data}
+          columns={table?.columns}
+          pagination={false}
+          onRow={(data, index) => {
+            return {
+              onClick: () => {
+                table?.onSelectedRow(data);
+              },
+            };
+          }}
+          loading={table?.loading}
+          className="h-full overflow-y-auto min-h-full"
         />
       </div>
-
-      <Table
-        dataSource={table?.data}
-        columns={table?.columns}
-        pagination={false}
-        onRow={(data, index) => {
-          return {
-            onClick: () => {
-              table?.onSelectedRow(data);
-            },
-          };
-        }}
-        loading={table?.loading}
-      />
-    </div>
+    </>
   );
 }
