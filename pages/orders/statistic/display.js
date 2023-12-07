@@ -32,8 +32,8 @@ export default function StatisticBody() {
     ];
 
     const [loading, setLoading] = useState(false);
-    const [keyword, setKeyword] = useState(null);
-    const [offset, setOffset] = useState(0);
+    // const [keyword, setKeyword] = useState(null);
+    // const [offset, setOffset] = useState(0);
     const [orders, setOrders] = useState()
 
     const getData = async (
@@ -55,6 +55,8 @@ export default function StatisticBody() {
                     ["created_at", "like", `%${current.format("YYYY-MM-DD")}%`]
                 )
             }
+            console.log("- Xuất 1:")
+            console.log(rangeDate)
             const response = await getUnlimitAllOrder(
                 {
                     domain: [
@@ -64,6 +66,9 @@ export default function StatisticBody() {
                 }
             );
             setOrders(response || [])
+            console.log("- Xuất 2:")
+            console.log(response)
+
         }
         catch (err) {
             console.log(err);
@@ -186,7 +191,6 @@ export default function StatisticBody() {
     return (
         <div className="mt-5 flex flex-col gap-4">
             <div>
-                //cái này nó bắt dùng dayjs
                 <RangePicker
                     defaultValue={[
                         dayjs().startOf("month"),
