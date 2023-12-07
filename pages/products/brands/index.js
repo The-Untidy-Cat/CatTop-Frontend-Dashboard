@@ -47,6 +47,7 @@ export default function brandList() {
         }
         
       );
+      console.log(response);
       setBrands(response?.records.map((item) => ({ ...item, key: item.id })));
       setLength(response?.length);
       setOffset(response?.offset);
