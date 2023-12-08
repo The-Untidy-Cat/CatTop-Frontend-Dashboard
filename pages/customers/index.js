@@ -3,9 +3,10 @@ import TableView from "../../components/View/table";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import { useRouter } from "next/router";
-import { NewCustomerForm } from "@/components/Form/customers";
 import { useEffect, useState } from "react";
 import { searchRead } from "@/services/search_read";
+import { ModalToggle } from "@/components/Modal";
+import NewCustomerForm from "@/components/Form/customers";
 
 const columns = [
   {

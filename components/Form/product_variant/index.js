@@ -28,7 +28,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-3">
                 <p className="m-0">Tên CPU</p>
                 <Form.Item
-                  name="specifications_cpu_name"
+                  name="specifications.cpu.name"
                   rules={[
                     {
                       required: true,
@@ -43,7 +43,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Số nhân CPU</p>
                 <Form.Item
-                  name="specifications_cpu_cores"
+                  name="specifications.cpu.cores"
                   rules={[
                     {
                       required: true,
@@ -58,7 +58,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Số luồng CPU</p>
                 <Form.Item
-                  name="specifications_cpu_threads"
+                  name="specifications.cpu.threads"
                   rules={[
                     {
                       required: true,
@@ -73,7 +73,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Xung cơ bản</p>
                 <Form.Item
-                  name="specifications_cpu_base_clock"
+                  name="specifications.cpu.base_clock"
                   rules={[
                     {
                       required: true,
@@ -88,7 +88,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Xung Turbo</p>
                 <Form.Item
-                  name="specifications_cpu_turbo_clock"
+                  name="specifications.cpu.turbo_clock"
                   rules={[
                     {
                       required: true,
@@ -103,7 +103,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bộ nhớ đệm (MB)</p>
                 <Form.Item
-                  name="specifications_cpu_cache"
+                  name="specifications.cpu.cache"
                   rules={[
                     {
                       required: true,
@@ -126,7 +126,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Dung lượng (MB)</p>
                 <Form.Item
-                  name="specifications_ram_capacity"
+                  name="specifications.ram.capacity"
                   rules={[
                     {
                       required: true,
@@ -152,7 +152,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bus</p>
                 <Form.Item
-                  name="specifications_ram_type"
+                  name="specifications.ram.type"
                   rules={[
                     {
                       required: true,
@@ -179,7 +179,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Tốc độ</p>
                 <Form.Item
-                  name="specifications_ram_frequency"
+                  name="specifications.ram.frequency"
                   rules={[
                     {
                       required: true,
@@ -228,7 +228,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Ổ lưu trữ</p>
                 <Form.Item
-                  name="specifications_storage_drive"
+                  name="specifications.storage.drive"
                   rules={[
                     {
                       required: true,
@@ -254,7 +254,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Dung lượng (GB)</p>
                 <Form.Item
-                  name="specifications_storage_capacity"
+                  name="specifications.storage.capacity"
                   rules={[
                     {
                       required: true,
@@ -269,7 +269,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Loại lưu trữ</p>
                 <Form.Item
-                  name="specifications_storage_type"
+                  name="specifications.storage.type"
                   rules={[
                     {
                       required: true,
@@ -301,7 +301,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Công nghệ hiển thị</p>
                 <Form.Item
-                  name="specifications_display_technology"
+                  name="specifications.display_technology"
                   rules={[
                     {
                       required: true,
@@ -324,7 +324,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Tần số quét</p>
                 <Form.Item
-                  name="specifications_display_refresh_rate"
+                  name="specifications.display_refresh_rate"
                   rules={[
                     {
                       required: true,
@@ -352,7 +352,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Cảm ứng</p>
                 <Form.Item
-                  name="specifications_display_touch"
+                  name="specifications.display_touch"
                   rules={[
                     {
                       required: true,
@@ -382,7 +382,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-3">
                 <p className="m-0">Tên GPU</p>
                 <Form.Item
-                  name="specifications_gpu_name"
+                  name="specifications.gpu_name"
                   rules={[
                     {
                       required: true,
@@ -397,7 +397,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bộ nhớ</p>
                 <Form.Item
-                  name="specifications_gpu_memory"
+                  name="specifications.gpu_memory"
                   rules={[
                     {
                       required: true,
@@ -428,7 +428,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Loại GPU</p>
                 <Form.Item
-                  name="specifications_gpu_type"
+                  name="specifications.gpu_type"
                   rules={[
                     {
                       required: true,
@@ -450,7 +450,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Tần số GPU</p>
                 <Form.Item
-                  name="specifications_gpu_frequency"
+                  name="specifications.gpu_frequency"
                   rules={[
                     {
                       required: true,
@@ -493,7 +493,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Số cổng</p>
                 <Form.Item
-                  name="specifications_ports"
+                  name="specifications.ports"
                   rules={[
                     {
                       required: true,
@@ -508,7 +508,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bàn phím</p>
                 <Form.Item
-                  name="specifications_keyboard"
+                  name="specifications.keyboard"
                   rules={[
                     {
                       required: true,
@@ -523,7 +523,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Touchpad</p>
                 <Form.Item
-                  name="specifications_touchpad"
+                  name="specifications.touchpad"
                   rules={[
                     {
                       required: true,
@@ -545,7 +545,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Webcam</p>
                 <Form.Item
-                  name="specifications_webcam"
+                  name="specifications.webcam"
                   rules={[
                     {
                       required: true,
@@ -567,7 +567,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Pin</p>
                 <Form.Item
-                  name="specifications_battery"
+                  name="specifications.battery"
                   rules={[
                     {
                       required: true,
@@ -582,7 +582,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Khối lượng (Kg)</p>
                 <Form.Item
-                  name="specifications_weight"
+                  name="specifications.weight"
                   rules={[
                     {
                       required: true,
@@ -598,7 +598,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Hệ điều hành</p>
                 <Form.Item
-                  name="specifications_os"
+                  name="specifications.os"
                   rules={[
                     {
                       required: true,
@@ -623,7 +623,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bảo hành (tháng)</p>
                 <Form.Item
-                  name="specifications_warranty"
+                  name="specifications.warranty"
                   rules={[
                     {
                       required: true,
@@ -638,7 +638,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Màu sắc</p>
                 <Form.Item
-                  name="specifications_color"
+                  name="specifications.color"
                   rules={[
                     {
                       required: true,
@@ -693,43 +693,43 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
       state: values.state,
       specifications: {
         cpu: {
-          name: values.specifications_cpu_name,
-          cores: values.specifications_cpu_cores,
-          threads: values.specifications_cpu_threads,
-          base_clock: values.specifications_cpu_base_clock,
-          turbo_clock: values.specifications_cpu_turbo_clock,
-          cache: values.specifications_cpu_cache,
+          name: values.specifications.cpu.name,
+          cores: values.specifications.cpu.cores,
+          threads: values.specifications.cpu.threads,
+          base_clock: values.specifications.cpu.base_clock,
+          turbo_clock: values.specifications.cpu.turbo_clock,
+          cache: values.specifications.cpu.cache,
         },
         ram: {
-          capacity: values.specifications_ram_capacity,
-          type: values.specifications_ram_type,
-          frequency: values.specifications_ram_frequency,
+          capacity: values.specifications.ram.capacity,
+          type: values.specifications.ram.type,
+          frequency: values.specifications.ram.frequency,
         },
         storage: {
-          drive: values.specifications_storage_drive,
-          capacity: values.specifications_storage_capacity,
-          type: values.specifications_storage_type,
+          drive: values.specifications.storage.drive,
+          capacity: values.specifications.storage.capacity,
+          type: values.specifications.storage.type,
         },
         display: {
-          technology: values.specifications_display_technology,
-          refresh_rate: values.specifications_display_refresh_rate,
-          touch: values.specifications_display_touch,
+          technology: values.specifications.display.technology,
+          refresh_rate: values.specifications.display.refresh_rate,
+          touch: values.specifications.display.touch,
         },
         graphics: {
-          name: values.specifications_gpu_name,
-          memory: values.specifications_gpu_memory,
-          type: values.specifications_gpu_type,
-          frequency: values.specifications_gpu_frequency,
+          name: values.specifications.gpu.name,
+          memory: values.specifications.gpu.memory,
+          type: values.specifications.gpu.type,
+          frequency: values.specifications.gpu.frequency,
         },
-        ports: values.specifications_ports,
-        keyboard: values.specifications_keyboard,
-        touchpad: values.specifications_touchpad,
-        webcam: values.specifications_webcam,
-        battery: values.specifications_battery,
-        weight: values.specifications_weight,
-        os: values.specifications_os,
-        warranty: values.specifications_warranty,
-        color: values.specifications_color,
+        ports: values.specifications.ports,
+        keyboard: values.specifications.keyboard,
+        touchpad: values.specifications.touchpad,
+        webcam: values.specifications.webcam,
+        battery: values.specifications.battery,
+        weight: values.specifications.weight,
+        os: values.specifications.os,
+        warranty: values.specifications.warranty,
+        color: values.specifications.color,
       }
     }
     console.log(data);

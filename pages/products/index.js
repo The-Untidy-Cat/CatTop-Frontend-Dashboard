@@ -1,5 +1,4 @@
 import DefaultLayout from "@/components/Layout";
-
 import TableView from "../../components/View/table";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -9,7 +8,7 @@ import { searchRead } from "@/services/search_read";
 
 const columns = [
   {
-    title: "Mã sản phẩm",
+    title: "#",
     dataIndex: "id",
     key: "id",
   },
