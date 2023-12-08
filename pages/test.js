@@ -54,7 +54,7 @@ const NewCustomerForm = () => {
 
       <p className="m-0">Email</p>
       <Form.Item
-        label=""
+        
         name="email"
         rules={[
           {
@@ -69,7 +69,7 @@ const NewCustomerForm = () => {
       </Form.Item>
       <p className="m-0">Số điện thoại</p>
       <Form.Item
-        label=""
+        
         name="phone_number"
         rules={[
           {

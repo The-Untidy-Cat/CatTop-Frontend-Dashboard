@@ -179,7 +179,7 @@ export default function Products() {
                 buttonType: "primary",
                 buttonIcon: <FaPen />,
                 title: "Thêm mới",
-                children: <NewProductVariantForm onSuccess={getData} />,
+                children: <NewProductVariantForm onSuccess={getData} productId={product?.id}/>,
                 modalProps: {
                   centered: true,
                 },

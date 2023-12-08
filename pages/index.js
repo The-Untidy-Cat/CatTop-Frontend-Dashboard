@@ -57,7 +57,7 @@ const NeworderForm = () => {
 
       <p className="m-0">Địa chỉ</p>
       <Form.Item
-        label=""
+        
         name="order_address"
         rules={[
           {
@@ -108,7 +108,7 @@ const NeworderForm = () => {
       </div>
       {/* <p className="m-0">Tên đăng nhập</p>
       <Form.Item
-        label=""
+        
         name="username"
         rules={[
           {
@@ -123,7 +123,7 @@ const NeworderForm = () => {
       </Form.Item>
       <p className="m-0">Mật khẩu</p>
       <Form.Item
-        label=""
+        
         name="password"
         rules={[
           { required: true, message: "Vui lòng nhập Mật khẩu!" },

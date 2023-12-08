@@ -48,7 +48,7 @@ const NewEmployeeForm = () => {
   
         <p className="m-0">Số điện thoại</p>
         <Form.Item
-          label=""
+          
           name="employee_phone"
           rules={[
             {
@@ -63,7 +63,7 @@ const NewEmployeeForm = () => {
         </Form.Item>
         <p className="m-0">Cơ sở làm việc</p>
         <Form.Item
-          label=""
+          
           name="employee_department"
           rules={[
             {
@@ -79,7 +79,7 @@ const NewEmployeeForm = () => {
         </Form.Item>
         <p className="m-0">Chức vụ</p>
         <Form.Item
-          label=""
+          
           name="employee_position"
           rules={[
             {
@@ -92,7 +92,7 @@ const NewEmployeeForm = () => {
         </Form.Item>
         {/* <p className="m-0">Tên đăng nhập</p>
         <Form.Item
-          label=""
+          
           name="username"
           rules={[
             {
@@ -107,7 +107,7 @@ const NewEmployeeForm = () => {
         </Form.Item>
         <p className="m-0">Mật khẩu</p>
         <Form.Item
-          label=""
+          
           name="password"
           rules={[
             { required: true, message: "Vui lòng nhập Mật khẩu!" },
