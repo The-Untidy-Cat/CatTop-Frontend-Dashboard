@@ -71,7 +71,7 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
 
       <p className="m-0">Địa chỉ</p>
       <Form.Item
-        label=""
+        
         name="order_address"
         rules={[
           {
@@ -122,7 +122,7 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
       </div>
       {/* <p className="m-0">Tên đăng nhập</p>
         <Form.Item
-          label=""
+          
           name="username"
           rules={[
             {
@@ -137,7 +137,7 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
         </Form.Item>
         <p className="m-0">Mật khẩu</p>
         <Form.Item
-          label=""
+          
           name="password"
           rules={[
             { required: true, message: "Vui lòng nhập Mật khẩu!" },
