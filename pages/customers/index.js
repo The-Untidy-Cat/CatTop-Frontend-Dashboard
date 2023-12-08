@@ -74,6 +74,8 @@ export default function CustomerList() {
     }
     setLoading(false);
   };
+
+  
   const onSearch = (value) => {
     setKeyword(value);
   };
@@ -82,7 +84,7 @@ export default function CustomerList() {
     setOffset((page - 1) * pageSize);
   };
   const onSelectedRow = (data) => {
-    router.push("/customers/" + data.customer_id);
+    router.push("/customers/" + data.id);
   };
 
   const actions = [
@@ -102,6 +104,8 @@ export default function CustomerList() {
   useEffect(() => {
     getData();
   }, [keyword, offset]);
+
+
   return (
     <DefaultLayout
       title={"Khách hàng"}
