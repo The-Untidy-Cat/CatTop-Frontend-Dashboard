@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import NewOrderForm from "@/components/Form/orders";
 import { useEffect, useState } from "react";
 import { searchRead } from "@/services/search_read";
+import { api } from "@/utils/axios";
+import { getUnlimitAllOrder } from "@/services/order";
 
 const columns = [
   {
@@ -52,33 +54,96 @@ const columns = [
 
 export default function Order() {
   const router = useRouter();
-  const limit = 5;
+  const limit = 1000;
   const [orders, setOrders] = useState([]);
   const [keyword, setKeyword] = useState(null);
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const getData = async () => {
+  const getState = (value) => {
+    console.log(value);
+    let result = "";
+    switch (value) {
+      case "pending":
+        result = 'Chờ xử lý';
+        break;
+      case "confirmed":
+        result = 'Đã xác nhận';
+        break;
+      case "delivered":
+        result = 'Đã giao';
+        break;
+      case "delivering":
+          result = 'Đang vận chuyển';
+          break;
+      case "draft":
+          result = 'Nháp';
+          break;
+      case "cancelled":
+          result = 'Đã hủy';
+          break;
+      case "refunded":
+            result = 'Đã hoàn tiền';
+            break;
+      case "failed":
+            result = 'Thất bại';
+            break;
+      default:
+        result = '';
+    }
+    return result;
+  }
+  const getPaymentState = (value) => {
+    console.log(value);
+    let result = "";
+    switch (value) {
+      case "unpaid":
+        result = 'Chưa thanh toán';
+        break;
+      case "paid":
+        result = 'Đã thanh toán';
+        break;
+    }
+    return result;
+  }
+
+  const getDate = (value) => {
+    return value.split('T')[0];
+  }
+    const getData = async () => {
     setLoading(true);
     try {
       const response = await searchRead({
         model: "Order",
-        domain: keyword ? [["name", "=", keyword]] : [],
-        fields: ["order_id", "customer_id","employee_id", "create_at","payment_state","state"],
+        domain: keyword ? [["id", "like", `%${keyword}%`]] : [],
+        fields: ["id","payment_state","customer_id","payment_method","created_at","state","employee_id"],
         limit,
         offset,
-        relation: ["customer:id, first_name","employee:id, first_name"],
-
+        relation: ["customer","employee"],
       });
-      setOrders(response?.records.map((item) => ({ ...item, key: item.id })));
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
+      // console.log(response);
+    setOrders(response?.records.map(
+      (item) => ({
+        key: item.id, 
+        order_id: item.id,
+        customer_name: item.customer.last_name + ' ' +  item.customer.first_name,
+        created_at: getDate(item.created_at),
+        state: getState(item.state),
+        employee_name: item.employee === null ? "Không có" : item.employee,
+        payment_state: getPaymentState(item.payment_state),
+      })
+    ));
+    // setOrders(response?.records.map((item) => ({ ...item, key: item.id })));
+    setLength(response?.length);
+    setOffset(response?.offset);
+    }
+    catch (error) {
       console.log("error", error);
     }
     setLoading(false);
   };
+  // console.log(orders);
 
   const onSearch = (value) => {
     setKeyword(value);
@@ -127,7 +192,7 @@ export default function Order() {
   ];
   return (
     <DefaultLayout
-      title={"Thương hiệu"}
+      title={"Đơn hàng"}
       breadcrumb={[
         {
           href: "/orders",
