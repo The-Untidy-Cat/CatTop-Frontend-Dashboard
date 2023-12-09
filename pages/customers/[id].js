@@ -1,7 +1,8 @@
-import { CUSTOMER_STATE } from "@/app.config";
+import { CUSTOMER_STATE, ORDER_STATE, PAYMENT_METHOD, PAYMENT_STATE } from "@/app.config";
 import NewCustomerForm, { EditCustomerForm } from "@/components/Form/customers";
 import NewOrderForm from "@/components/Form/orders";
 import DefaultLayout from "@/components/Layout";
+import { ModalToggle } from "@/components/Modal";
 import FormView from "@/components/View/form";
 import TableView from "@/components/View/table";
 import { getCustomer } from "@/services/customer";
@@ -12,7 +13,49 @@ import { FaPen, FaQuestion } from "react-icons/fa";
 
 
 const columns = [
-  
+  {
+    title: "#",
+    dataIndex: "id",
+    key: "id",
+    width: 80,
+  },
+  {
+    title: "Thanh toán",
+    dataIndex: "payment_method",
+    key: "payment_method",
+    // render: (_, record) => {
+    //   return <>{record.first_name + " " + record.last_name}</>
+    // }
+  },
+  {
+    title: "T/thái Thanh toán",
+    dataIndex: "payment_state",
+    key: "payment_state",
+  },
+  {
+    title: "T/thái đơn hàng",
+    dataIndex: "state",
+    key: "state",
+  },
+  {
+    title: "Tổng",
+    dataIndex: "total",
+    key: "total",
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <ModalToggle
+        button={{
+          label: "Edit",
+          type: "text",
+        }}
+      >
+        <NewOrderForm/>
+      </ModalToggle>
+    ),
+  },
 ];
 
 export default function Customer() {
@@ -88,59 +131,69 @@ export default function Customer() {
               label: "Trạng thái",
               children: CUSTOMER_STATE[customer?.state],
             },
+            {
+              label: "Địa chỉ",
+              children: customer?.address,
+            },
+            {
+              label: "Số điện thoại",
+              children: customer?.phone,
+            },
           ],
         },
       ],
     },
-    // {
-    //   key: "custome-order-info",
-    //   label: "Danh sách đơn hàng đã đặt",
-    //   children: [
-    //     {
-    //       type: "table",
-    //       key: "order-list",
-    //       items: {
-    //         actions: [
-    //           {
-    //             key: "add",
-    //             buttonLabel: "Thêm",
-    //             buttonType: "primary",
-    //             buttonIcon: <FaPen />,
-    //             title: "Thêm mới",
-    //             children: (
-    //               <NewOrderForm
-    //                 onSuccess={getData}
-    //                 // customerId={customer?.id}
-    //               />
-    //             ),
-    //             modalProps: {
-    //               centered: true,
-    //             },
-    //           },
-    //         ],
-    //         table: {
-    //           bordered: true,
-    //           loading: loading,
-    //           data: customer?.map((item) => ({
-    //             ...item,
-    //             key: item.id,
-    //             state: CUSTOMER_STATE[item.state],
-    //           })),
-    //           columns: columns,
-    //           onSelectedRow: (data) => {},
-    //         },
-    //         search: {
-    //           show: false,
-    //         },
-    //         pagination: {
-    //           length: customer?.length,
-    //           pageSize: 10,
-    //           current: 1,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
+    {
+      key: "custome-order-info",
+      label: "Danh sách đơn hàng đã đặt",
+      children: [
+        {
+          type: "table",
+          key: "order-list",
+          items: {
+            actions: [
+              {
+                key: "add",
+                buttonLabel: "Thêm",
+                buttonType: "primary",
+                buttonIcon: <FaPen />,
+                title: "Thêm mới",
+                children: (
+                  <NewOrderForm
+                    onSuccess={getData}
+                    // customerId={customer?.id}
+                  />
+                ),
+                modalProps: {
+                  centered: true,
+                },
+              },
+            ],
+            table: {
+              bordered: true,
+              loading: loading,
+              data: customer.orders?.map((item) => ({
+                ...item,
+                key: item.id,
+                state: ORDER_STATE[item.state],
+                payment_state: PAYMENT_STATE[item.payment_state], 
+                payment_method: PAYMENT_METHOD[item.payment_method],
+              })),
+              columns: columns,
+              onSelectedRow: (data) => {},
+            },
+            search: {
+              show: false,
+            },
+            pagination: {
+              length: customer.orders?.length,
+              pageSize: 10,
+              current: 1,
+            },
+          },
+        },
+      ],
+    },
   ];
 
   useEffect(() => {
