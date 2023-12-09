@@ -43,7 +43,7 @@ export default function StatisticBody() {
 
             // Create array to hold dates
             const rangeDate = ["||"]
-
+ 
             // Iterate one day at a time with for loop
             for (let i = 0; i < numDays; i++) {
                 const current = startDate.add(i, 'day')

@@ -9,7 +9,7 @@ export default function Statistic() {
   
   return (
     <DefaultLayout
-      title={"Đổi trả"}
+      title={"Thống kê"}
       breadcrumb={[
         {
           href: "/orders",
