@@ -1,17 +1,24 @@
-import { createProduct } from "@/services/product";
+import { PRODUCT_STATE } from "@/app.config";
+import { createProduct, updateProduct } from "@/services/product";
 import { searchRead } from "@/services/search_read";
-import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Modal,
+  Select,
+  notification,
+} from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-
 export function NewProductForm({ onSuccess, onClose }) {
-  const limit = 10;
-  const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [brandList, setBrandList] = useState([]); // [
   const [form] = Form.useForm();
   const router = useRouter();
+
   const handleSubmit = async (values) => {
     setLoading(true);
     console.log(values);
@@ -26,7 +33,7 @@ export function NewProductForm({ onSuccess, onClose }) {
           onSuccess && onSuccess();
         }
       })
-      .catch((err) => { })
+      .catch((err) => {})
       .finally(() => {
         setLoading(false);
       });
@@ -34,7 +41,7 @@ export function NewProductForm({ onSuccess, onClose }) {
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
-  }
+  };
 
   const handleSearchBrand = async (value) => {
     try {
@@ -42,22 +49,21 @@ export function NewProductForm({ onSuccess, onClose }) {
         model: "Brand",
         domain: [["name", "like", `%${value}%`]],
         fields: ["id", "name"],
-        limit,
-        offset,
-      }
-        
+      });
+      setBrandList(
+        response?.records.map((item) => {
+          return { value: item.id, label: item.name };
+        })
       );
-      setBrandList(response?.records.map((item) => { return { value: item.id, label: item.name } }));
     } catch (e) {
       console.log(e);
     }
-  }
-
-  useEffect(() => { handleSearchBrand() }, []);
-
-
+  };
+  useEffect(() => {
+    handleSearchBrand();
+  }, []);
   const filterOption = (input, option) =>
-    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <Form
       name="registration"
@@ -69,7 +75,6 @@ export function NewProductForm({ onSuccess, onClose }) {
     >
       <p className="m-0">Tên sản phẩm</p>
       <Form.Item
-        label=""
         name="name"
         rules={[
           {
@@ -81,14 +86,13 @@ export function NewProductForm({ onSuccess, onClose }) {
       >
         <Input />
       </Form.Item>
-      <p className="m-0">slug sản phẩm</p>
+      <p className="m-0">Slug</p>
       <Form.Item
-        label=""
         name="slug"
         rules={[
           {
             required: true,
-            message: "Vui lòng nhập slug sản phẩm!",
+            message: "Vui lòng nhập Slug!",
           },
         ]}
         className="m-0"
@@ -97,7 +101,6 @@ export function NewProductForm({ onSuccess, onClose }) {
       </Form.Item>
       <p className="m-0">Link hình ảnh</p>
       <Form.Item
-        label=""
         name="image"
         rules={[
           {
@@ -111,7 +114,6 @@ export function NewProductForm({ onSuccess, onClose }) {
       </Form.Item>
       <p className="m-0">Thương hiệu</p>
       <Form.Item
-        label=""
         name="brand_id"
         rules={[
           {
@@ -131,7 +133,6 @@ export function NewProductForm({ onSuccess, onClose }) {
       </Form.Item>
       <p className="m-0">Giá</p>
       <Form.Item
-        label=""
         name="product_price"
         rules={[
           {
@@ -145,7 +146,6 @@ export function NewProductForm({ onSuccess, onClose }) {
       </Form.Item>
       <p className="m-0">Mô tả</p>
       <Form.Item
-        label=""
         name="description"
         rules={[
           {
@@ -161,13 +161,179 @@ export function NewProductForm({ onSuccess, onClose }) {
         <Checkbox>Xem sau khi tạo</Checkbox>
       </Form.Item>
       <Form.Item className="m-0 mt-2">
-        <Button className="w-full bg-primary text-white"
+        <Button
+          className="w-full bg-primary text-white"
           htmlType="submit"
-          loading={loading}>
+          loading={loading}
+        >
           Hoàn thành
         </Button>
       </Form.Item>
     </Form>
   );
-};
+}
+
+export function EditProductForm({ data, onSuccess, onClose }) {
+  const [loading, setLoading] = useState(false);
+  const [brandList, setBrandList] = useState([]); // [
+  const [form] = Form.useForm();
+  const router = useRouter();
+
+  const handleSubmit = async (values) => {
+    setLoading(true);
+    updateProduct(data?.id, {
+      ...values,
+      slug: data?.slug !== values?.slug ? values?.slug : undefined,
+    })
+      .then((res) => {
+        onSuccess && onSuccess();
+        onClose && onClose();
+      })
+      .catch((err) => {
+        if (err?.response?.data?.errors) {
+          form.setFields(
+            Object.entries(err?.response?.data?.errors).map(([key, value]) => {
+              return {
+                name: key,
+                errors: [value],
+              };
+            })
+          );
+        } else {
+          notification.error({
+            message: "Cập nhật sản phẩm thất bại",
+            description: err.message,
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleSearchBrand = async (value = "") => {
+    setLoading(true);
+    try {
+      const response = await searchRead({
+        model: "Brand",
+        domain: [["name", "like", `%${value}%`]],
+        fields: ["id", "name"],
+      });
+      setBrandList(
+        response?.records.map((item) => {
+          return { value: item.id, label: item.name };
+        })
+      );
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    handleSearchBrand().then(() => {
+      form.setFieldsValue(data);
+    });
+  }, [data]);
+
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  return (
+    <Form
+      name="registration"
+      onFinish={handleSubmit}
+      autoComplete="off"
+      className="flex flex-col w-full gap-2"
+      disabled={loading}
+      form={form}
+    >
+      <p className="m-0">Tên sản phẩm</p>
+      <Form.Item
+        name="name"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập tên sản phẩm!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+      <p className="m-0">Slug</p>
+      <Form.Item
+        name="slug"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập Slug!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+      <p className="m-0">Link hình ảnh</p>
+      <Form.Item
+        name="image"
+        rules={[
+          {
+            required: true,
+            type: "url",
+          },
+        ]}
+        className="m-0"
+      >
+        <Input />
+      </Form.Item>
+      <p className="m-0">Thương hiệu</p>
+      <Form.Item
+        name="brand_id"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập tên thương hiệu!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Select
+          showSearch={true}
+          options={brandList}
+          onSearch={handleSearchBrand}
+          filterOption={filterOption}
+        />
+      </Form.Item>
+      <p className="m-0">Trạng thái</p>
+      <Form.Item
+        name="state"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập trạng thái!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Select
+          options={Object.keys(PRODUCT_STATE).map((key) => ({
+            label: PRODUCT_STATE[key],
+            value: key,
+          }))}
+          className="w-full"
+        />
+      </Form.Item>
+      <Form.Item className="m-0 mt-2">
+        <Button
+          className="w-full bg-primary text-white"
+          htmlType="submit"
+          loading={loading}
+        >
+          Cập nhật
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+}
+
 export default NewProductForm;

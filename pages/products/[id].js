@@ -1,20 +1,23 @@
-import NewProductForm from "@/components/Form/products";
+import { PRODUCT_STATE } from "@/app.config";
 import NewProductVariantForm from "@/components/Form/product_variant";
+import { EditProductForm } from "@/components/Form/products";
 import DefaultLayout from "@/components/Layout";
 import { ModalToggle } from "@/components/Modal";
-import TableView from "@/components/View/table";
-import { getAllProductVariant } from "@/services/product_variant";
-import { searchRead } from "@/services/search_read";
-import { Space, Table } from "antd";
+import FormView from "@/components/View/form";
+import { getProduct } from "@/services/product";
+import { formatCurrency } from "@/utils/currency";
+import { Image } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaPen, FaQuestion } from "react-icons/fa";
 
 const columns = [
   {
-    title: "Mã biến thể",
+    title: "ID",
     dataIndex: "id",
     key: "id",
+    width: 80,
   },
   {
     title: "Tên biến thể",
@@ -25,29 +28,34 @@ const columns = [
     // }
   },
   {
-    title: "sku",
+    title: "SKU",
     dataIndex: "sku",
     key: "sku",
   },
   {
-    title: "Giá tiêu chuẩn",
+    title: "Giá gốc",
     dataIndex: "standard_price",
     key: "standard_price",
+    render: (text) => formatCurrency(text),
   },
   {
     title: "Giảm giá",
     dataIndex: "discount",
     key: "discount",
+    render: (text) => Number(text) * 100 + "%",
+    width: 100,
   },
   {
     title: "Giá bán",
     dataIndex: "sale_price",
     key: "sale_price",
+    render: (text) => formatCurrency(text),
   },
   {
-    title: "Số lượng đã bán",
+    title: "Đã bán",
     dataIndex: "sold",
     key: "sold",
+    width: 80,
   },
   {
     title: "Trạng thái",
@@ -55,14 +63,14 @@ const columns = [
     key: "state",
   },
   {
-    title: 'Action',
-    key: 'action',
+    title: "Action",
+    key: "action",
     render: (_, record) => (
       <ModalToggle
-      button={{
-        label: "Edit",
-        type: "text",
-      }}
+        button={{
+          label: "Edit",
+          type: "text",
+        }}
       >
         <NewProductVariantForm />
       </ModalToggle>
@@ -73,85 +81,158 @@ const columns = [
 export default function Products() {
   const router = useRouter();
   const { id } = router.query;
-  const limit = 5;
-  const [productVariant, setProductVariant] = useState([]);
-  const [keyword, setKeyword] = useState(null);
-  const [length, setLength] = useState(0);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState(null);
 
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await getAllProductVariant(id);
-      setProductVariant(
-        response?.records.map((item) => ({ ...item, key: item.id }))
-      );
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setLoading(false);
+    getProduct(id)
+      .then((res) => {
+        // console.log(res);
+        setProduct(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        // router.push("/products");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
-  const onSearch = (value) => {
-    setKeyword(value);
-  };
-
-  const onSelectedRow = (data) => {
-    
-  }
-
-  const onPaginationChange = (page, pageSize) => {
-    setOffset((page - 1) * pageSize);
-  };
   const actions = [
     {
-      key: "add",
-      buttonLabel: (
-        <span className="text-white font-bold align-middle	">Thêm</span>
+      key: "edit-product",
+      buttonLabel: "Sửa",
+      buttonType: "default",
+      buttonIcon: <FaPen />,
+      title: "Cập nhật sản phẩm",
+      children: (
+        <EditProductForm
+          data={{ ...product, brand_id: product?.brand?.id }}
+          onSuccess={getData}
+        />
       ),
-      buttonType: "primary",
-      buttonIcon: (
-        <span>
-          <FaPlus className="text-white mr-2 w-2.5 align-middle" />
-        </span>
-      ),
-      title: "Thêm mới",
-      children: <NewProductVariantForm onSuccess={getData} id={id}/>,
       modalProps: {
         centered: true,
       },
     },
   ];
 
+  const items = [
+    {
+      key: "product-info",
+      label: "Thông tin sản phẩm",
+      children: [
+        {
+          type: "description",
+          key: "product-description",
+          items: [
+            {
+              label: "Tên sản phẩm",
+              children: product?.name,
+            },
+            {
+              label: "Hình ảnh",
+              children: (
+                <Image
+                  src={product?.image}
+                  alt="hinh-anh-san-pham"
+                  className="h-28 w-28 object-cover"
+                  loading="lazy"
+                  fallback={<FaQuestion />}
+                />
+              ),
+            },
+            {
+              label: "Thương hiệu",
+              children: (
+                <Link href={`/brands/${product?.brand?.id}`}>
+                  {product?.brand?.name}
+                </Link>
+              ),
+            },
+            {
+              label: "Slug",
+              children: product?.slug,
+            },
+            {
+              label: "Trạng thái",
+              children: PRODUCT_STATE[product?.state],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: "product-variant-info",
+      label: "Biến thể",
+      children: [
+        {
+          type: "table",
+          key: "variant-list",
+          items: {
+            actions: [
+              {
+                key: "add",
+                buttonLabel: "Thêm",
+                buttonType: "primary",
+                buttonIcon: <FaPen />,
+                title: "Thêm mới",
+                children: <NewProductVariantForm onSuccess={getData} productId={product?.id}/>,
+                modalProps: {
+                  centered: true,
+                },
+              },
+            ],
+            table: {
+              bordered: true,
+              loading: loading,
+              data: product?.variants?.map((item) => ({
+                ...item,
+                key: item.id,
+                state: PRODUCT_STATE[item.state],
+              })),
+              columns: columns,
+              onSelectedRow: (data) => {},
+            },
+            search: {
+              show: false,
+            },
+            pagination: {
+              length: product?.variants?.length,
+              pageSize: 10,
+              current: 1,
+            },
+          },
+        },
+      ],
+    },
+  ];
+
   useEffect(() => {
     getData();
-  }, [offset]);
+  }, []);
   return (
-    <DefaultLayout>
-      <h1>Product {id}</h1>
-      <TableView
-        title="Biến thể"
+    <DefaultLayout
+      title={"Chi tiết sản phẩm"}
+      breadcrumb={[
+        {
+          href: "/products",
+          title: "Sản phẩm",
+        },
+        {
+          href: `/products/${id}`,
+          title: product?.name || "Chi tiết sản phẩm",
+        },
+      ]}
+      activeKey={"product-list"}
+    >
+      <FormView
+        loading={loading}
+        items={items}
         actions={actions}
-        table={{
-          bordered: true,
-          loading: loading,
-          data: productVariant,
-          columns: columns,
-          onSelectedRow: onSelectedRow,
-        }}
-        search={{
-          show: false,
-        }}
-        pagination={{
-          length,
-          pageSize: limit,
-          current: offset / limit + 1,
-          onChange: onPaginationChange,
-        }}
+        title={product?.name}
       />
     </DefaultLayout>
   );

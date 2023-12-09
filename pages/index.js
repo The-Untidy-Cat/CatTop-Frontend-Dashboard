@@ -57,7 +57,7 @@ const NeworderForm = () => {
 
       <p className="m-0">Địa chỉ</p>
       <Form.Item
-        label=""
+        
         name="order_address"
         rules={[
           {
@@ -108,7 +108,7 @@ const NeworderForm = () => {
       </div>
       {/* <p className="m-0">Tên đăng nhập</p>
       <Form.Item
-        label=""
+        
         name="username"
         rules={[
           {
@@ -123,7 +123,7 @@ const NeworderForm = () => {
       </Form.Item>
       <p className="m-0">Mật khẩu</p>
       <Form.Item
-        label=""
+        
         name="password"
         rules={[
           { required: true, message: "Vui lòng nhập Mật khẩu!" },
@@ -141,7 +141,6 @@ const NeworderForm = () => {
     </Form>
   );
 };
-
 
 const actions = [
   {
@@ -245,7 +244,7 @@ export default function Home() {
     router.push("/orders/" + data.id);
   }
   return (
-    <DefaultLayout>
+    <DefaultLayout activeKey={"home"}>
       <Row gutter={16}>
         <Col span={6}>
           <Statistic title="Khách hàng" value={1128} prefix={<FaUserPlus />} />
