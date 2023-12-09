@@ -6,7 +6,7 @@ import { NavbarMenu, SidebarMenu } from "./Menu";
 import { Avatar, Breadcrumb, Button } from "antd";
 import Head from "next/head";
 
-const DefaultLayout = ({ children, title, breadcrumb = [] }) => {
+const DefaultLayout = ({ children, title, breadcrumb = [], activeKey = null }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
   return (
     <>
@@ -40,16 +40,15 @@ const DefaultLayout = ({ children, title, breadcrumb = [] }) => {
         </header>
         <div className="relative flex w-full h-full overflow-hidden bg-transparent">
           <div className="hidden md:flex w-56 items-start align-center gap-2 h-full bg-white border-r overflow-y-auto shrink-0">
-            <SidebarMenu />
+            <SidebarMenu activeKey={activeKey}/>
           </div>
           {openSidebar && (
             <div className="md:hidden absolute z-10 flex w-56 items-start align-center gap-2 h-full bg-white border-r overflow-y-auto shrink-0">
-              <SidebarMenu />
+              <SidebarMenu activeKey={activeKey}/>
             </div>
           )}
-
           <div className="relative flex flex-col w-full h-full overflow-x-hidden overflow-y-auto bg-transparent">
-            <div className="absolute flex flex-col w-full h-fit min-h-full p-5 md:px-8 bg-transparent">
+            <div className="absolute flex flex-col w-full h-fit min-h-full p-5 gap-2 md:px-8 bg-transparent">
               <Breadcrumb
                 separator=">"
                 items={[
@@ -71,8 +70,9 @@ const DefaultLayout = ({ children, title, breadcrumb = [] }) => {
                     ),
                   })),
                 ]}
-                className="flex items-center align-center gap-1 mb-2"
+                className="flex items-center align-center gap-1 "
               />
+              <h1 className="text-2xl font-semibold shrink-0">{title}</h1>
               {children}
             </div>
           </div>

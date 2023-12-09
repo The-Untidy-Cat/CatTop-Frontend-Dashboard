@@ -1,94 +1,143 @@
 import DefaultLayout from "@/components/Layout";
-import { DatePicker, Divider, Tabs, Pagination, Table, Form, Input, Button } from "antd";
 import TableView from "../../components/View/table";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import { useRouter } from "next/router";
-import { NewCustomerForm } from "@/components/Form/customers";
+import { useEffect, useState } from "react";
+import { searchRead } from "@/services/search_read";
+import { ModalToggle } from "@/components/Modal";
+import NewCustomerForm from "@/components/Form/customers";
 
 const columns = [
   {
-    title: "Mã khách hàng",
-    dataIndex: "customer_id",
-    key: "customer_id",
+    title: "#",
+    dataIndex: "id",
+    key: "id",
   },
   {
     title: "Tên khách hàng",
-    dataIndex: "customer_name",
-    key: "customer_name",
-    // render: (_, record) => {
-    //   return <>{record.first_name + " " + record.last_name}</>
-    // }
+    dataIndex: "name",
+    key: "name",
+    render: (_, record) => {
+      return <>{record.first_name + " " + record.last_name}</>;
+    },
   },
   {
     title: "Email",
-    dataIndex: "customer_email",
-    key: "customer_email",
+    dataIndex: "email",
+    key: "email",
   },
   {
     title: "Số điện thoại",
-    dataIndex: "customer_phone",
-    key: "customer_phone",
+    dataIndex: "phone_number",
+    key: "phone_number",
   },
   {
-    title: "Địa chỉ",
-    dataIndex: "customer_address",
-    key: "customer_address",
-  },
-  {
-    title: "Ngày khởi tạo",
-    dataIndex: "initial_date",
-    key: "initial_date",
+    title: "Đã đặt",
+    dataIndex: "order_count",
+    key: "order_count",
   },
   {
     title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
-  },
-];
-
-
-const actions = [
-  {
-      key: "add",
-      buttonLabel: <span className="text-white font-bold align-middle	">Thêm</span>,
-      buttonType: "primary",
-      buttonIcon: <span><FaPlus class ="text-white mr-2 w-2.5 align-middle"/></span>,
-      title: "Thêm mới",
-      children: <NewCustomerForm />,
-      modalProps: {
-          centered: true,
-      },
-  },
-  {
-      key: "edit",
-      buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
-      buttonType: "default",
-      buttonIcon: <RiPencilFill class ="mr-2 w-2.5 align-middle"/>,
-      title: "Sửa",
-      children: <NewCustomerForm />,
-      modalProps: {
-          centered: true,
-      },
+    dataIndex: "state",
+    key: "state",
   },
 ];
 
 export default function CustomerList() {
   const router = useRouter();
-  const onSelectedRow = (data) => {
-    router.push("/customers/" + data.customer_id);
-  }
-  return (
-    <DefaultLayout>
-      <div className="float-left">
-        <p>
-          <span className="text-2xl font-bold mr-3">Khách hàng</span>
-          <span className="font-bold text-slate-500">15 khách hàng được tìm thấy</span>
-        </p>
-      </div>
-      <TableView data={data} columns={columns} title={"Tìm kiếm khách hàng"} actions={actions} onSelectedRow={onSelectedRow}/>
-   
+  const limit = 5;
+  const [customers, setCustomers] = useState([]);
+  const [keyword, setKeyword] = useState(null);
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
 
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const response = await searchRead({
+        model: "Customer",
+        domain: keyword ? [["name", "=", keyword]] : [],
+        fields: ["id", "first_name", "last_name","state", "email", "phone_number"],
+        limit,
+        offset,
+      });
+      setCustomers(
+        response?.records.map((item) => ({
+          ...item, key: item.id 
+        }))
+      );
+      setLength(response?.length);
+      setOffset(response?.offset);
+    } catch (error) {
+      console.log("error", error);
+    }
+    setLoading(false);
+  };
+
+  
+  const onSearch = (value) => {
+    setKeyword(value);
+  };
+
+  const onPaginationChange = (page, pageSize) => {
+    setOffset((page - 1) * pageSize);
+  };
+  const onSelectedRow = (data) => {
+    router.push("/customers/" + data.id);
+  };
+
+  const actions = [
+    {
+      key: "add",
+      buttonLabel: "Thêm",
+      buttonType: "primary",
+      buttonIcon: <FaPlus />,
+      title: "Thêm mới",
+      children: <NewCustomerForm onSuccess={getData} />,
+      modalProps: {
+        centered: true,
+      },
+    },
+  ];
+
+  useEffect(() => {
+    getData();
+  }, [keyword, offset]);
+
+
+  return (
+    <DefaultLayout
+      title={"Khách hàng"}
+      breadcrumb={[
+        {
+          href: "/customers",
+          title: "Khách hàng",
+        },
+      ]}
+    >
+      <TableView
+        title="Khách hàng"
+        actions={actions}
+        table={{
+          bordered: true,
+          loading: loading,
+          data: customers,
+          columns: columns,
+          onSelectedRow: onSelectedRow,
+        }}
+        search={{
+          placeholder: "Tìm kiếm",
+          onSearch: onSearch,
+        }}
+        pagination={{
+          length,
+          pageSize: limit,
+          current: offset / limit + 1,
+          onChange: onPaginationChange,
+        }}
+      />
     </DefaultLayout>
   );
 }

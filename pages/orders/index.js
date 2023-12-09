@@ -104,7 +104,7 @@ export default function Order() {
       buttonType: "primary",
       buttonIcon: (
         <span>
-          <FaPlus class="text-white mr-2 w-2.5 align-middle" />
+          <FaPlus className="text-white mr-2 w-2.5 align-middle" />
         </span>
       ),
       title: "Thêm mới",
@@ -117,7 +117,7 @@ export default function Order() {
     //   key: "edit",
     //   buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
     //   buttonType: "default",
-    //   buttonIcon: <RiPencilFill class="mr-2 w-2.5 align-middle" />,
+    //   buttonIcon: <RiPencilFill className="mr-2 w-2.5 align-middle" />,
     //   title: "Sửa",
     //   children: <NewOrderForm />,
     //   modalProps: {
