@@ -30,7 +30,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Tên CPU</p>
                 <Form.Item
                   name="specifications.cpu.name"
-                  name="specifications.cpu.name"
                   rules={[
                     {
                       required: true,
@@ -45,7 +44,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Số nhân CPU</p>
                 <Form.Item
-                  name="specifications.cpu.cores"
                   name="specifications.cpu.cores"
                   rules={[
                     {
@@ -62,7 +60,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Số luồng CPU</p>
                 <Form.Item
                   name="specifications.cpu.threads"
-                  name="specifications.cpu.threads"
                   rules={[
                     {
                       required: true,
@@ -77,7 +74,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Xung cơ bản</p>
                 <Form.Item
-                  name="specifications.cpu.base_clock"
                   name="specifications.cpu.base_clock"
                   rules={[
                     {
@@ -94,7 +90,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Xung Turbo</p>
                 <Form.Item
                   name="specifications.cpu.turbo_clock"
-                  name="specifications.cpu.turbo_clock"
                   rules={[
                     {
                       required: true,
@@ -109,7 +104,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bộ nhớ đệm (MB)</p>
                 <Form.Item
-                  name="specifications.cpu.cache"
                   name="specifications.cpu.cache"
                   rules={[
                     {
@@ -133,7 +127,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Dung lượng (MB)</p>
                 <Form.Item
-                  name="specifications.ram.capacity"
                   name="specifications.ram.capacity"
                   rules={[
                     {
@@ -161,7 +154,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Bus</p>
                 <Form.Item
                   name="specifications.ram.type"
-                  name="specifications.ram.type"
                   rules={[
                     {
                       required: true,
@@ -188,7 +180,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Tốc độ</p>
                 <Form.Item
-                  name="specifications.ram.frequency"
                   name="specifications.ram.frequency"
                   rules={[
                     {
@@ -239,7 +230,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Loại ổ cứng</p>
                 <Form.Item
                   name="specifications.storage.drive"
-                  name="specifications.storage.drive"
                   rules={[
                     {
                       required: true,
@@ -263,7 +253,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Dung lượng (GB)</p>
                 <Form.Item
                   name="specifications.storage.capacity"
-                  name="specifications.storage.capacity"
                   rules={[
                     {
                       required: true,
@@ -278,7 +267,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Loại giao tiếp</p>
                 <Form.Item
-                  name="specifications.storage.type"
                   name="specifications.storage.type"
                   rules={[
                     {
@@ -556,7 +544,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Cổng kết nối</p>
                 <Form.Item
                   name="specifications.ports"
-                  name="specifications.ports"
                   rules={[
                     {
                       required: true,
@@ -572,7 +559,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Bàn phím</p>
                 <Form.Item
                   name="specifications.keyboard"
-                  name="specifications.keyboard"
                   rules={[
                     {
                       required: true,
@@ -587,7 +573,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Touchpad</p>
                 <Form.Item
-                  name="specifications.touchpad"
                   name="specifications.touchpad"
                   rules={[
                     {
@@ -611,7 +596,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Webcam</p>
                 <Form.Item
                   name="specifications.webcam"
-                  name="specifications.webcam"
                   rules={[
                     {
                       required: true,
@@ -634,7 +618,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Pin</p>
                 <Form.Item
                   name="specifications.battery"
-                  name="specifications.battery"
                   rules={[
                     {
                       required: true,
@@ -649,7 +632,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Khối lượng (Kg)</p>
                 <Form.Item
-                  name="specifications.weight"
                   name="specifications.weight"
                   rules={[
                     {
@@ -666,7 +648,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Hệ điều hành</p>
                 <Form.Item
-                  name="specifications.os"
                   name="specifications.os"
                   rules={[
                     {
@@ -693,7 +674,6 @@ const SpecificationsFormItem = () => {
                 <p className="m-0">Bảo hành (tháng)</p>
                 <Form.Item
                   name="specifications.warranty"
-                  name="specifications.warranty"
                   rules={[
                     {
                       required: true,
@@ -708,7 +688,6 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Màu sắc</p>
                 <Form.Item
-                  name="specifications.color"
                   name="specifications.color"
                   rules={[
                     {
