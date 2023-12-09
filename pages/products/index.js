@@ -63,7 +63,7 @@ export default function productList() {
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [option, setOption] = useState([]);
+ 
   const getData = async () => {
     setLoading(true);
     try {
@@ -93,7 +93,7 @@ export default function productList() {
     setOffset((page - 1) * pageSize);
   };
   const onSelectedRow = (data) => {
-    router.push("/products/" + data.product_id);
+    router.push("/products/" + data.id);
   }
 
   const actions = [

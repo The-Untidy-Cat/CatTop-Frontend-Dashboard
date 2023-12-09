@@ -7,14 +7,7 @@ const { RangePicker } = DatePicker;
 
 export default function StatisticBody() {
   
-    const handleChangeDate = (dates, dateArr) => {
-        // if(dateArr[0] != '' && dateArr[1] != ''){
-        //     console.log('So sánh: ', (format(new Date('01/12/2023'), 'dd/MM/yyyy') < (format(new Date(dateArr[1]), 'dd/MM/yyyy')) ? 'trong khoảng' : 'ngoài khoảng'));
-        // }
-        // else{
-        //     console.log(format(new Date('01/12/2023'), 'dd/MM/yyyy'))
-        //     console.log('chưa nhập đủ');
-        // }
+    const handleChangeDate = () => {
         const formattedDate = format(new Date('01/12/2023'), 'dd/MM/yyyy');
         console.log(formattedDate);  // Kết quả: 01/12/2023
     }

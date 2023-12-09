@@ -2,7 +2,7 @@ import { ModalToggle } from "@/components/Modal";
 import { Button, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
-import Return from "./return/index";
+import Return from "./orders/return/index";
 
 const NewCustomerForm = () => {
   const handleSubmit = (values) => {
