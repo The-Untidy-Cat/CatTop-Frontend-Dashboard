@@ -3,9 +3,21 @@ import { searchRead } from "./search_read";
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 
-const getAllOrder = async () => {
+const getAllOrder = async ({
+  keyword = null,
+  limit = 10,
+  offset = 0,
+  state = undefined,
+}) => {
   try {
-    const response = await api.get(`/dashboard/orders`);
+    const response = await api.get(`/dashboard/orders`, {
+      params: {
+        keyword,
+        limit,
+        offset,
+        state: state ? state : undefined,
+      },
+    });
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -16,28 +28,20 @@ const getAllOrder = async () => {
   }
 };
 
-const getUnlimitAllOrder = async ({
-  domain =  [],
-  fields =  [],
-}) => {
+const getUnlimitAllOrder = async ({ domain = [], fields = [] }) => {
   try {
-    const response = await searchRead(
-      {
-        model: "Order",
-        domain: domain,
-        fields: fields,
-        relation: [
-          "items:order_id,amount,total",
-        ],
-        
-      }
-    )
+    const response = await searchRead({
+      model: "Order",
+      domain: domain,
+      fields: fields,
+      relation: ["items:order_id,amount,total"],
+    });
     return response?.records;
   } catch (e) {
-    console.log(e)
-    return null
+    console.log(e);
+    return null;
   }
-}
+};
 
 const createOrder = async (data) => {
   try {
@@ -50,6 +54,6 @@ const createOrder = async (data) => {
     // });
     throw error;
   }
-}
+};
 
 export { getAllOrder, createOrder, getUnlimitAllOrder };
