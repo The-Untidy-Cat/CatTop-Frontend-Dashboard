@@ -3,8 +3,6 @@ import { searchRead } from "./search_read";
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 
-// đừng có đụng vào cái này, cái này api của Ngọc
-// lúc merge vào bị lỗi tùm lum nữa
 const getAllOrder = async () => {
   try {
     const response = await api.get(`/dashboard/orders`);

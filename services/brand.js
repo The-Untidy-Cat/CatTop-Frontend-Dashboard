@@ -14,6 +14,32 @@ const getAllBrand = async () => {
   }
 };
 
+const getBrand = async (id) => {
+  try {
+    const response = await api.get(`/dashboard/brands/${id}`);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
+const updateBrand = async (id, data) => {
+  try {
+    const response = await api.put(`/dashboard/brands/${id}`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
 const createBrand = async (data) => {
   try {
     const response = await api.post(`/dashboard/brands`, data);
@@ -27,4 +53,4 @@ const createBrand = async (data) => {
   }
 }
 
-export { getAllBrand, createBrand };
+export { getAllBrand, createBrand, getBrand, updateBrand };

@@ -5,7 +5,7 @@ import TableView from "./table";
 const PageItem = ({ type, label = null, items }) => {
   switch (type) {
     case "description":
-      return <Descriptions title={label} bordered items={items} size="small" />;
+      return <Descriptions title={label} layout="vertical" items={items} size="small" />;
     case "table":
       return <TableView {...items} />;
     default:

@@ -79,8 +79,7 @@ export default function TableView({
         </div>
         <Table
           size="small"
-          sticky={true}
-          scroll={{ x: true }}
+          scroll={{ x: "max-content" }}
           dataSource={table?.data}
           columns={table?.columns}
           pagination={false}
@@ -92,7 +91,7 @@ export default function TableView({
             };
           }}
           loading={table?.loading}
-          className="h-full overflow-y-auto min-h-full"
+          className="w-full h-full min-h-full"
         />
       </div>
     </>
