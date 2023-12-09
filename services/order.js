@@ -15,8 +15,7 @@ const getAllOrder = async () => {
     return null;
   }
 };
-// đợi xíu t fix api
-// ok
+
 const getUnlimitAllOrder = async ({
   domain =  [],
   fields =  [],
@@ -28,8 +27,9 @@ const getUnlimitAllOrder = async ({
         domain: domain,
         fields: fields,
         relation: [
-          "items:order_id,amount,total"
-        ]
+          "items:order_id,amount,total",
+        ],
+        
       }
     )
     return response?.records;

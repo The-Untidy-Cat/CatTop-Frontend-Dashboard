@@ -1,5 +1,4 @@
 import DefaultLayout from "@/components/Layout";
-
 import TableView from "../../components/View/table";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";

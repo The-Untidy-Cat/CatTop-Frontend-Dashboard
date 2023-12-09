@@ -45,9 +45,7 @@ export default function brandList() {
         fields: ["id", "name", "state"],
         limit,
         offset,
-        }
-        
-      );
+      });
       console.log(response);
       setBrands(response?.records.map((item) => ({ ...item, key: item.id })));
       setLength(response?.length);
@@ -83,7 +81,7 @@ export default function brandList() {
       },
     },
   ];
-  
+
   useEffect(() => {
     getData();
   }, [keyword, offset]);

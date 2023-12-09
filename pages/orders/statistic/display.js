@@ -1,8 +1,6 @@
-import TableView from "@/components/View/table";
 import { Table, DatePicker } from "antd";
-import { getAllOrder, getUnlimitAllOrder } from "@/services/order";
+import { getUnlimitAllOrder } from "@/services/order";
 import { useState, useEffect } from "react";
-import { searchRead } from "@/services/search_read";
 import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
@@ -32,8 +30,6 @@ export default function StatisticBody() {
     ];
 
     const [loading, setLoading] = useState(false);
-    const [keyword, setKeyword] = useState(null);
-    const [offset, setOffset] = useState(0);
     const [orders, setOrders] = useState()
 
     const getData = async (
@@ -63,7 +59,10 @@ export default function StatisticBody() {
                     fields: ["id", "state"]
                 }
             );
+            console.log(response)
             setOrders(response || [])
+           
+
         }
         catch (err) {
             console.log(err);
@@ -77,7 +76,7 @@ export default function StatisticBody() {
 
     const getTotalOrder = (state) => {
         let d = 0;
-        orders?.records?.map(
+        orders?.map(
             (item) => {
                 if (item?.state === state)
                     d++;
@@ -88,12 +87,12 @@ export default function StatisticBody() {
     const getTotalProduct = (state) => {
         let d = 0;
         if (state === "") {
-            orders?.records?.map(
+            orders?.map(
                 (item) => { d = d + item.items.length }
             )
         }
         else {
-            orders?.records?.map(
+            orders?.map(
                 (item) => {
                     if (item?.state === state)
                         d = d + item.items.length
@@ -105,12 +104,12 @@ export default function StatisticBody() {
     const getRevenue = (state) => {
         let total = 0;
         if (state === "") {
-            orders?.records?.map(
+            orders?.map(
                 (item) => { total = total + Number(item.total) }
             )
         }
         else {
-            orders?.records?.map(
+            orders?.map(
                 (item) => {
                     if (item?.state === state)
                         total = total + Number(item.total)
@@ -186,7 +185,6 @@ export default function StatisticBody() {
     return (
         <div className="mt-5 flex flex-col gap-4">
             <div>
-                //cái này nó bắt dùng dayjs
                 <RangePicker
                     defaultValue={[
                         dayjs().startOf("month"),

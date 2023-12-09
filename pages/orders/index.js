@@ -1,14 +1,14 @@
 import DefaultLayout from "@/components/Layout";
-import {
-  DatePicker,
-  Divider,
-  Tabs,
-  Pagination,
-  Table,
-  Form,
-  Input,
-  Button,
-} from "antd";
+// import {
+//   DatePicker,
+//   Divider,
+//   Tabs,
+//   Pagination,
+//   Table,
+//   Form,
+//   Input,
+//   Button,
+// } from "antd";
 import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import TableView from "../../components/View/table";
@@ -29,7 +29,7 @@ const columns = [
     key: "customer_name",
   },
   {
-    title: "Mã nhân viên",
+    title: "Tên nhân viên",
     dataIndex: "employee_name",
     key: "employee_name",
   },
@@ -64,14 +64,15 @@ export default function Order() {
     try {
       const response = await searchRead({
         model: "Order",
-        domain: keyword ? [["name", "=", keyword]] : [],
-        fields: ["order_id", "customer_id","employee_id", "create_at","payment_state","state"],
+        domain: keyword ? [["id", "like", `%${keyword}%`]] : [],
+        fields: ["id","payment_state","customer_id","payment_method","created_at","state","employee_id"],
         limit,
         offset,
-        relation: ["customer:id, first_name","employee:id, first_name"],
-
+        relation: ["customer","employee"],
       });
-      setOrders(response?.records.map((item) => ({ ...item, key: item.id })));
+      console.log(response)
+      setOrders(response?.records)
+      // setOrders(response?.records?.map((item) => ({ ...item, key: item.id })));
       setLength(response?.length);
       setOffset(response?.offset);
     } catch (error) {
@@ -79,6 +80,25 @@ export default function Order() {
     }
     setLoading(false);
   };
+
+  const listOrders = [
+  ]
+  const formatDataOrders = orders?.map((item) => {
+        const time = new Date(item.created_at);
+        const date = time.getDate()
+        const month = time.getMonth() + 1
+        const year = time.getFullYear()
+        let order =
+          {
+            order_id: item.id,
+            customer_name: item.customer.last_name + " " +item.customer.first_name,
+            employee_name: item.employee ? item.customer.last_name + " " +item.customer.first_name : "Không có",
+            payment_state: item.payment_state === "unpaid" ? "Chưa thanh toán" : "Đã thanh toán",
+            created_at: date + "-" + month + "-" + year,
+            state: item.state
+          }
+          listOrders.push(order)
+    })
 
   const onSearch = (value) => {
     setKeyword(value);
@@ -94,7 +114,9 @@ export default function Order() {
 
   useEffect(() => {
     getData();
+    formatDataOrders;
   }, [keyword, offset]);
+
   const actions = [
     {
       key: "add",
@@ -113,21 +135,10 @@ export default function Order() {
         centered: true,
       },
     },
-    // {
-    //   key: "edit",
-    //   buttonLabel: <span className="font-bold align-middle	">Sửa</span>,
-    //   buttonType: "default",
-    //   buttonIcon: <RiPencilFill className="mr-2 w-2.5 align-middle" />,
-    //   title: "Sửa",
-    //   children: <NewOrderForm />,
-    //   modalProps: {
-    //     centered: true,
-    //   },
-    // },
   ];
   return (
     <DefaultLayout
-      title={"Thương hiệu"}
+      title={"Đơn hàng"}
       breadcrumb={[
         {
           href: "/orders",
@@ -141,11 +152,12 @@ export default function Order() {
         table={{
           bordered: true,
           loading: loading,
-          data: orders,
+          data: listOrders,
           columns: columns,
           onSelectedRow: onSelectedRow,
         }}
         search={{
+          show: true,
           placeholder: "Tìm kiếm",
           onSearch: onSearch,
         }}

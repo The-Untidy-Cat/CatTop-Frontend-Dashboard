@@ -1,75 +1,159 @@
 import DefaultLayout from "@/components/Layout";
+import TableView from "@/components/View/table";
 import { Divider, Table } from "antd";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { FaPen, FaQuestion } from "react-icons/fa";
 
-const columns = [
+
+export default function Customer() {
+  const router = useRouter();
+  const { id } = router.query;
+  const limit = 5;
+  const [customers, setCustomers] = useState([]);
+  const [keyword, setKeyword] = useState(null);
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const actions = [
     {
-      title: "Mã đơn hàng",
-      dataIndex: "order_id",
-      key: "order_id",
-    },
-    {
-      title: "Tên khách hàng",
-      dataIndex: "customer_name",
-      key: "customer_name",
-    },
-    {
-      title: "Mã khách hàng",
-      dataIndex: "customer_id",
-      key: "customer_id",
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Ngày đặt hàng",
-      dataIndex: "order_date",
-      key: "order_date",
-    },
-    {
-      title: "Tổng tiền",
-      dataIndex: "total",
-      key: "total",
-    },
-    {
-      title: "Tình trạng",
-      dataIndex: "order_status",
-      key: "order_status",
+      key: "edit-customer",
+      buttonLabel: "Sửa",
+      buttonType: "default",
+      buttonIcon: <FaPen />,
+      title: "Cập nhật khách hàng",
+      children: (
+        <EditCustomerForm
+          data={{ ...customer}}
+          onSuccess={getData}
+        />
+      ),
+      modalProps: {
+        centered: true,
+      },
     },
   ];
 
-const data = [
+  const items = [
     {
-      order_id: "1",
-      customer_name: "John Brown",
-      customer_id: "32",
-      address: "New York No. 1 Lake Park",
-      order_date: "2021-10-10",
-      total: "1000",
-      order_status: "Đang xử lý",
-    }]
-    
+      key: "product-info",
+      label: "Thông tin khách hàng",
+      children: [
+        {
+          type: "description",
+          key: "product-description",
+          items: [
+            {
+              label: "Họ",
+              children: customer?.last_name,
+            },
+            {
+              label: "Tên",
+              children: customer?.first_name,
+            },
+            {
+              label: "Ảnh đại diện",
+              children: (
+                <Image
+                  src={customer?.image}
+                  alt="avatar"
+                  className="h-28 w-28 object-cover"
+                  loading="lazy"
+                  fallback={<FaQuestion />}
+                />
+              ),
+            },
+            {
+              label: "Email",
+              children: customer?,email,
+            },
+            {
+              label: "Ngày sinh",
+              children: customer?.date_of_birth,
+            },
+            {
+              label: "Trạng thái",
+              children: CUSTOMER_STATE[customer?.state],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: "custome-order-info",
+      label: "Danh sách đơn hàng đã đặt",
+      children: [
+        {
+          type: "table",
+          key: "order-list",
+          items: {
+            actions: [
+              {
+                key: "add",
+                buttonLabel: "Thêm",
+                buttonType: "primary",
+                buttonIcon: <FaPen />,
+                title: "Thêm mới",
+                children: (
+                  <NewProductVariantForm
+                    onSuccess={getData}
+                    productId={product?.id}
+                  />
+                ),
+                modalProps: {
+                  centered: true,
+                },
+              },
+            ],
+            table: {
+              bordered: true,
+              loading: loading,
+              data: product?.variants?.map((item) => ({
+                ...item,
+                key: item.id,
+                state: PRODUCT_STATE[item.state],
+              })),
+              columns: columns,
+              onSelectedRow: (data) => {},
+            },
+            search: {
+              show: false,
+            },
+            pagination: {
+              length: product?.variants?.length,
+              pageSize: 10,
+              current: 1,
+            },
+          },
+        },
+      ],
+    },
+  ];
 
-export default function Customer (){
-    const router = useRouter();
-    const { id } = router.query;
-    return (
-        <DefaultLayout>
-            <p>Thông tin khách hàng</p>
-            <p>Tên khách hàng: </p>
-            <p>Mã khách hàng: {id}</p>
-            <p>Địa chỉ: </p>
-            <p>Số điện thoại: </p>
-            <p>Email: </p>
-            <p>Giới tính: </p>
-            <p>Ngày sinh: </p>
-            <p>Ngày tạo: </p>
-
-            <Divider />
-            <p>Danh sách đơn hàng</p>
-            <Table dataSource={data} columns={columns} />
-        </DefaultLayout>
-    )
+  useEffect(() => {
+    getData();
+  }, []);
+  return (
+    <DefaultLayout
+      title={"Chi tiết khách hàng"}
+      breadcrumb={[
+        {
+          href: "/customers",
+          title: "Khách hàng",
+        },
+        {
+          href: `/customers/${id}`,
+          title: customer?.name || "Chi tiết khách hàng",
+        },
+      ]}
+      activeKey={"customer-list"}
+    >
+      <FormView
+        loading={loading}
+        items={items}
+        actions={actions}
+        title={product?.name}
+      />
+    </DefaultLayout>
+  );
 }
