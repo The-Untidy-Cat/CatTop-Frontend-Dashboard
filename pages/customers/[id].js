@@ -1,20 +1,41 @@
+import { CUSTOMER_STATE } from "@/app.config";
+import NewCustomerForm, { EditCustomerForm } from "@/components/Form/customers";
+import NewOrderForm from "@/components/Form/orders";
 import DefaultLayout from "@/components/Layout";
+import FormView from "@/components/View/form";
 import TableView from "@/components/View/table";
+import { getCustomer } from "@/services/customer";
 import { Divider, Table } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPen, FaQuestion } from "react-icons/fa";
 
+
+const columns = [
+  
+];
 
 export default function Customer() {
   const router = useRouter();
   const { id } = router.query;
-  const limit = 5;
-  const [customers, setCustomers] = useState([]);
-  const [keyword, setKeyword] = useState(null);
-  const [length, setLength] = useState(0);
-  const [offset, setOffset] = useState(0);
+  const [customer, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    setLoading(true);
+    getCustomer(id)
+      .then((res) => {
+        console.log(res )
+        setCustomers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const actions = [
     {
       key: "edit-customer",
@@ -52,20 +73,12 @@ export default function Customer() {
               children: customer?.first_name,
             },
             {
-              label: "Ảnh đại diện",
-              children: (
-                <Image
-                  src={customer?.image}
-                  alt="avatar"
-                  className="h-28 w-28 object-cover"
-                  loading="lazy"
-                  fallback={<FaQuestion />}
-                />
-              ),
+              label: "Email",
+              children: customer?.email,
             },
             {
-              label: "Email",
-              children: customer?,email,
+              label: "Trạng thái",
+              children: customer?.state,
             },
             {
               label: "Ngày sinh",
@@ -79,55 +92,55 @@ export default function Customer() {
         },
       ],
     },
-    {
-      key: "custome-order-info",
-      label: "Danh sách đơn hàng đã đặt",
-      children: [
-        {
-          type: "table",
-          key: "order-list",
-          items: {
-            actions: [
-              {
-                key: "add",
-                buttonLabel: "Thêm",
-                buttonType: "primary",
-                buttonIcon: <FaPen />,
-                title: "Thêm mới",
-                children: (
-                  <NewProductVariantForm
-                    onSuccess={getData}
-                    productId={product?.id}
-                  />
-                ),
-                modalProps: {
-                  centered: true,
-                },
-              },
-            ],
-            table: {
-              bordered: true,
-              loading: loading,
-              data: product?.variants?.map((item) => ({
-                ...item,
-                key: item.id,
-                state: PRODUCT_STATE[item.state],
-              })),
-              columns: columns,
-              onSelectedRow: (data) => {},
-            },
-            search: {
-              show: false,
-            },
-            pagination: {
-              length: product?.variants?.length,
-              pageSize: 10,
-              current: 1,
-            },
-          },
-        },
-      ],
-    },
+    // {
+    //   key: "custome-order-info",
+    //   label: "Danh sách đơn hàng đã đặt",
+    //   children: [
+    //     {
+    //       type: "table",
+    //       key: "order-list",
+    //       items: {
+    //         actions: [
+    //           {
+    //             key: "add",
+    //             buttonLabel: "Thêm",
+    //             buttonType: "primary",
+    //             buttonIcon: <FaPen />,
+    //             title: "Thêm mới",
+    //             children: (
+    //               <NewOrderForm
+    //                 onSuccess={getData}
+    //                 // customerId={customer?.id}
+    //               />
+    //             ),
+    //             modalProps: {
+    //               centered: true,
+    //             },
+    //           },
+    //         ],
+    //         table: {
+    //           bordered: true,
+    //           loading: loading,
+    //           data: customer?.map((item) => ({
+    //             ...item,
+    //             key: item.id,
+    //             state: CUSTOMER_STATE[item.state],
+    //           })),
+    //           columns: columns,
+    //           onSelectedRow: (data) => {},
+    //         },
+    //         search: {
+    //           show: false,
+    //         },
+    //         pagination: {
+    //           length: customer?.length,
+    //           pageSize: 10,
+    //           current: 1,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // },
   ];
 
   useEffect(() => {
@@ -152,7 +165,7 @@ export default function Customer() {
         loading={loading}
         items={items}
         actions={actions}
-        title={product?.name}
+        title={customer?.name}
       />
     </DefaultLayout>
   );

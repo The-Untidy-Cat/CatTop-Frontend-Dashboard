@@ -40,4 +40,13 @@ const getCustomer = async (id) => {
   }
 }
 
-export { getAllCustomer, createCustomer, getCustomer };
+const updateCustomer = async (id, data) => {
+  try {
+    const response = await api.put(`/dashboard/customers/${id}`, data);
+    return response?.data?.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { getAllCustomer, createCustomer, getCustomer, updateCustomer };
