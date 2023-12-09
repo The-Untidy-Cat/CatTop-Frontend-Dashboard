@@ -1,7 +1,7 @@
 import { searchRead } from "./search_read";
-
-const { api } = require("@/utils/axios");
-const { notification } = require("antd");
+import dayjs from "dayjs";
+import { api } from "@/utils/axios";
+import { notification } from "antd";
 
 const getAllOrder = async ({
   keyword = null,
@@ -56,4 +56,23 @@ const createOrder = async (data) => {
   }
 };
 
-export { getAllOrder, createOrder, getUnlimitAllOrder };
+const getStatistic = async ({ dateRange }) => {
+  try {
+    const response = await api.get(`/dashboard/statistics/orders`, {
+      params: {
+        start_date: dateRange?.[0]
+          ? dayjs(dateRange?.[0]).startOf("day").toISOString()
+          : undefined,
+        end_date: dateRange?.[1]
+          ? dayjs(dateRange?.[1]).endOf("day").toISOString()
+          : undefined,
+      },
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export { getAllOrder, createOrder, getUnlimitAllOrder, getStatistic };
