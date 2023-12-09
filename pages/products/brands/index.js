@@ -110,6 +110,7 @@ export default function brandList() {
           onSelectedRow: onSelectedRow,
         }}
         search={{
+          show: true,
           placeholder: "Tìm kiếm",
           onSearch: onSearch,
         }}

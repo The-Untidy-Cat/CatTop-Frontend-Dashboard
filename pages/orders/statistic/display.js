@@ -1,8 +1,6 @@
-import TableView from "@/components/View/table";
 import { Table, DatePicker } from "antd";
-import { getAllOrder, getUnlimitAllOrder } from "@/services/order";
+import { getUnlimitAllOrder } from "@/services/order";
 import { useState, useEffect } from "react";
-import { searchRead } from "@/services/search_read";
 import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
@@ -61,6 +59,7 @@ export default function StatisticBody() {
                     fields: ["id", "state"]
                 }
             );
+            console.log(response)
             setOrders(response || [])
            
 
