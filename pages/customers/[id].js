@@ -1,4 +1,4 @@
-import { CUSTOMER_STATE, ORDER_STATE, PAYMENT_METHOD, PAYMENT_STATE } from "@/app.config";
+import { CUSTOMER_GENDER, CUSTOMER_STATE, ORDER_STATE, PAYMENT_METHOD, PAYMENT_STATE } from "@/app.config";
 import NewCustomerForm, { EditCustomerForm } from "@/components/Form/customers";
 import NewOrderForm from "@/components/Form/orders";
 import DefaultLayout from "@/components/Layout";
@@ -108,6 +108,10 @@ export default function Customer() {
           key: "product-description",
           items: [
             {
+              label: "Mã khách hàng",
+              children: customer?.id,
+            },
+            {
               label: "Họ",
               children: customer?.last_name,
             },
@@ -120,10 +124,6 @@ export default function Customer() {
               children: customer?.email,
             },
             {
-              label: "Trạng thái",
-              children: customer?.state,
-            },
-            {
               label: "Ngày sinh",
               children: customer?.date_of_birth,
             },
@@ -132,12 +132,12 @@ export default function Customer() {
               children: CUSTOMER_STATE[customer?.state],
             },
             {
-              label: "Địa chỉ",
-              children: customer?.address,
+              label: "Giới tính",
+              children: CUSTOMER_GENDER[customer?.gender],
             },
             {
               label: "Số điện thoại",
-              children: customer?.phone,
+              children: customer?.phone_number,
             },
           ],
         },
