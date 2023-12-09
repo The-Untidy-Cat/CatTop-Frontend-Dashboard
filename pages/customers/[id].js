@@ -65,7 +65,7 @@ export default function Customer() {
             },
             {
               label: "Email",
-              children: customer?,email,
+              children: customer?.email,
             },
             {
               label: "Ngày sinh",
