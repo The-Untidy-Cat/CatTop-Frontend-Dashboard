@@ -15,7 +15,7 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
     console.log(values);
     createOrder({ ...values, view_on_create: undefined })
       .then((res) => {
-        Modal.destroyAll();
+        // Modal.destroyAll();
         form.resetFields();
         onClose && onClose();
         if (values.view_on_create) {
@@ -76,6 +76,9 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
   }, [])
 
 
+  // const handleClose = () => {
+  //   console.log("Form is closed");
+  // }
   const onChange = (e) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
@@ -87,8 +90,8 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
       onFinish={handleSubmit}
       autoComplete="off"
       className="flex flex-col w-full gap-2"
-    // disabled={loading}
-    // form={form}
+      disabled={loading}
+      form={form}
     >
         <div className="flex flex-col gap-2 w-full">
           <p className="m-0">Tên khách hàng</p>
