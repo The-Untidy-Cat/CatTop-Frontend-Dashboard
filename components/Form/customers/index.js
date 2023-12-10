@@ -9,6 +9,7 @@ export function EditCustomerForm({ data, onSuccess, onClose }) {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const router = useRouter();
+  
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -126,7 +127,7 @@ export function EditCustomerForm({ data, onSuccess, onClose }) {
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 w-1/3">
-          {/* <p className="m-0">Ngày sinh</p>
+          <p className="m-0">Ngày sinh</p>
           <Form.Item
             label=""
             name="date_of_birth"
@@ -140,7 +141,7 @@ export function EditCustomerForm({ data, onSuccess, onClose }) {
             className="m-0"
           >
             <DatePicker format={"YYYY-MM-DD"} />
-          </Form.Item> */}
+          </Form.Item>
         </div>
         <div className="flex flex-col gap-2 w-1/3">
           <p className="m-0">Giới tính</p>

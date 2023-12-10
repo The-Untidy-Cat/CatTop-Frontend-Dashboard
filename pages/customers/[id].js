@@ -1,4 +1,10 @@
-import { CUSTOMER_GENDER, CUSTOMER_STATE, ORDER_STATE, PAYMENT_METHOD, PAYMENT_STATE } from "@/app.config";
+import {
+  CUSTOMER_GENDER,
+  CUSTOMER_STATE,
+  ORDER_STATE,
+  PAYMENT_METHOD,
+  PAYMENT_STATE,
+} from "@/app.config";
 import NewCustomerForm, { EditCustomerForm } from "@/components/Form/customers";
 import NewOrderForm from "@/components/Form/orders";
 import DefaultLayout from "@/components/Layout";
@@ -10,7 +16,7 @@ import { Divider, Table } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaPen, FaQuestion } from "react-icons/fa";
-
+import dayjs from "dayjs";
 
 const columns = [
   {
@@ -55,11 +61,11 @@ const columns = [
           title: "Chi tiết đơn hàng",
         }}
       >
-        <NewOrderForm/>
+        <NewOrderForm />
       </ModalToggle>
     ),
     width: 80,
-    fixed: 'right',
+    fixed: "right",
   },
 ];
 
@@ -73,7 +79,7 @@ export default function Customer() {
     setLoading(true);
     getCustomer(id)
       .then((res) => {
-        console.log(res )
+        console.log(res);
         setCustomers(res);
       })
       .catch((err) => {
@@ -91,12 +97,10 @@ export default function Customer() {
       buttonType: "default",
       buttonIcon: <FaPen />,
       title: "Cập nhật khách hàng",
-      children: (
-        <EditCustomerForm
-          data={{ ...customer}}
-          onSuccess={getData}
-        />
-      ),
+      children: <EditCustomerForm data={{ ...customer, 
+      date_of_birth: customer.date_of_birth ? dayjs(customer.date_of_birth) : null,
+      gender: Number(customer.gender),
+    }} onSuccess={getData} />,
       modalProps: {
         centered: true,
       },
@@ -181,7 +185,7 @@ export default function Customer() {
                 ...item,
                 key: item.id,
                 state: ORDER_STATE[item.state],
-                payment_state: PAYMENT_STATE[item.payment_state], 
+                payment_state: PAYMENT_STATE[item.payment_state],
                 payment_method: PAYMENT_METHOD[item.payment_method],
               })),
               columns: columns,
