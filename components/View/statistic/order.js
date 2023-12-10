@@ -1,7 +1,9 @@
 import { getStatistic } from "@/services/order";
-import { DatePicker, Tabs } from "antd";
+import { DatePicker, Empty, Statistic, Tabs } from "antd";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { ORDER_STATE } from "@/app.config";
+import { color } from "@/theme/theme.config";
 
 const { RangePicker } = DatePicker;
 
@@ -32,51 +34,49 @@ export default function OrderStatistic() {
         <RangePicker
           defaultValue={[dayjs().startOf("month"), dayjs()]}
           onChange={(date, dateString) => setDate(date)}
-          className="w-full"
+          className="w-full max-w-sm "
           format={"DD/MM/YYYY"}
         />
-        <Tabs
-          defaultActiveKey="pending"
-          className="p-0"
-          items={[
-            {
-              key: "all",
-              label: "Tất cả",
-            },
-            {
-              key: "pending",
-              label: "Chờ xử lý",
-            },
-            {
-              key: "confirmed",
-              label: "Đã xác nhận",
-            },
-            {
-              key: "delivering",
-              label: "Đang vận chuyển",
-            },
-            {
-              key: "delivered",
-              label: "Đã giao",
-            },
-            {
-              key: "cancelled",
-              label: "Đã hủy",
-            },
-            {
-              key: "failed",
-              label: "Thất bại",
-            },
-            {
-              key: "refunded",
-              label: "Hoàn tiền"
-            },
-            {
-              key: "draft",
-              label: "Nháp",
-            },
-          ]}
-        />
+        <div className="grid md:grid-cols-2 gap-2 w-full h-full py-2">
+          {data?.length ? (
+            data.map((item) => (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3 col-span-1">
+                <p className="font-semibold md:col-span-3">
+                  {ORDER_STATE[item?.state]}
+                </p>
+                <Statistic
+                  title="Số đơn hàng"
+                  value={Number(item?.total_order)}
+                  className="border rounded p-2 font-medium"
+                  valueStyle={{
+                    color: color.primary,
+                    fontWeight: 600,
+                  }}
+                />
+                <Statistic
+                  title="Doanh thu"
+                  value={Number(item?.total_sale)}
+                  className="border rounded p-2 font-medium"
+                  valueStyle={{
+                    color: color.primary,
+                    fontWeight: 600,
+                  }}
+                />
+                <Statistic
+                  title="Đã bán"
+                  value={Number(item?.total_amount)}
+                  className="border rounded p-2  font-medium"
+                  valueStyle={{
+                    color: color.primary,
+                    fontWeight: 600,
+                  }}
+                />
+              </div>
+            ))
+          ) : (
+            <Empty description="Không có thông tin" className="col-span-2 h-full flex flex-col items-center justify-center" />
+          )}
+        </div>
       </div>
     </>
   );
