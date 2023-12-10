@@ -56,6 +56,19 @@ const createOrder = async (data) => {
   }
 };
 
+const getOrder = async (id) => {
+  try {
+    const response = await api.get(`/dashboard/orders/${id}`);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+};
+
 const getStatistic = async ({ dateRange }) => {
   try {
     const response = await api.get(`/dashboard/statistics/orders`, {
@@ -75,4 +88,4 @@ const getStatistic = async ({ dateRange }) => {
   }
 };
 
-export { getAllOrder, createOrder, getUnlimitAllOrder, getStatistic };
+export { getAllOrder, createOrder, getUnlimitAllOrder, getStatistic, getOrder };
