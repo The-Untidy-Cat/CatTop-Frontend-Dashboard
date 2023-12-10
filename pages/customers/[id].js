@@ -15,18 +15,18 @@ import { getCustomer } from "@/services/customer";
 import { Button, Divider, Table } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaPen, FaQuestion } from "react-icons/fa";
+import { FaPen, FaPlus, FaQuestion } from "react-icons/fa";
 import dayjs from "dayjs";
 
 const columns = [
   {
-    title: "#",
+    title: "ID",
     dataIndex: "id",
     key: "id",
     width: 80,
   },
   {
-    title: "Thanh toán",
+    title: "Phương thức thanh toán",
     dataIndex: "payment_method",
     key: "payment_method",
     // render: (_, record) => {
@@ -34,12 +34,12 @@ const columns = [
     // }
   },
   {
-    title: "T/thái Thanh toán",
+    title: "Trạng thái thanh toán",
     dataIndex: "payment_state",
     key: "payment_state",
   },
   {
-    title: "T/thái đơn hàng",
+    title: "Trạng thái đơn hàng",
     dataIndex: "state",
     key: "state",
   },
@@ -47,15 +47,6 @@ const columns = [
     title: "Tổng",
     dataIndex: "total",
     key: "total",
-  },
-  {
-    title: "",
-    key: "action",
-    render: (_, record) => (
-      <a href={`/orders/${record.id}`}>Chi tiết</a>
-    ),
-    width: 80,
-    fixed: "right",
   },
 ];
 
@@ -87,10 +78,18 @@ export default function Customer() {
       buttonType: "default",
       buttonIcon: <FaPen />,
       title: "Cập nhật khách hàng",
-      children: <EditCustomerForm data={{ ...customer, 
-      date_of_birth: customer.date_of_birth ? dayjs(customer.date_of_birth) : null,
-      gender: Number(customer.gender),
-    }} onSuccess={getData} />,
+      children: (
+        <EditCustomerForm
+          data={{
+            ...customer,
+            date_of_birth: customer.date_of_birth
+              ? dayjs(customer.date_of_birth)
+              : null,
+            gender: Number(customer.gender),
+          }}
+          onSuccess={getData}
+        />
+      ),
       modalProps: {
         centered: true,
       },
@@ -152,20 +151,12 @@ export default function Customer() {
           items: {
             actions: [
               {
-                key: "add",
-                buttonLabel: "Thêm",
+                key: "create-order",
+                buttonLabel: "Tạo đơn hàng",
                 buttonType: "primary",
-                buttonIcon: <FaPen />,
-                title: "Thêm mới",
-                children: (
-                  <NewOrderForm
-                    onSuccess={getData}
-                    // customerId={customer?.id}
-                  />
-                ),
-                modalProps: {
-                  centered: true,
-                },
+                buttonIcon: <FaPlus />,
+                title: "Tạo đơn hàng",
+                children: <NewOrderForm onSuccess={getData} />,
               },
             ],
             table: {
@@ -179,7 +170,9 @@ export default function Customer() {
                 payment_method: PAYMENT_METHOD[item.payment_method],
               })),
               columns: columns,
-              onSelectedRow: (data) => {},
+              onSelectedRow: (data) => {
+                router.push("/orders/" + data.id);
+              },
             },
             search: {
               show: false,
@@ -208,7 +201,7 @@ export default function Customer() {
         },
         {
           href: `/customers/${id}`,
-          title: customer?.name || "Chi tiết khách hàng",
+          title: String(customer?.last_name + " " + customer?.first_name).trim() || "Chi tiết khách hàng",
         },
       ]}
       activeKey={"customer-list"}
@@ -217,7 +210,7 @@ export default function Customer() {
         loading={loading}
         items={items}
         actions={actions}
-        title={customer?.name}
+        title={String(customer?.last_name + " " + customer?.first_name).trim()}
       />
     </DefaultLayout>
   );

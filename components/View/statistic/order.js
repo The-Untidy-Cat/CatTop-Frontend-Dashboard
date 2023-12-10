@@ -37,7 +37,7 @@ export default function OrderStatistic() {
           className="w-full max-w-sm "
           format={"DD/MM/YYYY"}
         />
-        <div className="grid md:grid-cols-2 gap-2 w-full h-full py-2">
+        <div className="grid 3xl:grid-cols-2 gap-2 w-full h-full py-2">
           {data?.length ? (
             data.map((item) => (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3 col-span-1">
@@ -51,6 +51,7 @@ export default function OrderStatistic() {
                   valueStyle={{
                     color: color.primary,
                     fontWeight: 600,
+                    fontSize: "1.2rem",
                   }}
                 />
                 <Statistic
@@ -60,6 +61,7 @@ export default function OrderStatistic() {
                   valueStyle={{
                     color: color.primary,
                     fontWeight: 600,
+                    fontSize: "1.2rem",
                   }}
                 />
                 <Statistic
@@ -69,6 +71,8 @@ export default function OrderStatistic() {
                   valueStyle={{
                     color: color.primary,
                     fontWeight: 600,
+                    fontSize: "1.2rem",
+                    wordBreak: 'break-all'
                   }}
                 />
               </div>

@@ -26,7 +26,7 @@ const prod_data = [
   
   const cols = [
     {
-        title: "#",
+        title: "ID",
         dataIndex: "id",
         key: "id",
       },

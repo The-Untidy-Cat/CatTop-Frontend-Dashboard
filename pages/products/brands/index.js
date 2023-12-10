@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { searchRead } from "@/services/search_read";
 import NewBrandForm from "@/components/Form/brands";
+import { BRAND_STATE } from "@/app.config";
 
 const columns = [
   {
@@ -23,6 +24,7 @@ const columns = [
     title: "Trạng thái",
     dataIndex: "state",
     key: "state",
+    render: (text) => BRAND_STATE[text],
   },
 ];
 

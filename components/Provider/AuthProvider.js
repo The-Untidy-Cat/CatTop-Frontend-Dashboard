@@ -1,12 +1,12 @@
 import { createContext, useContext } from "react";
-import { useAuthController, useFakeAuthController } from "./controllers/auth";
+import { useUserController, useFakeAuthController } from "./controllers/auth";
 
 const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-//   const auth = useAuthController();
-    const auth = useAuthController();
+//   const auth = useUserController();
+    const auth = useUserController();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 
-export const useAuth = () => useContext(AuthContext);
+export const useUser = () => useContext(AuthContext);

@@ -41,7 +41,7 @@ class api {
   static async delete(url, config) {
     try {
       const token = await getCSRFToken();
-      return Axios.delete(url, { _token: token }, config);
+      return Axios.delete(url, { ...config, data: { _token: token } });
     } catch (error) {
       throw error;
     }

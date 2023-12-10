@@ -14,7 +14,7 @@ import { FaPen, FaQuestion } from "react-icons/fa";
 
 const columns = [
   {
-    title: "#",
+    title: "ID",
     dataIndex: "id",
     key: "id",
     width: 80,

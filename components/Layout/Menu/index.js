@@ -6,18 +6,18 @@ import { BiShoppingBag} from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { IoMdArrowDropdown, IoMdArrowDropright } from "react-icons/io";
 
-const NAVBAR_MENU = [
-  {
-    key: "order",
-    name: "Đơn hàng",
-    path: "#",
-  },
-];
+// const NAVBAR_MENU = [
+//   {
+//     key: "",
+//     name: "Đơn hàng",
+//     path: "ID",
+//   },
+// ];
 
 const SIDEBAR_MENU = [
   {
     key: "home",
-    name: "Home",
+    name: "Tổng quan",
     path: "/",
     type: "link",
     icon: <AiOutlineHome />,
@@ -42,12 +42,6 @@ const SIDEBAR_MENU = [
         key: "order-statistic",
         name: "Thống kê đơn hàng",
         path: "/orders/statistic",
-        type: "sub-menu",
-      },
-      {
-        key: "warranty-list",
-        name: "Danh sách bảo hành",
-        path: "/",
         type: "sub-menu",
       },
       {

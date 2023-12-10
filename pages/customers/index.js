@@ -10,7 +10,7 @@ import NewCustomerForm from "@/components/Form/customers";
 
 const columns = [
   {
-    title: "#",
+    title: "ID",
     dataIndex: "id",
     key: "id",
   },
@@ -44,10 +44,30 @@ const columns = [
   },
 ];
 
+const filterOptions = [
+  {
+    label: "ID",
+    value: "id",
+  },
+  {
+    label: "Tên khách hàng",
+    value: "first_name",
+  },
+  {
+    label: "Email",
+    value: "email",
+  },
+  {
+    label: "Số điện thoại",
+    value: "phone_number",
+  },
+];
+
 export default function CustomerList() {
   const router = useRouter();
   const limit = 5;
   const [customers, setCustomers] = useState([]);
+  const [filter, setFilter] = useState([]);
   const [keyword, setKeyword] = useState(null);
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -58,14 +78,22 @@ export default function CustomerList() {
     try {
       const response = await searchRead({
         model: "Customer",
-        domain: keyword ? [["name", "=", keyword]] : [],
-        fields: ["id", "first_name", "last_name","state", "email", "phone_number"],
+        domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
+        fields: [
+          "id",
+          "first_name",
+          "last_name",
+          "state",
+          "email",
+          "phone_number",
+        ],
         limit,
         offset,
       });
       setCustomers(
         response?.records.map((item) => ({
-          ...item, key: item.id 
+          ...item,
+          key: item.id,
         }))
       );
       setLength(response?.length);
@@ -76,7 +104,6 @@ export default function CustomerList() {
     setLoading(false);
   };
 
-  
   const onSearch = (value) => {
     setKeyword(value);
   };
@@ -106,7 +133,6 @@ export default function CustomerList() {
     getData();
   }, [keyword, offset]);
 
-
   return (
     <DefaultLayout
       title={"Khách hàng"}
@@ -116,10 +142,16 @@ export default function CustomerList() {
           title: "Khách hàng",
         },
       ]}
+      activeKey={"customer-list"}
     >
       <TableView
         title="Danh sách khách hàng"
         actions={actions}
+        filter={{
+          show: true,
+          options: filterOptions,
+          onChange: (value) => setFilter(value),
+        }}
         table={{
           bordered: true,
           loading: loading,
