@@ -12,7 +12,7 @@ import { ModalToggle } from "@/components/Modal";
 import FormView from "@/components/View/form";
 import TableView from "@/components/View/table";
 import { getCustomer } from "@/services/customer";
-import { Divider, Table } from "antd";
+import { Button, Divider, Table } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaPen, FaQuestion } from "react-icons/fa";
@@ -52,17 +52,7 @@ const columns = [
     title: "",
     key: "action",
     render: (_, record) => (
-      <ModalToggle
-        button={{
-          label: "Chi tiết",
-          type: "text",
-        }}
-        modal={{
-          title: "Chi tiết đơn hàng",
-        }}
-      >
-        <NewOrderForm />
-      </ModalToggle>
+      <a href={`/orders/${record.id}`}>Chi tiết</a>
     ),
     width: 80,
     fixed: "right",

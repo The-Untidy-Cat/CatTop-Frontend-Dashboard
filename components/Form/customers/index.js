@@ -15,7 +15,9 @@ export function EditCustomerForm({ data, onSuccess, onClose }) {
     setLoading(true);
     updateCustomer(data?.id, {
       ...values,
+      email: values.email != data?.email ? values.email : undefined,
       date_of_birth: dayjs(values.date_of_birth).format("YYYY-MM-DD"),
+      date_of_birth: values.date_of_birth != data?.date_of_birth ? values.date_of_birth : undefined,
     })
       .then((res) => {
         onSuccess && onSuccess();
