@@ -1,9 +1,9 @@
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 
-const getAllCustomer = async () => {
+const getAllEmployee = async () => {
   try {
-    const response = await api.get(`/dashboard/customers`);
+    const response = await api.get(`/dashboard/employees`);
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -14,9 +14,9 @@ const getAllCustomer = async () => {
   }
 };
 
-const createCustomer = async (data) => {
+const createEmployee = async (data) => {
   try {
-    const response = await api.post(`/dashboard/customers`, data);
+    const response = await api.post(`/dashboard/employees`, data);
     return response?.data?.data;
   } catch (error) {
     // notification.error({
@@ -27,9 +27,9 @@ const createCustomer = async (data) => {
   }
 }
 
-const getCustomer = async (id) => {
+const getEmployee = async (id) => {
   try {
-    const response = await api.get(`/dashboard/customers/${id}`);
+    const response = await api.get(`/dashboard/employees/${id}`);
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -40,13 +40,13 @@ const getCustomer = async (id) => {
   }
 }
 
-const updateCustomer = async (id, data) => {
+const updateEmployee = async (id, data) => {
   try {
-    const response = await api.put(`/dashboard/customers/${id}`, data);
+    const response = await api.put(`/dashboard/employees/${id}`, data);
     return response?.data?.data;
   } catch (error) {
     throw error;
   }
 }
 
-export { getAllCustomer, createCustomer, getCustomer, updateCustomer };
+export { getAllEmployee, createEmployee, getEmployee, updateEmployee };

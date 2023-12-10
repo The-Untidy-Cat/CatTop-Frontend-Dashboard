@@ -1188,7 +1188,7 @@ export function EditProductVariantForm({
         data?.specifications != specifications ? specifications : undefined,
     };
     setLoading(true);
-    updateProductVariant({ data: formData, productId, variantId })
+    updateProductVariant({ data: formData, productId: productId, variantId: variantId })
       .then((res) => {
         onSuccess && onSuccess();
         notification.success({

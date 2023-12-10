@@ -19,9 +19,16 @@ const BRAND_STATE = {
 };
 
 const CUSTOMER_GENDER = {
-  0: "Nam",
-  1: "Nữ",
-};
+    0: "Nam",
+    1: "Nữ", 
+}
+
+const CUSTOMER_STATE = {
+    draft: "Bản nháp",
+    inactive: "Không hoạt động",
+    active: "Đang hoạt động",
+    banned: "Đã cấm",
+}
 
 const ORDER_STATE = {
   draft: "Bản nháp",
@@ -50,6 +57,18 @@ const SHOPPING_METHOD = {
   offline: "Offline",
 };
 
+const EMPLOYEE_STATE = {
+  draft: "Bản nháp",
+  inactive: "Không hoạt động",
+  active: "Đang hoạt động",
+  banned: "Đã cấm",
+};
+
+const EMPLOYEE_GENDER = {
+  0: "Nam",
+  1: "Nữ",
+}
+
 export {
   PRODUCT_VARIANT_STATE,
   PRODUCT_STATE,
@@ -59,4 +78,7 @@ export {
   PAYMENT_STATE,
   PAYMENT_METHOD,
   SHOPPING_METHOD,
+  CUSTOMER_STATE,
+  EMPLOYEE_GENDER,
+  EMPLOYEE_STATE,
 };

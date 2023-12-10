@@ -2,74 +2,200 @@ import DefaultLayout from "@/components/Layout";
 import { useRouter } from "next/router";
 import TableView from "../../components/View/table";
 import { Table } from "antd";
+import { useEffect, useState } from "react";
+import { getOrder } from "@/services/order";
+import { ORDER_STATE, PAYMENT_STATE } from "@/app.config";
+import { FaPen } from "react-icons/fa";
+import NewOrderForm from "@/components/Form/orders";
+import FormView from "@/components/View/form";
 
 const columns = [
+  {
+    title: "Mã đơn hàng",
+    dataIndex: "order_id",
+    key: "order_id",
+  },
+  {
+    title: "Tên khách hàng",
+    dataIndex: "customer_name",
+    key: "customer_name",
+  },
+  {
+    title: "Mã khách hàng",
+    dataIndex: "customer_id",
+    key: "customer_id",
+  },
+  {
+    title: "Địa chỉ",
+    dataIndex: "address",
+    key: "address",
+  },
+  {
+    title: "Ngày đặt hàng",
+    dataIndex: "order_date",
+    key: "order_date",
+  },
+  {
+    title: "Tổng tiền",
+    dataIndex: "total",
+    key: "total",
+  },
+  {
+    title: "Tình trạng",
+    dataIndex: "order_status",
+    key: "order_status",
+  },
+];
+
+export default function OrderDetail() {
+  const router = useRouter();
+  const { id } = router.query;
+  const [order, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    setLoading(true);
+    getOrder(id)
+      .then((res) => {
+        console.log(res);
+        setOrders(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const items = [
     {
-      title: "Mã đơn hàng",
-      dataIndex: "order_id",
-      key: "order_id",
+      key: "order-info",
+      label: "Thông tin đơn hàng",
+      children: [
+        {
+          type: "description",
+          key: "order-description",
+          items: [
+            {
+              label: "Mã đơn hàng",
+              children: order?.id,
+            },
+            {
+              label: "Khách hàng",
+              children: order?.customer?.last_name + " " + order?.customer?.first_name, 
+            },
+            {
+              label: "Mã nhân viên",
+              children: order?.employee_id || "Chưa có",
+            },
+            {
+              label: "Hình thức mua hàng",
+              children: order?.payment_method,
+            },
+            {
+              label: "Trạng thái mua hàng",
+              children: PAYMENT_STATE[order?.payment_state],
+            },
+            {
+              label: "Trạng thái",
+              children: ORDER_STATE[order?.state],
+            },
+          ],
+        },
+      ],
     },
+    // {
+    //   key: "custome-order-info",
+    //   label: "Danh sách đơn hàng đã đặt",
+    //   children: [
+    //     {
+    //       type: "table",
+    //       key: "order-list",
+    //       items: {
+    //         actions: [
+    //           {
+    //             key: "add",
+    //             buttonLabel: "Thêm",
+    //             buttonType: "primary",
+    //             buttonIcon: <FaPen />,
+    //             title: "Thêm mới",
+    //             children: (
+    //               <NewOrderForm
+    //                 onSuccess={getData}
+    //                 // customerId={customer?.id}
+    //               />
+    //             ),
+    //             modalProps: {
+    //               centered: true,
+    //             },
+    //           },
+    //         ],
+    //         table: {
+    //           bordered: true,
+    //           loading: loading,
+    //           data: customer.orders?.map((item) => ({
+    //             ...item,
+    //             key: item.id,
+    //             state: ORDER_STATE[item.state],
+    //             payment_state: PAYMENT_STATE[item.payment_state],
+    //             payment_method: PAYMENT_METHOD[item.payment_method],
+    //           })),
+    //           columns: columns,
+    //           onSelectedRow: (data) => {},
+    //         },
+    //         search: {
+    //           show: false,
+    //         },
+    //         pagination: {
+    //           length: customer.orders?.length,
+    //           pageSize: 10,
+    //           current: 1,
+    //         },
+    //       },
+    //     },
+    //   ],
+    // },
+  ];
+
+  const actions = [
     {
-      title: "Tên khách hàng",
-      dataIndex: "customer_name",
-      key: "customer_name",
-    },
-    {
-      title: "Mã khách hàng",
-      dataIndex: "customer_id",
-      key: "customer_id",
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Ngày đặt hàng",
-      dataIndex: "order_date",
-      key: "order_date",
-    },
-    {
-      title: "Tổng tiền",
-      dataIndex: "total",
-      key: "total",
-    },
-    {
-      title: "Tình trạng",
-      dataIndex: "order_status",
-      key: "order_status",
+      key: "edit-order",
+      buttonLabel: "Sửa",
+      buttonType: "default",
+      buttonIcon: <FaPen />,
+      title: "Cập nhật đơn hàng",
+      children: <NewOrderForm />,
+      modalProps: {
+        centered: true,
+      },
     },
   ];
 
-const data = [
-    {
-      order_id: "1",
-      customer_name: "John Brown",
-      customer_id: "32",
-      address: "New York No. 1 Lake Park",
-      order_date: "2021-10-10",
-      total: "1000",
-      order_status: "Đang xử lý",
-    }]
-    
-
-export default function OrderDetail (){
-    const router = useRouter();
-    const { id } = router.query;
-    return (
-        <DefaultLayout>
-            <div>
-                <h1>Chi tiết đơn hàng</h1>
-                <p>Đơn hàng có id là {id}</p>
-                <p>Thông tin khách hàng</p>
-                <p>Tên khách hàng: </p>
-                <p>Mã khách hàng: </p>
-                <p>SĐT: </p>
-                <p>Địa chỉ: </p>
-                <p>Danh sách sản phẩm</p>
-
-                <Table dataSource={data} columns={columns}/>
-            </div>
-        </DefaultLayout>
-    )
+  useEffect(() => {
+    getData();
+  }, []);
+  return (
+    <DefaultLayout
+      title={"Chi tiết đơn hàng"}
+      breadcrumb={[
+        {
+          href: "/orders",
+          title: "Đơn hàng",
+        },
+        {
+          href: `/orders/${id}`,
+          title: order?.name || "Chi tiết đơn hàng",
+        },
+      ]}
+      activeKey={"order-list"}
+    >
+      <FormView
+        loading={loading}
+        items={items}
+        actions={actions}
+        title={order?.name}
+      />
+    </DefaultLayout>
+  );
 }

@@ -1,20 +1,85 @@
+import {
+  CUSTOMER_GENDER,
+  CUSTOMER_STATE,
+  ORDER_STATE,
+  PAYMENT_METHOD,
+  PAYMENT_STATE,
+} from "@/app.config";
+import NewCustomerForm, { EditCustomerForm } from "@/components/Form/customers";
+import NewOrderForm from "@/components/Form/orders";
 import DefaultLayout from "@/components/Layout";
+import { ModalToggle } from "@/components/Modal";
+import FormView from "@/components/View/form";
 import TableView from "@/components/View/table";
-import { Divider, Table } from "antd";
+import { getCustomer } from "@/services/customer";
+import { Button, Divider, Table } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPen, FaQuestion } from "react-icons/fa";
+import dayjs from "dayjs";
 
+const columns = [
+  {
+    title: "#",
+    dataIndex: "id",
+    key: "id",
+    width: 80,
+  },
+  {
+    title: "Thanh toán",
+    dataIndex: "payment_method",
+    key: "payment_method",
+    // render: (_, record) => {
+    //   return <>{record.first_name + " " + record.last_name}</>
+    // }
+  },
+  {
+    title: "T/thái Thanh toán",
+    dataIndex: "payment_state",
+    key: "payment_state",
+  },
+  {
+    title: "T/thái đơn hàng",
+    dataIndex: "state",
+    key: "state",
+  },
+  {
+    title: "Tổng",
+    dataIndex: "total",
+    key: "total",
+  },
+  {
+    title: "",
+    key: "action",
+    render: (_, record) => (
+      <a href={`/orders/${record.id}`}>Chi tiết</a>
+    ),
+    width: 80,
+    fixed: "right",
+  },
+];
 
 export default function Customer() {
   const router = useRouter();
   const { id } = router.query;
-  const limit = 5;
-  const [customers, setCustomers] = useState([]);
-  const [keyword, setKeyword] = useState(null);
-  const [length, setLength] = useState(0);
-  const [offset, setOffset] = useState(0);
+  const [customer, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    setLoading(true);
+    getCustomer(id)
+      .then((res) => {
+        console.log(res);
+        setCustomers(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const actions = [
     {
       key: "edit-customer",
@@ -22,12 +87,10 @@ export default function Customer() {
       buttonType: "default",
       buttonIcon: <FaPen />,
       title: "Cập nhật khách hàng",
-      children: (
-        <EditCustomerForm
-          data={{ ...customer}}
-          onSuccess={getData}
-        />
-      ),
+      children: <EditCustomerForm data={{ ...customer, 
+      date_of_birth: customer.date_of_birth ? dayjs(customer.date_of_birth) : null,
+      gender: Number(customer.gender),
+    }} onSuccess={getData} />,
       modalProps: {
         centered: true,
       },
@@ -41,8 +104,12 @@ export default function Customer() {
       children: [
         {
           type: "description",
-          key: "product-description",
+          key: "customer-description",
           items: [
+            {
+              label: "Mã khách hàng",
+              children: customer?.id,
+            },
             {
               label: "Họ",
               children: customer?.last_name,
@@ -50,18 +117,6 @@ export default function Customer() {
             {
               label: "Tên",
               children: customer?.first_name,
-            },
-            {
-              label: "Ảnh đại diện",
-              children: (
-                <Image
-                  src={customer?.image}
-                  alt="avatar"
-                  className="h-28 w-28 object-cover"
-                  loading="lazy"
-                  fallback={<FaQuestion />}
-                />
-              ),
             },
             {
               label: "Email",
@@ -74,6 +129,14 @@ export default function Customer() {
             {
               label: "Trạng thái",
               children: CUSTOMER_STATE[customer?.state],
+            },
+            {
+              label: "Giới tính",
+              children: CUSTOMER_GENDER[customer?.gender],
+            },
+            {
+              label: "Số điện thoại",
+              children: customer?.phone_number,
             },
           ],
         },
@@ -95,9 +158,9 @@ export default function Customer() {
                 buttonIcon: <FaPen />,
                 title: "Thêm mới",
                 children: (
-                  <NewProductVariantForm
+                  <NewOrderForm
                     onSuccess={getData}
-                    productId={product?.id}
+                    // customerId={customer?.id}
                   />
                 ),
                 modalProps: {
@@ -108,10 +171,12 @@ export default function Customer() {
             table: {
               bordered: true,
               loading: loading,
-              data: product?.variants?.map((item) => ({
+              data: customer.orders?.map((item) => ({
                 ...item,
                 key: item.id,
-                state: PRODUCT_STATE[item.state],
+                state: ORDER_STATE[item.state],
+                payment_state: PAYMENT_STATE[item.payment_state],
+                payment_method: PAYMENT_METHOD[item.payment_method],
               })),
               columns: columns,
               onSelectedRow: (data) => {},
@@ -120,7 +185,7 @@ export default function Customer() {
               show: false,
             },
             pagination: {
-              length: product?.variants?.length,
+              length: customer.orders?.length,
               pageSize: 10,
               current: 1,
             },
@@ -152,7 +217,7 @@ export default function Customer() {
         loading={loading}
         items={items}
         actions={actions}
-        title={product?.name}
+        title={customer?.name}
       />
     </DefaultLayout>
   );
