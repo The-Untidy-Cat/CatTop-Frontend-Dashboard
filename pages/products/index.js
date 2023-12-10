@@ -5,12 +5,14 @@ import { FaPlus } from "react-icons/fa";
 import { useRouter } from "next/router";
 import NewProductForm from "@/components/Form/products";
 import { searchRead } from "@/services/search_read";
+import { PRODUCT_STATE } from "@/app.config";
 
 const columns = [
   {
-    title: "#",
+    title: "ID",
     dataIndex: "id",
     key: "id",
+    width: 50,
   },
   {
     title: "Tên sản phẩm",
@@ -24,16 +26,19 @@ const columns = [
     title: "Thương hiệu",
     dataIndex: "brand_name",
     key: "brand_name",
+    width: 120,
   },
   {
-    title: "Mô tả",
-    dataIndex: "description",
-    key: "description",
+    title: "Biến thể",
+    dataIndex: "variant_count",
+    key: "variant_count",
+    width: 100,
   },
   {
     title: "Trạng thái",
     dataIndex: "state",
     key: "state",
+    render: (text) => PRODUCT_STATE[text],
   },
 ];
 
@@ -51,11 +56,27 @@ export default function ProductList() {
     try {
       const response = await searchRead({
         model: "Product",
-        domain: keyword ? [["name", "like", `%${keyword}%`]] : [],
-        fields: ["id", "name", "brand_id", "description", "state"],
+        domain: keyword
+          ? [
+              "||",
+              ["products.name", "like", `%${keyword}%`],
+              ["products.state", "like", `%${keyword}%`],
+              ["product_variants.name", "like", `%${keyword}%`],
+            ]
+          : [],
+        fields: ["products.id", "products.name", "brand_id", "products.state"],
         limit,
         offset,
         relation: ["brand:id,name"],
+        joins: [
+          [
+            "product_variants",
+            "products.id",
+            "=",
+            "product_variants.product_id",
+          ],
+        ],
+        count: ["products.id"],
       });
       setProducts(
         response?.records.map((item) => ({
@@ -86,9 +107,9 @@ export default function ProductList() {
   const actions = [
     {
       key: "add",
-      buttonLabel:"Thêm",
+      buttonLabel: "Thêm",
       buttonType: "primary",
-      buttonIcon: <FaPlus/>,
+      buttonIcon: <FaPlus />,
       title: "Thêm mới",
       children: <NewProductForm onSuccess={getData} />,
       modalProps: {

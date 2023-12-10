@@ -1,11 +1,13 @@
-import { DatePicker, Pagination, Table, Input } from "antd";
+import { DatePicker, Pagination, Table, Input, Select } from "antd";
 import { ModalToggle } from "@/components/Modal";
 
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 export default function TableView({
   title,
-  actions,
+  actions = [],
+  addonBefore,
   table = {
     bordered: true,
     loading: false,
@@ -17,6 +19,11 @@ export default function TableView({
     placeholder: "Tìm kiếm",
     show: true,
     onSearch: (value) => {},
+  },
+  filter = {
+    show: false,
+    options: [],
+    onChange: (value) => {},
   },
   datePicker = {
     show: false,
@@ -55,17 +62,32 @@ export default function TableView({
       </div>
       <div className="flex flex-col gap-1 bg-white p-5 w-full h-fit min-h-full border rounded">
         {title && <h2 className="text-lg font-semibold shrink-0">{title}</h2>}
+        {addonBefore}
         <div className="flex flex-col gap-2 md:flex-row justify-between items-center align-center">
-          {search?.show && (
-            <Search
-              type="search"
-              name="search"
-              placeholder={search?.placeholder}
-              onSearch={search?.onSearch}
-              className="w-full max-w-sm"
-            />
+          {datePicker?.show && (
+            <RangePicker onChange={datePicker?.onChange} className="w-full" format={"DD/MM/YYYY"}/>
           )}
-          {datePicker?.show && <DatePicker onChange={datePicker?.onChange} />}
+          <div className="flex flex-row w-full gap-1">
+            {filter?.show && (
+              <Select
+                className="w-full max-w-sm"
+                onChange={filter?.onChange}
+                options={filter?.options}
+                placeholder="Lọc"
+              />
+            )}
+            {search?.show && (
+              <Search
+                type="search"
+                name="search"
+                placeholder={search?.placeholder}
+                onSearch={search?.onSearch}
+                className="w-full"
+              />
+            )}
+          </div>
+        </div>
+        <div className="block w-full h-fit">
           <Pagination
             size="small"
             showLessItems={true}
@@ -74,13 +96,12 @@ export default function TableView({
             pageSize={pagination?.pageSize}
             current={pagination?.current}
             onChange={pagination?.onChange}
-            className="w-fit shrink-0 grow-0"
+            className="w-fit float-right"
           />
         </div>
         <Table
           size="small"
-          sticky={true}
-          scroll={{ x: true }}
+          scroll={{ x: "max-content" }}
           dataSource={table?.data}
           columns={table?.columns}
           pagination={false}
@@ -92,7 +113,7 @@ export default function TableView({
             };
           }}
           loading={table?.loading}
-          className="h-full overflow-y-auto min-h-full"
+          className="w-full h-full min-h-full"
         />
       </div>
     </>

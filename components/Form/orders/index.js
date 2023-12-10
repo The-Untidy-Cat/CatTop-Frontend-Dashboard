@@ -1,9 +1,11 @@
-import { Button, Form, Input, Radio, Select } from "antd";
+import { Button, Form, Space, Radio, Select, InputNumber } from "antd";
 const { useRouter } = require("next/router");
 const { useState, useEffect } = require("react");
 import { getAllCustomer } from "@/services/customer";
-import { getAllProduct } from "@/services/product";
+// import { getAllProduct } from "@/services/product";
 import { searchRead } from "@/services/search_read";
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { createOrder } from "@/services/order";
 
 const NewOrderForm = ({ onSuccess, onClose }) => {
   const [form] = Form.useForm();
@@ -11,7 +13,7 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
   const handleSubmit = async (values) => {
     setLoading(true);
     console.log(values);
-    createBrand({ ...values, view_on_create: undefined })
+    createOrder({ ...values, view_on_create: undefined })
       .then((res) => {
         Modal.destroyAll();
         form.resetFields();
@@ -82,17 +84,17 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
   return (
     <Form
-      // onFinish={handleSubmit}
+      onFinish={handleSubmit}
       autoComplete="off"
       className="flex flex-col w-full gap-2"
     // disabled={loading}
     // form={form}
     >
-      <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col gap-2 w-full">
           <p className="m-0">Tên khách hàng</p>
           <Form.Item
             className="m-0"
+            name="customer_id"
             rules={[
               {
                 required: true,
@@ -109,65 +111,83 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
             />
           </Form.Item>
         </div>
-        <div className="flex flex-col gap-2 w-full">
-          <p className="m-0">Tên nhân viên</p>
+        <div>
+          <p className="m-0">Phương thức thanh toán</p>
           <Form.Item
+            name="payment_method"
             className="m-0"
             rules={[
               {
                 required: true,
-                message: "Vui lòng chọn tên nhân viên",
+                message: "Vui lòng chọn phương thức thanh toán",
               },
             ]}
           >
-            <Select
-              showSearch
-              placeholder="Chọn nhân viên"
-              optionFilterProp="children"
-              filterOption={filterOption}
-              options={customers}
-            />
+            <Radio.Group onChange={onChange} value={value}>
+              <Radio value={'banking'}>Chuyển khoản</Radio>
+              <Radio value={'cash'}>Tiền mặt</Radio>
+            </Radio.Group>
           </Form.Item>
         </div>
+        <div className="w-full">
+          <Form.List 
+            name="products"
+          >
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Space key={key} style={{ display: 'flex', marginBottom: 8 }}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'variant_id']}
+                      rules={[{
+                        required: true,
+                        message: 'Vui lòng chọn sản phẩm'
+                      }]}
+                      className="w-full"
+                    >
+                      <Select
+                        showSearch
+                        placeholder="Chọn sản phẩm"
+                        optionFilterProp="children"
+                        filterOption={filterOption}
+                        options={products}
+                        className="w-full"
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'amount']}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={100}
+                        className="w-full"
+                      />
+
+                    </Form.Item>
+                    
+                    <MinusCircleOutlined onClick={() => remove(name)} />
+                  </Space>
+                
+                ))}
+                <Form.Item>
+                  <Button type="primary" className="bg-primary/[.7] hover:bg-primary" onClick={() => add()} block icon={<PlusOutlined />}>
+                    Thêm sản phẩm
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
       </div>
-      <p>Phương thức thanh toán</p>
-      <Form.Item
-        className="m-0"
-      >
-        <Radio.Group onChange={onChange} value={value}>
-          <Radio value={'chuyen-khoan'}>Chuyển khoản</Radio>
-          <Radio value={'tien-mat'}>Tiền mặt</Radio>
-        </Radio.Group>
-      </Form.Item>
-
-      <p>Sản phẩm</p>
-      <Form.Item
-        name="order_product"
-        rules={[
-          {
-            required: true,
-            message: 'Vui lòng chọn sản phẩm'
-          },
-        ]}
-        className="m-0"
-      >
-        <Select
-          mode="multiple"
-          showSearch
-          placeholder="Chọn sản phẩm"
-          optionFilterProp="children"
-          filterOption={filterOption}
-          options={products}
-          className="w-full"
-        />
-      </Form.Item>
-
-
-      <Form.Item className="m-0 mt-2">
-        <Button type="primary" className="w-full hover:bg-primary bg-primary/[.8]" htmlType="submit">
-          Hoàn thành
-        </Button>
-      </Form.Item>
+      <div>
+        <Form.Item className="m-0 mt-2">
+          <Button type="primary" className="w-full hover:bg-primary bg-primary/[.8]" htmlType="submit">
+            Hoàn thành
+          </Button>
+        </Form.Item>
+      </div>
     </Form >
   );
 }

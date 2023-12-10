@@ -9,9 +9,10 @@ import NewBrandForm from "@/components/Form/brands";
 
 const columns = [
   {
-    title: "#",
+    title: "ID",
     dataIndex: "id",
     key: "id",
+    width: 50,
   },
   {
     title: "Tên thương hiệu",
@@ -64,7 +65,7 @@ export default function brandList() {
   };
 
   const onSelectedRow = (data) => {
-    router.push("/brands/" + data.id);
+    router.push("/products/brands/" + data.id);
   };
 
   const actions = [
@@ -100,7 +101,7 @@ export default function brandList() {
       ]}
     >
       <TableView
-        title="Thương hiệu"
+        title="Danh sách thương hiệu"
         actions={actions}
         table={{
           bordered: true,
@@ -110,6 +111,7 @@ export default function brandList() {
           onSelectedRow: onSelectedRow,
         }}
         search={{
+          show: true,
           placeholder: "Tìm kiếm",
           onSearch: onSearch,
         }}

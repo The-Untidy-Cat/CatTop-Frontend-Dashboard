@@ -1,9 +1,5 @@
 import DefaultLayout from "@/components/Layout";
-// import { FaPlus } from "react-icons/fa";
-// import TableView from "../../../components/View/table";
-// import ReturnForm from "@/pages/orders/return/form";
-// import { useRouter } from "next/router";
-import StatisticBody from "./display";
+import OrderStatistic from "@/components/View/statistic/order";
 
 export default function Statistic() {
   
@@ -21,7 +17,7 @@ export default function Statistic() {
         },
       ]}
     >
-      <StatisticBody/>
+      <OrderStatistic/>
     </DefaultLayout>
   );
 }

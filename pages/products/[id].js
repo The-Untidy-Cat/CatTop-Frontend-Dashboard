@@ -1,5 +1,5 @@
 import { PRODUCT_STATE } from "@/app.config";
-import NewProductVariantForm from "@/components/Form/product_variant";
+import NewProductVariantForm, { EditProductVariantForm } from "@/components/Form/product_variant";
 import { EditProductForm } from "@/components/Form/products";
 import DefaultLayout from "@/components/Layout";
 import { ModalToggle } from "@/components/Modal";
@@ -12,77 +12,80 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaPen, FaQuestion } from "react-icons/fa";
 
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    key: "id",
-    width: 80,
-  },
-  {
-    title: "Tên biến thể",
-    dataIndex: "name",
-    key: "name",
-    // render: (_, record) => {
-    //   return <>{record.first_name + " " + record.last_name}</>
-    // }
-  },
-  {
-    title: "SKU",
-    dataIndex: "sku",
-    key: "sku",
-  },
-  {
-    title: "Giá gốc",
-    dataIndex: "standard_price",
-    key: "standard_price",
-    render: (text) => formatCurrency(text),
-  },
-  {
-    title: "Giảm giá",
-    dataIndex: "discount",
-    key: "discount",
-    render: (text) => Number(text) * 100 + "%",
-    width: 100,
-  },
-  {
-    title: "Giá bán",
-    dataIndex: "sale_price",
-    key: "sale_price",
-    render: (text) => formatCurrency(text),
-  },
-  {
-    title: "Đã bán",
-    dataIndex: "sold",
-    key: "sold",
-    width: 80,
-  },
-  {
-    title: "Trạng thái",
-    dataIndex: "state",
-    key: "state",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <ModalToggle
-        button={{
-          label: "Edit",
-          type: "text",
-        }}
-      >
-        <NewProductVariantForm />
-      </ModalToggle>
-    ),
-  },
-];
-
 export default function Products() {
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
+
+  const variantsTableColumn = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      width: 50,
+    },
+    {
+      title: "Tên biến thể",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "SKU",
+      dataIndex: "sku",
+      key: "sku",
+    },
+    {
+      title: "Giá gốc",
+      dataIndex: "standard_price",
+      key: "standard_price",
+      render: (text) => formatCurrency(text),
+    },
+    {
+      title: "Giảm giá",
+      dataIndex: "discount",
+      key: "discount",
+      render: (text) => Number(text) * 100 + "%",
+      width: 80,
+    },
+    {
+      title: "Giá bán",
+      dataIndex: "sale_price",
+      key: "sale_price",
+      render: (text) => formatCurrency(text),
+    },
+    {
+      title: "Đã bán",
+      dataIndex: "sold",
+      key: "sold",
+      width: 80,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "state",
+      key: "state",
+      width: 100,
+    },
+    {
+      title: "",
+      key: "action",
+      render: (_, record) => (
+        <ModalToggle
+          button={{
+            label: "Chi tiết",
+            type: "text",
+          }}
+          modal={{
+            title: "Chi tiết biến thể",
+          }}
+        >
+          <EditProductVariantForm onSuccess={getData} productId={product.id} variantId={record?.id}/>
+        </ModalToggle>
+      ),
+      width: 80,
+      fixed: 'right',
+    },
+  ];
 
   const getData = async () => {
     setLoading(true);
@@ -146,6 +149,7 @@ export default function Products() {
             },
             {
               label: "Thương hiệu",
+              width: "100px",
               children: (
                 <Link href={`/brands/${product?.brand?.id}`}>
                   {product?.brand?.name}
@@ -179,7 +183,12 @@ export default function Products() {
                 buttonType: "primary",
                 buttonIcon: <FaPen />,
                 title: "Thêm mới",
-                children: <NewProductVariantForm onSuccess={getData} productId={product?.id}/>,
+                children: (
+                  <NewProductVariantForm
+                    onSuccess={getData}
+                    productId={product?.id}
+                  />
+                ),
                 modalProps: {
                   centered: true,
                 },
@@ -193,7 +202,7 @@ export default function Products() {
                 key: item.id,
                 state: PRODUCT_STATE[item.state],
               })),
-              columns: columns,
+              columns: variantsTableColumn,
               onSelectedRow: (data) => {},
             },
             search: {
