@@ -6,17 +6,17 @@ import { useEffect, useState } from "react";
 import { getOrder } from "@/services/order";
 import { ORDER_STATE, PAYMENT_STATE } from "@/app.config";
 import { FaPen } from "react-icons/fa";
-import NewOrderForm from "@/components/Form/orders";
+import NewOrderForm, { EditOrderForm } from "@/components/Form/orders";
 import FormView from "@/components/View/form";
 
 const columns = [
   {
-    title: "Mã đơn hàng",
+    title: "#",
     dataIndex: "order_id",
     key: "order_id",
   },
   {
-    title: "Tên khách hàng",
+    title: "Sản phẩm",
     dataIndex: "customer_name",
     key: "customer_name",
   },
@@ -83,11 +83,12 @@ export default function OrderDetail() {
             },
             {
               label: "Khách hàng",
-              children: order?.customer?.last_name + " " + order?.customer?.first_name, 
+              children:
+                order?.customer?.last_name + " " + order?.customer?.first_name,
             },
             {
-              label: "Mã nhân viên",
-              children: order?.employee_id || "Chưa có",
+              label: "Nhân viên",
+              children: order?.employee_id || "Admin",
             },
             {
               label: "Hình thức mua hàng",
@@ -105,57 +106,54 @@ export default function OrderDetail() {
         },
       ],
     },
-    // {
-    //   key: "custome-order-info",
-    //   label: "Danh sách đơn hàng đã đặt",
-    //   children: [
-    //     {
-    //       type: "table",
-    //       key: "order-list",
-    //       items: {
-    //         actions: [
-    //           {
-    //             key: "add",
-    //             buttonLabel: "Thêm",
-    //             buttonType: "primary",
-    //             buttonIcon: <FaPen />,
-    //             title: "Thêm mới",
-    //             children: (
-    //               <NewOrderForm
-    //                 onSuccess={getData}
-    //                 // customerId={customer?.id}
-    //               />
-    //             ),
-    //             modalProps: {
-    //               centered: true,
-    //             },
-    //           },
-    //         ],
-    //         table: {
-    //           bordered: true,
-    //           loading: loading,
-    //           data: customer.orders?.map((item) => ({
-    //             ...item,
-    //             key: item.id,
-    //             state: ORDER_STATE[item.state],
-    //             payment_state: PAYMENT_STATE[item.payment_state],
-    //             payment_method: PAYMENT_METHOD[item.payment_method],
-    //           })),
-    //           columns: columns,
-    //           onSelectedRow: (data) => {},
-    //         },
-    //         search: {
-    //           show: false,
-    //         },
-    //         pagination: {
-    //           length: customer.orders?.length,
-    //           pageSize: 10,
-    //           current: 1,
-    //         },
-    //       },
-    //     },
-    //   ],
-    // },
+    {
+      key: "detail-order-info",
+      label: "Chi tiết đơn hàng",
+      children: [
+        {
+          type: "table",
+          key: "order-list",
+          items: {
+            actions: [
+              {
+                key: "add",
+                buttonLabel: "Thêm",
+                buttonType: "primary",
+                buttonIcon: <FaPen />,
+                title: "Thêm mới",
+                children: (
+                  <NewOrderForm
+                    onSuccess={getData}
+                    // customerId={customer?.id}
+                  />
+                ),
+                modalProps: {
+                  centered: true,
+                },
+              },
+            ],
+            table: {
+              bordered: true,
+              loading: loading,
+              data: order?.items?.map((item) => ({
+                ...item,
+                key: item.id,
+              })),
+              columns: columns,
+              onSelectedRow: (data) => {},
+            },
+            search: {
+              show: false,
+            },
+            pagination: {
+              length: order?.items?.length,
+              pageSize: 10,
+              current: 1,
+            },
+          },
+        },
+      ],
+    },
   ];
 
   const actions = [
@@ -165,7 +163,7 @@ export default function OrderDetail() {
       buttonType: "default",
       buttonIcon: <FaPen />,
       title: "Cập nhật đơn hàng",
-      children: <NewOrderForm />,
+      children: <EditOrderForm />,
       modalProps: {
         centered: true,
       },

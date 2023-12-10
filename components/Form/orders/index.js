@@ -1,19 +1,20 @@
-import { Button, Form, Space, Radio, Select, InputNumber } from "antd";
+import { Button, Form, Space, Radio, Select, InputNumber, Input } from "antd";
 const { useRouter } = require("next/router");
 const { useState, useEffect } = require("react");
 import { getAllCustomer } from "@/services/customer";
 // import { getAllProduct } from "@/services/product";
 import { searchRead } from "@/services/search_read";
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { createOrder } from "@/services/order";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { createOrder, updateOrder } from "@/services/order";
 
-const NewOrderForm = ({ onSuccess, onClose }) => {
+export function NewOrderForm({ onSuccess, onClose, customer_id }) {
   const [form] = Form.useForm();
   const router = useRouter();
   const handleSubmit = async (values) => {
     setLoading(true);
     console.log(values);
-    createOrder({ ...values, view_on_create: undefined })
+    createOrder({ ...values,
+      view_on_create: undefined })
       .then((res) => {
         Modal.destroyAll();
         form.resetFields();
@@ -24,30 +25,29 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
           onSuccess && onSuccess();
         }
       })
-      .catch((err) => { })
+      .catch((err) => {})
       .finally(() => {
         setLoading(false);
       });
   };
   const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [customers, setCustomer] = useState([])
+  const [customers, setCustomer] = useState([]);
   const [products, setProducts] = useState([]);
   const getCustomer = async () => {
     try {
-      const response = await getAllCustomer()
-      console.log(response)
-      setCustomer(response?.records.map(
-        (item) => (
-          {
-            value: item.id,
-            label: item.last_name + " " + item.first_name
-          })))
+      const response = await getAllCustomer();
+      console.log(response);
+      setCustomer(
+        response?.records.map((item) => ({
+          value: item.id,
+          label: item.last_name + " " + item.first_name,
+        }))
+      );
+    } catch (e) {
+      console.log(e);
     }
-    catch (e) {
-      console.log(e)
-    }
-  }
+  };
 
   const getProducts = async () => {
     try {
@@ -56,139 +56,338 @@ const NewOrderForm = ({ onSuccess, onClose }) => {
         model: "Product",
         domain: [],
         fields: ["id", "name"],
-      })
-      setProducts(response?.records.map(
-        (item) => (
-          {
-            value: item.id,
-            label: item.name
-          }
-        )
-      ))
+      });
+      setProducts(
+        response?.records.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }))
+      );
+    } catch (e) {
+      console.log(e);
     }
-    catch (e) {
-      console.log(e)
-    }
-  }
+  };
   useEffect(() => {
-    getCustomer()
-    getProducts()
-  }, [])
-
+    getCustomer();
+    getProducts();
+  }, []);
 
   const onChange = (e) => {
-    console.log('radio checked', e.target.value);
+    console.log("radio checked", e.target.value);
     setValue(e.target.value);
-  }
+  };
   const filterOption = (input, option) =>
-    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
   return (
     <Form
       onFinish={handleSubmit}
       autoComplete="off"
       className="flex flex-col w-full gap-2"
-    // disabled={loading}
-    // form={form}
+      disabled={loading}
+      form={form}
     >
-        <div className="flex flex-col gap-2 w-full">
-          <p className="m-0">Tên khách hàng</p>
-          <Form.Item
-            className="m-0"
-            name="customer_id"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn tên khách hàng",
-              },
-            ]}
-          >
-            <Select
-              showSearch
-              placeholder="Chọn khách hàng"
-              optionFilterProp="children"
-              filterOption={filterOption}
-              options={customers}
-            />
-          </Form.Item>
-        </div>
-        <div>
-          <p className="m-0">Phương thức thanh toán</p>
-          <Form.Item
-            name="payment_method"
-            className="m-0"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn phương thức thanh toán",
-              },
-            ]}
-          >
-            <Radio.Group onChange={onChange} value={value}>
-              <Radio value={'banking'}>Chuyển khoản</Radio>
-              <Radio value={'cash'}>Tiền mặt</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </div>
-        <div className="w-full">
-          <Form.List 
-            name="products"
-          >
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Space key={key} style={{ display: 'flex', marginBottom: 8 }}>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'variant_id']}
-                      rules={[{
+      <div className="flex flex-col gap-2 w-full">
+        <p className="m-0">Tên khách hàng</p>
+        <Form.Item
+          className="m-0"
+          name="customer_id"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng chọn tên khách hàng",
+            },
+          ]}
+        >
+          <Select
+            showSearch
+            placeholder="Chọn khách hàng"
+            optionFilterProp="children"
+            defaultValue={customer_id}
+            value={customer_id}
+            filterOption={filterOption}
+            options={customers}
+          />
+        </Form.Item>
+      </div>
+      <div>
+        <p className="m-0">Phương thức thanh toán</p>
+        <Form.Item
+          name="payment_method"
+          className="m-0"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng chọn phương thức thanh toán",
+            },
+          ]}
+        >
+          <Radio.Group onChange={onChange} value={value}>
+            <Radio value={"banking"}>Chuyển khoản</Radio>
+            <Radio value={"cash"}>Tiền mặt</Radio>
+          </Radio.Group>
+        </Form.Item>
+      </div>
+      <div className="w-full">
+        <Form.List name="products">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Space key={key} style={{ display: "flex", marginBottom: 8 }}>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "variant_id"]}
+                    rules={[
+                      {
                         required: true,
-                        message: 'Vui lòng chọn sản phẩm'
-                      }]}
+                        message: "Vui lòng chọn sản phẩm",
+                      },
+                    ]}
+                    className="w-full"
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Chọn sản phẩm"
+                      optionFilterProp="children"
+                      filterOption={filterOption}
+                      options={products}
                       className="w-full"
-                    >
-                      <Select
-                        showSearch
-                        placeholder="Chọn sản phẩm"
-                        optionFilterProp="children"
-                        filterOption={filterOption}
-                        options={products}
-                        className="w-full"
-                      />
-                    </Form.Item>
+                    />
+                  </Form.Item>
 
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'amount']}
-                    >
-                      <InputNumber
-                        min={1}
-                        max={100}
-                        className="w-full"
-                      />
+                  <Form.Item {...restField} name={[name, "amount"]}>
+                    <InputNumber min={1} max={100} className="w-full" />
+                  </Form.Item>
 
-                    </Form.Item>
-                    
-                    <MinusCircleOutlined onClick={() => remove(name)} />
-                  </Space>
-                
-                ))}
-                <Form.Item>
-                  <Button type="primary" className="bg-primary/[.7] hover:bg-primary" onClick={() => add()} block icon={<PlusOutlined />}>
-                    Thêm sản phẩm
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
+                  <MinusCircleOutlined onClick={() => remove(name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button
+                  type="primary"
+                  className="bg-primary/[.7] hover:bg-primary"
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  Thêm sản phẩm
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </div>
       <div>
         <Form.Item className="m-0 mt-2">
-          <Button type="primary" className="w-full hover:bg-primary bg-primary/[.8]" htmlType="submit">
+          <Button
+            type="primary"
+            className="w-full hover:bg-primary bg-primary/[.8]"
+            htmlType="submit"
+          >
             Hoàn thành
           </Button>
         </Form.Item>
       </div>
-    </Form >
+    </Form>
+  );
+}
+
+export function EditOrderForm({ data, onSuccess, onClose }) {
+  const [form] = Form.useForm();
+  const router = useRouter();
+  const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [customers, setCustomer] = useState([]);
+  const [products, setProducts] = useState([]);
+  const handleSubmit = async (values) => {
+    setLoading(true);
+    console.log(values);
+    updateOrder(data?.id, { ...values })
+      .then((res) => {
+        onSuccess && onSuccess();
+        onClose && onClose();
+      })
+      .catch((err) => {
+        if (err?.response?.data?.errors) {
+          form.setFields(
+            Object.entries(err?.response?.data?.errors).map(([key, value]) => {
+              return {
+                name: key,
+                errors: [value],
+              };
+            })
+          );
+        } else {
+          notification.error({
+            message: "Cập nhật khách hàng thất bại",
+            description: err.message,
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const getCustomer = async () => {
+    try {
+      const response = await getAllCustomer();
+      console.log(response);
+      setCustomer(
+        response?.records.map((item) => ({
+          value: item.id,
+          label: item.last_name + " " + item.first_name,
+        }))
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getProducts = async () => {
+    try {
+      // const response = await getAllProduct()
+      const response = await searchRead({
+        model: "Product",
+        domain: [],
+        fields: ["id", "name"],
+      });
+      setProducts(
+        response?.records.map((item) => ({
+          value: item.id,
+          label: item.name,
+        }))
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    form.setFieldValue("customer_id", data?.customer_id);
+    form.setFieldValue("payment_method", data?.payment_method);
+    form.setFieldValue(
+      "products",
+      data?.order_lines?.map((item) => ({
+        variant_id: item.variant_id,
+        amount: item.amount,
+      }))
+    );
+
+  }, [data]);
+
+  const onChange = (e) => {
+    console.log("radio checked", e.target.value);
+    setValue(e.target.value);
+  };
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  return (
+    <Form
+      onFinish={handleSubmit}
+      autoComplete="off"
+      className="flex flex-col w-full gap-2"
+      disabled={loading}
+      form={form}
+    >
+      <div className="flex flex-col gap-2 w-full">
+        <p className="m-0">Tên khách hàng</p>
+        <Form.Item
+          className="m-0"
+          name="customer_id"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng chọn tên khách hàng",
+            },
+          ]}
+        >
+          <Select
+            showSearch
+            placeholder="Chọn khách hàng"
+            optionFilterProp="children"
+            filterOption={filterOption}
+            options={customers}
+          />
+        </Form.Item>
+      </div>
+      <div>
+        <p className="m-0">Phương thức thanh toán</p>
+        <Form.Item
+          name="payment_method"
+          className="m-0"
+          rules={[
+            {
+              required: true,
+              message: "Vui lòng chọn phương thức thanh toán",
+            },
+          ]}
+        >
+          <Radio.Group onChange={onChange} value={value}>
+            <Radio value={"banking"}>Chuyển khoản</Radio>
+            <Radio value={"cash"}>Tiền mặt</Radio>
+          </Radio.Group>
+        </Form.Item>
+      </div>
+      <div className="w-full">
+        <Form.List name="products">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Space key={key} style={{ display: "flex", marginBottom: 8 }}>
+                  <Form.Item
+                    {...restField}
+                    name={[name, "variant_id"]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng chọn sản phẩm",
+                      },
+                    ]}
+                    className="w-full"
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Chọn sản phẩm"
+                      optionFilterProp="children"
+                      filterOption={filterOption}
+                      options={products}
+                      className="w-full"
+                    />
+                  </Form.Item>
+
+                  <Form.Item {...restField} name={[name, "amount"]}>
+                    <InputNumber min={1} max={100} className="w-full" />
+                  </Form.Item>
+
+                  <MinusCircleOutlined onClick={() => remove(name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button
+                  type="primary"
+                  className="bg-primary/[.7] hover:bg-primary"
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  Thêm sản phẩm
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+      </div>
+      <div>
+        <Form.Item className="m-0 mt-2">
+          <Button
+            type="primary"
+            className="w-full hover:bg-primary bg-primary/[.8]"
+            htmlType="submit"
+          >
+            Hoàn thành
+          </Button>
+        </Form.Item>
+      </div>
+    </Form>
   );
 }
 export default NewOrderForm;

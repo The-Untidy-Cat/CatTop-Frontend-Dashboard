@@ -13,7 +13,6 @@ import { FaPlus } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import TableView from "../../components/View/table";
 import { useRouter } from "next/router";
-import NewOrderForm from "@/components/Form/orders";
 import { useEffect, useState } from "react";
 import { searchRead } from "@/services/search_read";
 import { api } from "@/utils/axios";
@@ -21,6 +20,7 @@ import { getAllOrder, getUnlimitAllOrder } from "@/services/order";
 import { ORDER_STATE, PAYMENT_STATE } from "@/app.config";
 import { Tabs } from "antd";
 import dayjs from "dayjs";
+import NewOrderForm from "@/components/Form/orders";
 
 const columns = [
   {
