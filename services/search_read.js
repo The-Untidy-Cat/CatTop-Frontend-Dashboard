@@ -10,6 +10,7 @@ const searchRead = async ({
   sort = "asc",
   relation = [],
   joins = [],
+  count = ["*"],
 }) => {
   try {
     const response = await api.post(`/dashboard/search_read`, {
@@ -22,6 +23,7 @@ const searchRead = async ({
       order_by: order_by ? order_by : "id",
       with: relation ? relation : [],
       joins: joins ? joins : [],
+      count: count ? count : ["*"],
     });
     return response?.data?.data;
   } catch (error) {

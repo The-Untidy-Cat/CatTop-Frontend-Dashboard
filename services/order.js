@@ -1,13 +1,23 @@
 import { searchRead } from "./search_read";
+import dayjs from "dayjs";
+import { api } from "@/utils/axios";
+import { notification } from "antd";
 
-const { api } = require("@/utils/axios");
-const { notification } = require("antd");
-
-// đừng có đụng vào cái này, cái này api của Ngọc
-// lúc merge vào bị lỗi tùm lum nữa
-const getAllOrder = async () => {
+const getAllOrder = async ({
+  keyword = null,
+  limit = 10,
+  offset = 0,
+  state = undefined,
+}) => {
   try {
-    const response = await api.get(`/dashboard/orders`);
+    const response = await api.get(`/dashboard/orders`, {
+      params: {
+        keyword,
+        limit,
+        offset,
+        state: state ? state : undefined,
+      },
+    });
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -17,29 +27,21 @@ const getAllOrder = async () => {
     return null;
   }
 };
-// đợi xíu t fix api
-// ok
-const getUnlimitAllOrder = async ({
-  domain =  [],
-  fields =  [],
-}) => {
+
+const getUnlimitAllOrder = async ({ domain = [], fields = [] }) => {
   try {
-    const response = await searchRead(
-      {
-        model: "Order",
-        domain: domain,
-        fields: fields,
-        relation: [
-          "items:order_id,amount,total"
-        ]
-      }
-    )
+    const response = await searchRead({
+      model: "Order",
+      domain: domain,
+      fields: fields,
+      relation: ["items:order_id,amount,total"],
+    });
     return response?.records;
   } catch (e) {
-    console.log(e)
-    return null
+    console.log(e);
+    return null;
   }
-}
+};
 
 const createOrder = async (data) => {
   try {
@@ -52,6 +54,25 @@ const createOrder = async (data) => {
     // });
     throw error;
   }
-}
+};
 
-export { getAllOrder, createOrder, getUnlimitAllOrder };
+const getStatistic = async ({ dateRange }) => {
+  try {
+    const response = await api.get(`/dashboard/statistics/orders`, {
+      params: {
+        start_date: dateRange?.[0]
+          ? dayjs(dateRange?.[0]).startOf("day").toISOString()
+          : undefined,
+        end_date: dateRange?.[1]
+          ? dayjs(dateRange?.[1]).endOf("day").toISOString()
+          : undefined,
+      },
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export { getAllOrder, createOrder, getUnlimitAllOrder, getStatistic };

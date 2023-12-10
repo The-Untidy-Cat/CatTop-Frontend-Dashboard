@@ -1,19 +1,21 @@
-import { CUSTOMER_GENDER } from "@/app.config";
+import { CUSTOMER_GENDER, CUSTOMER_STATE } from "@/app.config";
 import { createCustomer, updateCustomer } from "@/services/customer";
 import { Button, Checkbox, DatePicker, Form, Input, Select } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
-export function EditCustomerForm({ data, onSuccess, onClose }) 
-{
+export function EditCustomerForm({ data, onSuccess, onClose }) {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const router = useRouter();
 
   const handleSubmit = async (values) => {
     setLoading(true);
-    updateCustomer(data?.id, { ...values })
+    updateCustomer(data?.id, {
+      ...values,
+      date_of_birth: dayjs(values.date_of_birth).format("YYYY-MM-DD"),
+    })
       .then((res) => {
         onSuccess && onSuccess();
         onClose && onClose();
@@ -30,7 +32,7 @@ export function EditCustomerForm({ data, onSuccess, onClose })
           );
         } else {
           notification.error({
-            message: "Cập nhật sản phẩm thất bại",
+            message: "Cập nhật khách hàng thất bại",
             description: err.message,
           });
         }
@@ -40,6 +42,9 @@ export function EditCustomerForm({ data, onSuccess, onClose })
       });
   };
 
+  useEffect(() => {
+    form.setFieldsValue(data);
+  }, [data]);
   return (
     <Form
       onFinish={handleSubmit}
@@ -121,7 +126,7 @@ export function EditCustomerForm({ data, onSuccess, onClose })
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 w-1/3">
-          <p className="m-0">Ngày sinh</p>
+          {/* <p className="m-0">Ngày sinh</p>
           <Form.Item
             label=""
             name="date_of_birth"
@@ -135,7 +140,7 @@ export function EditCustomerForm({ data, onSuccess, onClose })
             className="m-0"
           >
             <DatePicker format={"YYYY-MM-DD"} />
-          </Form.Item>
+          </Form.Item> */}
         </div>
         <div className="flex flex-col gap-2 w-1/3">
           <p className="m-0">Giới tính</p>
@@ -160,9 +165,24 @@ export function EditCustomerForm({ data, onSuccess, onClose })
           </Form.Item>
         </div>
       </div>
-
-      <Form.Item name="view_on_create" valuePropName="checked" className="m-0">
-        <Checkbox>Xem sau khi tạo</Checkbox>
+      <p className="m-0">Trạng thái</p>
+      <Form.Item
+        name="state"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập trạng thái!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Select
+          options={Object.keys(CUSTOMER_STATE).map((key) => ({
+            label: CUSTOMER_STATE[key],
+            value: key,
+          }))}
+          className="w-full"
+        />
       </Form.Item>
       <Form.Item className="m-0 mt-2">
         <Button

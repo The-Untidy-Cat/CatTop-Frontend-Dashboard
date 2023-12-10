@@ -118,7 +118,7 @@ export default function CustomerList() {
       ]}
     >
       <TableView
-        title="Khách hàng"
+        title="Danh sách khách hàng"
         actions={actions}
         table={{
           bordered: true,
@@ -128,6 +128,7 @@ export default function CustomerList() {
           onSelectedRow: onSelectedRow,
         }}
         search={{
+          show: true,
           placeholder: "Tìm kiếm",
           onSearch: onSearch,
         }}

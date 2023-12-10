@@ -43,18 +43,23 @@ const columns = [
     key: "total",
   },
   {
-    title: "Action",
+    title: "",
     key: "action",
     render: (_, record) => (
       <ModalToggle
         button={{
-          label: "Edit",
+          label: "Chi tiết",
           type: "text",
+        }}
+        modal={{
+          title: "Chi tiết đơn hàng",
         }}
       >
         <NewOrderForm/>
       </ModalToggle>
     ),
+    width: 80,
+    fixed: 'right',
   },
 ];
 
@@ -105,7 +110,7 @@ export default function Customer() {
       children: [
         {
           type: "description",
-          key: "product-description",
+          key: "customer-description",
           items: [
             {
               label: "Mã khách hàng",

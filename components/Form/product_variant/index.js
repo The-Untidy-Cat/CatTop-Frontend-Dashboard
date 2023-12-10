@@ -1,4 +1,5 @@
 import { PRODUCT_VARIANT_STATE } from "@/app.config";
+import { createProductVariant, getProductVariant, updateProductVariant } from "@/services/product_variant";
 import {
   Button,
   Checkbox,
@@ -226,7 +227,7 @@ const SpecificationsFormItem = () => {
           children: (
             <div className="grid grid-cols-3 gap-2">
               <div className="flex flex-col gap-2 col-span-1">
-                <p className="m-0">Ổ lưu trữ</p>
+                <p className="m-0">Loại ổ cứng</p>
                 <Form.Item
                   name="specifications.storage.drive"
                   rules={[
@@ -241,12 +242,9 @@ const SpecificationsFormItem = () => {
                     showSearch={true}
                     filterOption={filterOption}
                     options={[
-                      { value: "HDD", label: "Hard Disk Drive" },
-                      { value: "SSD", label: "Solid State Drive" },
-                      { value: "SSHD", label: "Solid State Hybrid Drive" },
-                      { value: "ODD", label: "Optical Disk Drive" },
-                      { value: "USB", label: "USB Flash Drive" },
-                      { value: "MC", label: "Memory Card" },
+                      { value: "HDD", label: "HDD" },
+                      { value: "SSD", label: "SSD" },
+                      { value: "SSHD", label: "SSHD" },
                     ]}
                   />
                 </Form.Item>
@@ -267,13 +265,13 @@ const SpecificationsFormItem = () => {
                 </Form.Item>
               </div>
               <div className="flex flex-col gap-2 col-span-1">
-                <p className="m-0">Loại lưu trữ</p>
+                <p className="m-0">Loại giao tiếp</p>
                 <Form.Item
                   name="specifications.storage.type"
                   rules={[
                     {
                       required: true,
-                      message: "Loại lưu trữ không hợp lệ!",
+                      message: "Loại giao tiếp không hợp lệ!",
                     },
                   ]}
                   className="m-0"
@@ -299,9 +297,61 @@ const SpecificationsFormItem = () => {
           children: (
             <div className="grid grid-cols-3 gap-2">
               <div className="flex flex-col gap-2 col-span-1">
-                <p className="m-0">Công nghệ hiển thị</p>
+                <p className="m-0">Độ phân giải</p>
                 <Form.Item
-                  name="specifications.display_technology"
+                  name="specifications.display.size"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Thông tin không hợp lệ!",
+                    },
+                  ]}
+                  className="m-0"
+                >
+                  <Select
+                    showSearch={true}
+                    filterOption={filterOption}
+                    options={[
+                      { value: "HD", label: "HD" },
+                      { value: "HD+", label: "HD+" },
+                      { value: "Full HD", label: "Full HD" },
+                      { value: "QHD", label: "QHD" },
+                      { value: "UHD", label: "UHD" },
+                      { value: "4K", label: "4K" },
+                    ]}
+                  />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col gap-2 col-span-1">
+                <p className="m-0">Kích thước điểm ảnh</p>
+                <Form.Item
+                  name="specifications.display.resolution"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Thông tin không hợp lệ!",
+                    },
+                  ]}
+                  className="m-0"
+                >
+                  <Select
+                    showSearch={true}
+                    filterOption={filterOption}
+                    options={[
+                      { value: "1366x768", label: "1366x768" },
+                      { value: "1600x900", label: "1600x900" },
+                      { value: "1920x1080", label: "1920x1080" },
+                      { value: "2560x1440", label: "2560x1440" },
+                      { value: "3840x2160", label: "3840x2160" },
+                      { value: "7680x4320", label: "7680x4320" },
+                    ]}
+                  />
+                </Form.Item>
+              </div>
+              <div className="flex flex-col gap-2 col-span-1">
+                <p className="m-0">Công nghệ</p>
+                <Form.Item
+                  name="specifications.display.technology"
                   rules={[
                     {
                       required: true,
@@ -324,7 +374,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Tần số quét</p>
                 <Form.Item
-                  name="specifications.display_refresh_rate"
+                  name="specifications.display.refresh_rate"
                   rules={[
                     {
                       required: true,
@@ -352,7 +402,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Cảm ứng</p>
                 <Form.Item
-                  name="specifications.display_touch"
+                  name="specifications.display.touch"
                   rules={[
                     {
                       required: true,
@@ -382,7 +432,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-3">
                 <p className="m-0">Tên GPU</p>
                 <Form.Item
-                  name="specifications.gpu_name"
+                  name="specifications.gpu.name"
                   rules={[
                     {
                       required: true,
@@ -397,7 +447,7 @@ const SpecificationsFormItem = () => {
               <div className="flex flex-col gap-2 col-span-1">
                 <p className="m-0">Bộ nhớ</p>
                 <Form.Item
-                  name="specifications.gpu_memory"
+                  name="specifications.gpu.memory"
                   rules={[
                     {
                       required: true,
@@ -426,9 +476,9 @@ const SpecificationsFormItem = () => {
                 </Form.Item>
               </div>
               <div className="flex flex-col gap-2 col-span-1">
-                <p className="m-0">Loại GPU</p>
+                <p className="m-0">Loại</p>
                 <Form.Item
-                  name="specifications.gpu_type"
+                  name="specifications.gpu.type"
                   rules={[
                     {
                       required: true,
@@ -441,16 +491,16 @@ const SpecificationsFormItem = () => {
                     showSearch={true}
                     filterOption={filterOption}
                     options={[
-                      { value: "Dedicated", label: "Dedicated" },
-                      { value: "Integrated", label: "Integrated" },
+                      { value: "Dedicated", label: "Card rời" },
+                      { value: "Integrated", label: "Tích hợp" },
                     ]}
                   />
                 </Form.Item>
               </div>
               <div className="flex flex-col gap-2 col-span-1">
-                <p className="m-0">Tần số GPU</p>
+                <p className="m-0">Tần số</p>
                 <Form.Item
-                  name="specifications.gpu_frequency"
+                  name="specifications.gpu.frequency"
                   rules={[
                     {
                       required: true,
@@ -491,18 +541,18 @@ const SpecificationsFormItem = () => {
           children: (
             <div className="grid grid-cols-3 gap-2">
               <div className="flex flex-col gap-2 col-span-1">
-                <p className="m-0">Số cổng</p>
+                <p className="m-0">Cổng kết nối</p>
                 <Form.Item
                   name="specifications.ports"
                   rules={[
                     {
                       required: true,
-                      message: "Số cổng không hợp lệ!",
+                      message: "Cổng kết nối không hợp lệ!",
                     },
                   ]}
                   className="m-0"
                 >
-                  <InputNumber min={0} step={1} className="w-full" />
+                  <Input className="w-full" />
                 </Form.Item>
               </div>
               <div className="flex flex-col gap-2 col-span-1">
@@ -676,83 +726,75 @@ const SpecificationsFormItem = () => {
   );
 };
 
-export function NewProductVariantForm({ onSuccess, onClose, productId }) {
-  const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
-
-  const handleSubmit = async (values) => {
-    const data = {
-      name: values.name,
-      sku: values.SKU,
-      image: values.image,
-      cost_price: values.cost_price,
-      standard_price: values.standard_price,
-      discount: values.discount,
-      tax_rate: values.tax_rate,
-      extra_fee: values.extra_fee,
-      state: values.state,
-      specifications: {
-        cpu: {
-          name: values.specifications.cpu.name,
-          cores: values.specifications.cpu.cores,
-          threads: values.specifications.cpu.threads,
-          base_clock: values.specifications.cpu.base_clock,
-          turbo_clock: values.specifications.cpu.turbo_clock,
-          cache: values.specifications.cpu.cache,
-        },
-        ram: {
-          capacity: values.specifications.ram.capacity,
-          type: values.specifications.ram.type,
-          frequency: values.specifications.ram.frequency,
-        },
-        storage: {
-          drive: values.specifications.storage.drive,
-          capacity: values.specifications.storage.capacity,
-          type: values.specifications.storage.type,
-        },
-        display: {
-          technology: values.specifications.display.technology,
-          refresh_rate: values.specifications.display.refresh_rate,
-          touch: values.specifications.display.touch,
-        },
-        graphics: {
-          name: values.specifications.gpu.name,
-          memory: values.specifications.gpu.memory,
-          type: values.specifications.gpu.type,
-          frequency: values.specifications.gpu.frequency,
-        },
-        ports: values.specifications.ports,
-        keyboard: values.specifications.keyboard,
-        touchpad: values.specifications.touchpad,
-        webcam: values.specifications.webcam,
-        battery: values.specifications.battery,
-        weight: values.specifications.weight,
-        os: values.specifications.os,
-        warranty: values.specifications.warranty,
-        color: values.specifications.color,
-      }
-    }
-    console.log(data);
+function ProductVariantForm({
+  handleSubmit,
+  data,
+  loading,
+  disabled,
+  formRef,
+}) {
+  const [form] = formRef ?? Form.useForm();
+  const loadData = async () => {
+    if (!data) return;
+    const fields = {
+      ...data,
+      "specifications.cpu.name": data?.specifications?.cpu?.name ?? null,
+      "specifications.cpu.cores": data?.specifications?.cpu?.cores ?? null,
+      "specifications.cpu.threads": data?.specifications?.cpu?.threads ?? null,
+      "specifications.cpu.base_clock":
+        data?.specifications?.cpu?.base_clock ?? null,
+      "specifications.cpu.turbo_clock":
+        data?.specifications?.cpu?.turbo_clock ?? null,
+      "specifications.cpu.cache": data?.specifications?.cpu?.cache ?? null,
+      "specifications.ram.type": data?.specifications?.ram?.type ?? null,
+      "specifications.ram.capacity":
+        data?.specifications?.ram?.capacity ?? null,
+      "specifications.ram.frequency":
+        data?.specifications?.ram?.frequency ?? null,
+      "specifications.storage.drive":
+        data?.specifications?.storage?.drive ?? null,
+      "specifications.storage.capacity":
+        data?.specifications?.storage?.capacity ?? null,
+      "specifications.storage.type":
+        data?.specifications?.storage?.type ?? null,
+      "specifications.display.size":
+        data?.specifications?.display?.size ?? null,
+      "specifications.display.resolution":
+        data?.specifications?.display?.resolution ?? null,
+      "specifications.display.refresh_rate":
+        data?.specifications?.display?.refresh_rate ?? null,
+      "specifications.display.technology":
+        data?.specifications?.display?.technology ?? null,
+      "specifications.display.touch":
+        data?.specifications?.display?.touch ?? null,
+      "specifications.gpu.name": data?.specifications?.gpu?.name ?? null,
+      "specifications.gpu.memory": data?.specifications?.gpu?.memory ?? null,
+      "specifications.gpu.frequency":
+        data?.specifications?.gpu?.frequency ?? null,
+      "specifications.gpu.type": data?.specifications?.gpu?.type ?? null,
+      "specifications.ports": data?.specifications?.ports ?? null,
+      "specifications.keyboard": data?.specifications?.keyboard ?? null,
+      "specifications.touchpad": data?.specifications?.touchpad ?? null,
+      "specifications.webcam": data?.specifications?.webcam ?? null,
+      "specifications.battery": data?.specifications?.battery ?? null,
+      "specifications.weight": data?.specifications?.weight ?? null,
+      "specifications.warranty": data?.specifications?.warranty ?? null,
+      "specifications.os": data?.specifications?.os ?? null,
+      "specifications.color": data?.specifications?.color ?? null,
+    };
+    form.setFieldsValue(fields);
   };
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
   useEffect(() => {
-    if (productId)
-      form.setFieldsValue({
-        product_id: productId,
-      });
-  }, [productId]);
+    loadData();
+  }, [data]);
 
   return (
     <Form
-      name="new-product-variant-form"
+      name={`product-variant-form-${Math.random(1000, 9999)}`}
       onFinish={handleSubmit}
       autoComplete="off"
       className="flex flex-col w-full gap-2"
-      disabled={loading}
+      disabled={disabled || loading}
       form={form}
       initialValues={{
         tax_rate: 0.1,
@@ -783,7 +825,7 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
           {
             required: true,
             message: "Vui lòng nhập SKU hợp lệ!",
-            pattern: /^[a-zA-Z0-9]+$/,
+            pattern: /^[a-zA-Z0-9-]+$/,
           },
         ]}
         className="m-0"
@@ -817,7 +859,16 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
             ]}
             className="m-0"
           >
-            <InputNumber min={0} step={1} className="w-full" />
+            <InputNumber
+              min={0}
+              step={1}
+              className="w-full"
+              decimalSeparator=","
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+              }
+              parser={(value) => value.replace(/\.\s?|(,*)/g, "")}
+            />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 col-span-3">
@@ -832,7 +883,15 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
             ]}
             className="m-0"
           >
-            <InputNumber min={0} step={1} className="w-full" />
+            <InputNumber
+              min={0}
+              step={1}
+              className="w-full"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+              }
+              parser={(value) => value.replace(/\.\s?|(,*)/g, "")}
+            />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 col-span-1">
@@ -852,6 +911,9 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
               max={1}
               placeholder="0.01"
               className="w-full"
+              prefix="%"
+              formatter={(value) => `${value * 100}`}
+              parser={(value) => value / 100}
             />
           </Form.Item>
         </div>
@@ -867,7 +929,15 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
             ]}
             className="m-0"
           >
-            <InputNumber min={0} max={1} placeholder="0.1" className="w-full" />
+            <InputNumber
+              min={0}
+              max={1}
+              placeholder="0.1"
+              className="w-full"
+              prefix="%"
+              formatter={(value) => `${value * 100}`}
+              parser={(value) => value / 100}
+            />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 col-span-1">
@@ -882,7 +952,14 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
             ]}
             className="m-0"
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber
+              min={0}
+              className="w-full"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+              }
+              parser={(value) => value.replace(/\.\s?|(,*)/g, "")}
+            />
           </Form.Item>
         </div>
       </div>
@@ -893,17 +970,16 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
         rules={[
           {
             required: true,
-            message: "Vui lòng nhập tên thương hiệu!",
+            message: "Vui lòng chọn trạng thái!",
           },
         ]}
         className="m-0"
       >
         <Select
-          onChange={handleChange}
-          options={Object.entries(PRODUCT_VARIANT_STATE).map(([key, value]) => {
-            console.log(key, value);
-            return { value: key, label: value };
-          })}
+          options={Object.keys(PRODUCT_VARIANT_STATE).map((key) => ({
+            value: key,
+            label: PRODUCT_VARIANT_STATE[key],
+          }))}
         />
       </Form.Item>
       <div className="grid gap-0">
@@ -916,6 +992,7 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
           className="w-full bg-primary text-white"
           htmlType="submit"
           loading={loading}
+          hidden={disabled}
         >
           Hoàn thành
         </Button>
@@ -923,4 +1000,264 @@ export function NewProductVariantForm({ onSuccess, onClose, productId }) {
     </Form>
   );
 }
-export default NewProductVariantForm;
+
+export default function NewProductVariantForm({
+  onSuccess,
+  onClose,
+  productId,
+}) {
+  const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
+  const handleSubmit = async (values) => {
+    if (!productId)
+      return notification.error({
+        message: "Lỗi",
+        description: "Không tìm thấy mã sản phẩm!",
+      });
+    const data = {
+      name: values.name,
+      SKU: values.SKU,
+      image: values.image,
+      cost_price: values.cost_price,
+      standard_price: values.standard_price,
+      discount: values.discount,
+      description: "Không có thông tin",
+      tax_rate: values.tax_rate,
+      extra_fee: values.extra_fee,
+      state: values.state,
+      specifications: {
+        cpu: {
+          name: values[`specifications.cpu.name`],
+          cores: values[`specifications.cpu.cores`],
+          threads: values[`specifications.cpu.threads`],
+          base_clock: values[`specifications.cpu.base_clock`],
+          turbo_clock: values[`specifications.cpu.turbo_clock`],
+          cache: values[`specifications.cpu.cache`],
+        },
+        ram: {
+          capacity: values[`specifications.ram.capacity`],
+          type: values[`specifications.ram.type`],
+          frequency: values[`specifications.ram.frequency`],
+        },
+        storage: {
+          drive: values[`specifications.storage.drive`],
+          capacity: values[`specifications.storage.capacity`],
+          type: values[`specifications.storage.type`],
+        },
+        display: {
+          size: values[`specifications.display.size`],
+          resolution: values[`specifications.display.resolution`],
+          technology: values[`specifications.display.technology`],
+          refresh_rate: values[`specifications.display.refresh_rate`],
+          touch: values[`specifications.display.touch`],
+        },
+        gpu: {
+          name: values[`specifications.gpu.name`],
+          memory: values[`specifications.gpu.memory`],
+          type: values[`specifications.gpu.type`],
+          frequency: values[`specifications.gpu.frequency`],
+        },
+        ports: values[`specifications.ports`],
+        keyboard: values[`specifications.keyboard`],
+        touchpad: values[`specifications.touchpad`],
+        webcam: values[`specifications.webcam`],
+        battery: values[`specifications.battery`],
+        weight: values[`specifications.weight`],
+        os: values[`specifications.os`],
+        warranty: values[`specifications.warranty`],
+        color: values[`specifications.color`],
+      },
+    };
+    setLoading(true);
+    createProductVariant({ data, productId })
+      .then((res) => {
+        onSuccess && onSuccess();
+        notification.success({
+          message: "Thành công",
+          description: "Tạo biến thể sản phẩm thành công!",
+        });
+        onClose && onClose();
+      })
+      .catch((err) => {
+        if (err?.response?.data?.errors) {
+          Object.keys(err.response.data.errors).forEach((key) => {
+            form.setFields([
+              {
+                name: key,
+                errors: [err.response.data.errors[key]],
+              },
+            ]);
+          });
+        } else {
+          notification.error({
+            message: "Lỗi",
+            description: "Có lỗi xảy ra!",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return (
+    <ProductVariantForm
+      handleSubmit={handleSubmit}
+      loading={loading}
+      formRef={[form]}
+    />
+  );
+}
+
+export function EditProductVariantForm({
+  onSuccess,
+  onClose,
+  productId,
+  variantId,
+}) {
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [data, setData] = useState(null);
+
+  const handleSubmit = async (values) => {
+    if (!productId)
+      return notification.error({
+        message: "Lỗi",
+        description: "Không tìm thấy mã sản phẩm!",
+      });
+    const specifications = {
+      cpu: {
+        name: values[`specifications.cpu.name`],
+        cores: values[`specifications.cpu.cores`],
+        threads: values[`specifications.cpu.threads`],
+        base_clock: values[`specifications.cpu.base_clock`],
+        turbo_clock: values[`specifications.cpu.turbo_clock`],
+        cache: values[`specifications.cpu.cache`],
+      },
+      ram: {
+        capacity: values[`specifications.ram.capacity`],
+        type: values[`specifications.ram.type`],
+        frequency: values[`specifications.ram.frequency`],
+      },
+      storage: {
+        drive: values[`specifications.storage.drive`],
+        capacity: values[`specifications.storage.capacity`],
+        type: values[`specifications.storage.type`],
+      },
+      display: {
+        size: values[`specifications.display.size`],
+        resolution: values[`specifications.display.resolution`],
+        technology: values[`specifications.display.technology`],
+        refresh_rate: values[`specifications.display.refresh_rate`],
+        touch: values[`specifications.display.touch`],
+      },
+      gpu: {
+        name: values[`specifications.gpu.name`],
+        memory: values[`specifications.gpu.memory`],
+        type: values[`specifications.gpu.type`],
+        frequency: values[`specifications.gpu.frequency`],
+      },
+      ports: values[`specifications.ports`],
+      keyboard: values[`specifications.keyboard`],
+      touchpad: values[`specifications.touchpad`],
+      webcam: values[`specifications.webcam`],
+      battery: values[`specifications.battery`],
+      weight: values[`specifications.weight`],
+      os: values[`specifications.os`],
+      warranty: values[`specifications.warranty`],
+      color: values[`specifications.color`],
+    };
+    const formData = {
+      name: data?.name != values.name ? values.name : undefined,
+      SKU: data?.SKU != values.SKU ? values.SKU : undefined,
+      image: data?.image != values.image ? values.image : undefined,
+      cost_price:
+        data?.cost_price != values.cost_price ? values.cost_price : undefined,
+      standard_price:
+        data?.standard_price != values.standard_price
+          ? values.standard_price
+          : undefined,
+      discount: data?.discount != values.discount ? values.discount : undefined,
+      description: "Không có thông tin",
+      tax_rate: data?.tax_rate != values.tax_rate ? values.tax_rate : undefined,
+      extra_fee:
+        data?.extra_fee != values.extra_fee ? values.extra_fee : undefined,
+      state: data?.state != values.state ? values.state : undefined,
+      specifications:
+        data?.specifications != specifications ? specifications : undefined,
+    };
+    setLoading(true);
+    updateProductVariant({ data: formData, productId, variantId })
+      .then((res) => {
+        onSuccess && onSuccess();
+        notification.success({
+          message: "Thành công",
+          description: "Cập nhật biến thể sản phẩm thành công!",
+        });
+        onClose && onClose();
+      })
+      .catch((err) => {
+        if (err?.response?.data?.errors) {
+          Object.keys(err.response.data.errors).forEach((key) => {
+            form.setFields([
+              {
+                name: key,
+                errors: [err.response.data.errors[key]],
+              },
+            ]);
+          });
+        } else {
+          notification.error({
+            message: "Lỗi",
+            description: "Có lỗi xảy ra!",
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const loadVariant = async () => {
+    setLoading(true);
+    getProductVariant({ productId, variantId })
+      .then((res) => {
+        setData(res);
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Lỗi",
+          description: "Có lỗi xảy ra!",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (!productId || !variantId) return;
+    loadVariant();
+  }, []);
+  return (
+    <>
+      <Button
+        type="link"
+        onClick={() => setDisabled(!disabled)}
+        className="p-0 float-right"
+      >
+        {disabled ? "Chỉnh sửa" : "Hủy"}
+      </Button>
+      <ProductVariantForm
+        formRef={[form]}
+        handleSubmit={handleSubmit}
+        loading={loading}
+        data={data}
+        disabled={disabled}
+      />
+    </>
+  );
+}
+
+// export  NewProductVariantForm;
