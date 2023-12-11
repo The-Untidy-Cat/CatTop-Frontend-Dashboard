@@ -116,7 +116,20 @@ const addOrderItem = async (id, data) => {
 
 const updateOrderItem = async (orderId, itemId, data) => {
   try {
-    const response = await api.put(`/dashboard/orders/${id}/items/${itemId}`, data);
+    const response = await api.put(`/dashboard/orders/${orderId}/items/${itemId}`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
+const deleteOrderItem = async (orderId, itemId) => {
+  try {
+    const response = await api.delete(`/dashboard/orders/${orderId}/items/${itemId}`);
     return response?.data?.data;
   } catch (error) {
     notification.error({
@@ -136,4 +149,5 @@ export {
   updateOrder,
   addOrderItem,
   updateOrderItem,
+  deleteOrderItem,
 };

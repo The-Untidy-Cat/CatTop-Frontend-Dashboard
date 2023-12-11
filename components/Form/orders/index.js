@@ -339,7 +339,7 @@ export function EditOrderForm({ onSuccess, onClose, order }) {
   }, [order]);
 
   const handleSubmit = async (values) => {
-    console.log(values);
+    setLoading(true);
     updateOrder(order?.id, values)
       .then((res) => {
         onSuccess && onSuccess();
@@ -351,6 +351,9 @@ export function EditOrderForm({ onSuccess, onClose, order }) {
           message: "Có lỗi xảy ra",
           description: err?.response?.data?.message || err?.message,
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   return (
@@ -386,6 +389,15 @@ export function EditOrderForm({ onSuccess, onClose, order }) {
       <p className="m-0">Ghi chú đơn hàng</p>
       <Form.Item className="m-0" name="note">
         <TextArea />
+      </Form.Item>
+      <Form.Item className="m-0 mt-2">
+        <Button
+          type="primary"
+          className="w-full hover:bg-primary bg-primary/[.8]"
+          htmlType="submit"
+        >
+          Hoàn thành
+        </Button>
       </Form.Item>
     </Form>
   );

@@ -1,16 +1,16 @@
 import DefaultLayout from "@/components/Layout";
 import { useRouter } from "next/router";
 import TableView from "../../components/View/table";
-import { Button, Modal, Table, notification } from "antd";
+import { Button, Modal, Rate, Table, notification } from "antd";
 import { useEffect, useState } from "react";
-import { getOrder, updateOrder, updateOrderItem } from "@/services/order";
+import { deleteOrderItem, getOrder, updateOrder, updateOrderItem } from "@/services/order";
 import {
   ORDER_STATE,
   PAYMENT_METHOD,
   PAYMENT_STATE,
   PROVINCES,
 } from "@/app.config";
-import { FaPen, FaTrash } from "react-icons/fa";
+import { FaPen, FaStar, FaTrash } from "react-icons/fa";
 import NewOrderForm, {
   EditOrderForm,
   AddOrderItemForm,
@@ -120,14 +120,14 @@ export default function OrderDetail() {
             button={{
               size: "small",
               type: "text",
-              icon: <MdStarRate />,
+              icon: <FaStar />,
             }}
             modal={{
               title: "Đánh giá",
             }}
           >
             <div className="flex flex-col">
-              <p>{record?.rating}</p>
+              <Rate value={record?.rating} disabled allowHalf={true}/>
               <p>{record?.review}</p>
             </div>
           </ModalToggle>
@@ -136,14 +136,14 @@ export default function OrderDetail() {
             icon={<FaTrash />}
             size="small"
             onClick={() => {
-              setLoading(true);
-              updateOrderItem(order?.id, record?.id, { amount: 0 }).then(() => getData()).catch((err) => {
+              // setLoading(true);
+              deleteOrderItem(order?.id, record?.id).then(() => getData()).catch((err) => {
                 notification.error({
                   message: "Lỗi",
                   description: err?.response?.data?.message || err.message,
                 });
               }).finally(() => {
-                setLoading(false);
+                // setLoading(false);
               });
             }}
           />
