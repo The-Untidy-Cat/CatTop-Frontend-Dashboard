@@ -193,17 +193,19 @@ export default function OrderDetail() {
                   {order?.address?.name} | {order?.address?.phone} <br />
                   {order?.address?.address_line} <br />
                   {
-                    PROVINCES[order?.address?.province]?.districts
+                    // PROVINCES?.find((p) => p?.id == order?.address?.province)
+                    PROVINCES?.find((p) => p?.id == order?.address?.province)
+                    ?.districts
                       ?.find((d) => d?.id == order?.address?.district)
                       ?.wards?.find((w) => w?.id == order?.address?.ward)?.name
                   }
                   ,{" "}
                   {
-                    PROVINCES[order?.address?.province]?.districts?.find(
+                    PROVINCES?.find((p) => p?.id == order?.address?.province)?.districts?.find(
                       (d) => d?.id == order?.address?.district
                     )?.name
                   }
-                  , {PROVINCES[order?.address?.province]?.name},
+                  , {PROVINCES?.find((p) => p?.id == order?.address?.province)?.name},
                 </>
               ) : (
                 "Nhận tại cửa hàng"
@@ -263,6 +265,7 @@ export default function OrderDetail() {
               })),
               columns: columns,
               onSelectedRow: (data) => {},
+              addonAfter: <div>Tổng tiền: {formatCurrency(order?.total || 0)}</div>,
             },
             search: {
               show: false,
