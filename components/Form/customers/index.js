@@ -228,7 +228,23 @@ export function NewCustomerForm({ onSuccess, onClose }) {
           onSuccess && onSuccess();
         }
       })
-      .catch((err) => {})
+      .catch((err) => {
+        if (err?.response?.data?.errors) {
+          form.setFields(
+            Object.entries(err?.response?.data?.errors).map(([key, value]) => {
+              return {
+                name: key,
+                errors: [value],
+              };
+            })
+          );
+        } else {
+          notification.error({
+            message: "Tạo khách hàng thất bại",
+            description: err.message,
+          });
+        }
+      })
       .finally(() => {
         setLoading(false);
       });
