@@ -26,7 +26,7 @@ export default function Home() {
           </h2>
           <OrderStatistic />
         </div>
-        <h2 className="text-lg font-semibold shrink-0">Thống kê sản phẩm</h2>
+        {/* <h2 className="text-lg font-semibold shrink-0">Thống kê sản phẩm</h2> */}
       </div>
     </DefaultLayout>
   );

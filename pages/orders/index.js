@@ -224,12 +224,17 @@ export function OrderList() {
               label: "Đã giao",
             },
             {
+              key: "refunded",
+              label: "Hoàn tiền",
+            },
+            {
               key: "cancelled",
               label: "Đã hủy",
             },
             {
               key: "failed",
               label: "Thất bại",
+              
             },
             {
               key: "draft",

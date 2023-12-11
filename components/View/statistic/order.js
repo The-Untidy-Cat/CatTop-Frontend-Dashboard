@@ -45,7 +45,7 @@ export default function OrderStatistic() {
                   {ORDER_STATE[item?.state]}
                 </p>
                 <Statistic
-                  title="Số đơn hàng"
+                  title="Đơn hàng"
                   value={Number(item?.total_order)}
                   className="border rounded p-2 font-medium"
                   valueStyle={{
@@ -65,7 +65,7 @@ export default function OrderStatistic() {
                   }}
                 />
                 <Statistic
-                  title="Đã bán"
+                  title="Sản phẩm"
                   value={Number(item?.total_amount)}
                   className="border rounded p-2  font-medium"
                   valueStyle={{
