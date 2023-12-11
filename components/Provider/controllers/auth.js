@@ -17,7 +17,7 @@ export const useUserController = () => {
     }
     return;
   };
-
+  
   const changePassword = async (account) => {
     setLoadingAuth(true);
     try {
@@ -41,7 +41,7 @@ export const useUserController = () => {
         .delete(`/auth/logout`)
         .then(() => {
           setUser(null);
-          router.reload();
+          // router.reload();
         })
         .catch((e) => {
           notification.error({

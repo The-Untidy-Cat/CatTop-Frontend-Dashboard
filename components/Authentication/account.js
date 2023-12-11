@@ -15,6 +15,7 @@ export const AccountBar = () => {
               "flex items-center align-center p-0 text-sm font-medium",
             icon: <FaPen />,
             label: "Sửa hồ sơ",
+            disabled: true
           }}
         >
           <Button
@@ -32,7 +33,6 @@ export const AccountBar = () => {
           Đăng xuất<FaSignOutAlt />
         </Button>
       </div>
-
       <Descriptions
         size="small"
         className="text-gray-900 w-full max-w-md m-0 p-0"
@@ -53,17 +53,10 @@ export const AccountBar = () => {
           {
             label: "Số điện thoại",
             children: user?.phone_number,
-          },
-          {
-            label: "Địa chỉ",
-            children: user?.address,
-          },
-          {
-            label: "Ngày tạo",
-            children: user?.created_at,
-          },
+          }
         ]}
       />
     </div>
   );
 };
+
