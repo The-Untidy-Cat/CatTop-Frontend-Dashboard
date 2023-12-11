@@ -41,7 +41,7 @@ const columns = [
     dataIndex: "employee_name",
     key: "employee_name",
     render: (_, record) => {
-      return <>{record.employee?.first_name || "Không có"}</>;
+      return <>{record.employee?.first_name || "Admin"}</>;
     },
   },
   {
@@ -151,6 +151,7 @@ export default function Order() {
       ],
       limit: limit,
       offset: offset,
+      count: ["orders.id"],
     })
       .then((response) => {
         setOrders(response?.records.map((item) => ({ ...item, key: item.id })));

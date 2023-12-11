@@ -8,6 +8,7 @@ import { ORDER_STATE, PAYMENT_STATE } from "@/app.config";
 import { FaPen } from "react-icons/fa";
 import NewOrderForm, { EditOrderForm } from "@/components/Form/orders";
 import FormView from "@/components/View/form";
+import NewProductVariantForm from "@/components/Form/product_variant";
 
 const columns = [
   {
@@ -122,7 +123,7 @@ export default function OrderDetail() {
                 buttonIcon: <FaPen />,
                 title: "Thêm mới",
                 children: (
-                  <NewOrderForm
+                  <NewProductVariantForm
                     onSuccess={getData}
                     // customerId={customer?.id}
                   />
