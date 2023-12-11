@@ -16,6 +16,7 @@ export default function Statistic() {
           title: "Thống kê",
         },
       ]}
+      activeKey={"order-statistic"}
     >
       <OrderStatistic/>
     </DefaultLayout>

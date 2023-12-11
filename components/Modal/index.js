@@ -13,6 +13,7 @@ export const ModalToggle = ({
     type: "default",
     icon: null,
     className: null,
+    disabled: false,
   },
 }) => {
   const [visible, setVisible] = useState(false);
@@ -31,6 +32,7 @@ export const ModalToggle = ({
           button.type === "primary" && "text-white bg-primary"
         } ${button.className}`}
         size={button.size}
+        disabled={button.disabled}
       >
         {button.label}
       </Button>
@@ -39,7 +41,7 @@ export const ModalToggle = ({
         open={visible}
         onCancel={() => setVisible(false)}
         footer={null}
-        className={modal.className}
+        className={"lg:min-w-[60%] modal.className"}
         centered
       >
         {clonedChildren}

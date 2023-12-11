@@ -6,18 +6,18 @@ import { BiShoppingBag} from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { IoMdArrowDropdown, IoMdArrowDropright } from "react-icons/io";
 
-const NAVBAR_MENU = [
-  {
-    key: "order",
-    name: "Đơn hàng",
-    path: "#",
-  },
-];
+// const NAVBAR_MENU = [
+//   {
+//     key: "",
+//     name: "Đơn hàng",
+//     path: "ID",
+//   },
+// ];
 
 const SIDEBAR_MENU = [
   {
     key: "home",
-    name: "Home",
+    name: "Tổng quan",
     path: "/",
     type: "link",
     icon: <AiOutlineHome />,
@@ -44,18 +44,12 @@ const SIDEBAR_MENU = [
         path: "/orders/statistic",
         type: "sub-menu",
       },
-      {
-        key: "warranty-list",
-        name: "Danh sách bảo hành",
-        path: "/",
-        type: "sub-menu",
-      },
-      {
-        key: "return-list",
-        name: "Danh sách đổi trả",
-        path: "/orders/return",
-        type: "sub-menu",
-      },
+      // {
+      //   key: "return-list",
+      //   name: "Danh sách đổi trả",
+      //   path: "/orders/return",
+      //   type: "sub-menu",
+      // },
     ],
   },
   {
@@ -92,20 +86,21 @@ const SIDEBAR_MENU = [
       },
     ],
   },
-  {
-    key: "employee",
-    name: "Nhân viên",
-    type: "section",
-    icon: <FiUser />,
-    children: [
-      {
-        key: "employee-list",
-        name: "Danh sách nhân viên",
-        path: "/employees",
-        type: "sub-menu",
-      },
-    ],
-  },
+  // {
+  //   key: "employee",
+  //   name: "Nhân viên",
+  //   type: "section",
+  //   icon: <FiUser />,
+  //   disabled: true,
+  //   children: [
+  //     {
+  //       key: "employee-list",
+  //       name: "Danh sách nhân viên",
+  //       path: "/employees",
+  //       type: "sub-menu",
+  //     },
+  //   ],
+  // },
 ];
 
 const NavbarMenu = () => {
@@ -116,6 +111,7 @@ const NavbarMenu = () => {
           className="text-gray-500 text-sm font-medium hover:text-primary transition-all duration-300 px-3"
           key={item.key}
           href={item.path}
+          disabled={item?.disabled}
         >
           {item.name}
         </Link>
@@ -134,6 +130,7 @@ const MenuItem = ({ item, activeKey }) => {
           }`}
           key={item.key}
           href={item.path}
+          disabled={item?.disabled}
         >
           <span className="flex text-primary h-fit">{item.icon}</span>
           {item.name}
@@ -149,6 +146,7 @@ const MenuItem = ({ item, activeKey }) => {
     case "section":
       return (
         <Collapse
+          disabled={item?.disabled}
           items={[
             {
               ...item,
@@ -195,6 +193,7 @@ const MenuItem = ({ item, activeKey }) => {
           className={`flex items-center align-center w-full gap-2 transition-all duration-300 pl-9 pr-3 py-1 `}
           key={item.key}
           href={item.path}
+          disabled={item?.disabled}
         >
           <span
             className={`w-full text-gray-600 hover:text-secondary ${

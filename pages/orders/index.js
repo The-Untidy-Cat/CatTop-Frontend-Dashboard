@@ -93,7 +93,7 @@ const filterOptions = [
   },
 ];
 
-export default function Order() {
+export function OrderList() {
   const router = useRouter();
   const limit = 10;
   const [orders, setOrders] = useState([]);
@@ -151,6 +151,8 @@ export default function Order() {
       ],
       limit: limit,
       offset: offset,
+      order_by: "orders.created_at",
+      sort: "asc",
       count: ["orders.id"],
     })
       .then((response) => {
@@ -181,15 +183,9 @@ export default function Order() {
   const actions = [
     {
       key: "add",
-      buttonLabel: (
-        <span className="text-white font-bold align-middle	">Thêm</span>
-      ),
+      buttonLabel: "Tạo đơn hàng",
       buttonType: "primary",
-      buttonIcon: (
-        <span>
-          <FaPlus className="text-white mr-2 w-2.5 align-middle" />
-        </span>
-      ),
+      buttonIcon: <FaPlus />,
       title: "Thêm mới",
       children: <NewOrderForm onSuccess={getData} />,
       modalProps: {
@@ -197,6 +193,85 @@ export default function Order() {
       },
     },
   ];
+  return (
+    <TableView
+      title="Danh sách đơn hàng"
+      actions={actions}
+      addonBefore={
+        <Tabs
+          defaultActiveKey="pending"
+          onChange={(key) => setState(key)}
+          className="p-0"
+          items={[
+            {
+              key: "all",
+              label: "Tất cả",
+            },
+            {
+              key: "pending",
+              label: "Chờ xử lý",
+            },
+            {
+              key: "confirmed",
+              label: "Đã xác nhận",
+            },
+            {
+              key: "delivering",
+              label: "Đang vận chuyển",
+            },
+            {
+              key: "delivered",
+              label: "Đã giao",
+            },
+            {
+              key: "cancelled",
+              label: "Đã hủy",
+            },
+            {
+              key: "failed",
+              label: "Thất bại",
+            },
+            {
+              key: "draft",
+              label: "Nháp",
+            },
+          ]}
+        />
+      }
+      filter={{
+        show: true,
+        options: filterOptions,
+        onChange: (value) => setFilter(value),
+      }}
+      table={{
+        bordered: true,
+        loading: loading,
+        data: orders,
+        columns: columns,
+        onSelectedRow: onSelectedRow,
+      }}
+      search={{
+        show: true,
+        placeholder: "Tìm kiếm",
+        onSearch: onSearch,
+      }}
+      datePicker={{
+        show: true,
+        onChange: (date, dateString) => {
+          setDate(date);
+        },
+      }}
+      pagination={{
+        length,
+        pageSize: limit,
+        current: offset / limit + 1,
+        onChange: onPaginationChange,
+      }}
+    />
+  );
+}
+
+export default function Order() {
   return (
     <DefaultLayout
       title={"Đơn hàng"}
@@ -206,81 +281,9 @@ export default function Order() {
           title: "Đơn hàng",
         },
       ]}
+      activeKey={"order-list"}
     >
-      <TableView
-        title="Danh sách đơn hàng"
-        actions={actions}
-        addonBefore={
-          <Tabs
-            defaultActiveKey="pending"
-            onChange={(key) => setState(key)}
-            className="p-0"
-            items={[
-              {
-                key: "all",
-                label: "Tất cả",
-              },
-              {
-                key: "pending",
-                label: "Chờ xử lý",
-              },
-              {
-                key: "confirmed",
-                label: "Đã xác nhận",
-              },
-              {
-                key: "delivering",
-                label: "Đang vận chuyển",
-              },
-              {
-                key: "delivered",
-                label: "Đã giao",
-              },
-              {
-                key: "cancelled",
-                label: "Đã hủy",
-              },
-              {
-                key: "failed",
-                label: "Thất bại",
-              },
-              {
-                key: "draft",
-                label: "Nháp",
-              },
-            ]}
-          />
-        }
-        filter={{
-          show: true,
-          options: filterOptions,
-          onChange: (value) => setFilter(value),
-        }}
-        table={{
-          bordered: true,
-          loading: loading,
-          data: orders,
-          columns: columns,
-          onSelectedRow: onSelectedRow,
-        }}
-        search={{
-          show: true,
-          placeholder: "Tìm kiếm",
-          onSearch: onSearch,
-        }}
-        datePicker={{
-          show: true,
-          onChange: (date, dateString) => {
-            setDate(date);
-          },
-        }}
-        pagination={{
-          length,
-          pageSize: limit,
-          current: offset / limit + 1,
-          onChange: onPaginationChange,
-        }}
-      />
+      <OrderList />
     </DefaultLayout>
   );
 }

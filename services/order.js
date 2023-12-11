@@ -101,6 +101,45 @@ const getStatistic = async ({ dateRange }) => {
   }
 };
 
+const addOrderItem = async (id, data) => {
+  try {
+    const response = await api.post(`/dashboard/orders/${id}/items`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
+const updateOrderItem = async (orderId, itemId, data) => {
+  try {
+    const response = await api.put(`/dashboard/orders/${orderId}/items/${itemId}`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
+const deleteOrderItem = async (orderId, itemId) => {
+  try {
+    const response = await api.delete(`/dashboard/orders/${orderId}/items/${itemId}`);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
 export {
   getAllOrder,
   createOrder,
@@ -108,4 +147,7 @@ export {
   getStatistic,
   getOrder,
   updateOrder,
+  addOrderItem,
+  updateOrderItem,
+  deleteOrderItem,
 };

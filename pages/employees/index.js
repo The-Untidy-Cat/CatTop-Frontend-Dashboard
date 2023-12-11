@@ -20,7 +20,7 @@ import { NewEmployeeForm } from "@/components/Form/employees";
 import { searchRead } from "@/services/search_read";
 const columns = [
   {
-    title: "#",
+    title: "ID",
     dataIndex: "id",
     key: "id",
   },

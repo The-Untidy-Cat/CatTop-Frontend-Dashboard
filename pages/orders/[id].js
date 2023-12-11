@@ -1,58 +1,48 @@
 import DefaultLayout from "@/components/Layout";
 import { useRouter } from "next/router";
 import TableView from "../../components/View/table";
-import { Table } from "antd";
+import { Button, Modal, Rate, Table, notification } from "antd";
 import { useEffect, useState } from "react";
-import { getOrder } from "@/services/order";
-import { ORDER_STATE, PAYMENT_STATE } from "@/app.config";
-import { FaPen } from "react-icons/fa";
-import NewOrderForm, { EditOrderForm } from "@/components/Form/orders";
+import { deleteOrderItem, getOrder, updateOrder, updateOrderItem } from "@/services/order";
+import {
+  ORDER_STATE,
+  PAYMENT_METHOD,
+  PAYMENT_STATE,
+  PROVINCES,
+} from "@/app.config";
+import { FaPen, FaStar, FaTrash } from "react-icons/fa";
+import NewOrderForm, {
+  EditOrderForm,
+  AddOrderItemForm,
+  UpdateAmountOrderItemForm,
+} from "@/components/Form/orders";
 import FormView from "@/components/View/form";
-import NewProductVariantForm from "@/components/Form/product_variant";
+import { formatCurrency } from "@/utils/currency";
+import { ModalToggle } from "@/components/Modal";
+import { MdStarRate } from "react-icons/md";
 
-const columns = [
-  {
-    title: "#",
-    dataIndex: "order_id",
-    key: "order_id",
-  },
-  {
-    title: "Sản phẩm",
-    dataIndex: "customer_name",
-    key: "customer_name",
-  },
-  {
-    title: "Mã khách hàng",
-    dataIndex: "customer_id",
-    key: "customer_id",
-  },
-  {
-    title: "Địa chỉ",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Ngày đặt hàng",
-    dataIndex: "order_date",
-    key: "order_date",
-  },
-  {
-    title: "Tổng tiền",
-    dataIndex: "total",
-    key: "total",
-  },
-  {
-    title: "Tình trạng",
-    dataIndex: "order_status",
-    key: "order_status",
-  },
-];
+const confirm = ({
+  onOk,
+  title = "Xác nhận",
+  content = "Không thể hoàn tác sau khi xác nhận",
+}) => {
+  return Modal.confirm({
+    title: title,
+    content: content,
+    onOk: onOk,
+    centered: true,
+    okButtonProps: {
+      className: "bg-primary text-white",
+    },
+  });
+};
 
 export default function OrderDetail() {
   const router = useRouter();
   const { id } = router.query;
   const [order, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [actions, setActions] = useState([]);
 
   const getData = async () => {
     setLoading(true);
@@ -68,6 +58,99 @@ export default function OrderDetail() {
         setLoading(false);
       });
   };
+
+  const columns = [
+    {
+      title: "Sản phẩm",
+      dataIndex: "product_name",
+      key: "product_name",
+      render: (text, record) => record?.variant?.product?.name,
+    },
+    {
+      title: "Biến thể",
+      dataIndex: "variant_name",
+      key: "variant_name",
+      render: (text, record) => record?.variant?.name,
+    },
+    {
+      title: "Giá ban đầu",
+      dataIndex: "standard_price",
+      key: "standard_price",
+      render: (text) => formatCurrency(text),
+    },
+    {
+      title: "Giá bán",
+      dataIndex: "sale_price",
+      key: "sale_price",
+      render: (text) => formatCurrency(text),
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "amount",
+      key: "amount",
+    },
+    {
+      title: "Thành tiền",
+      dataIndex: "total",
+      render: (text) => formatCurrency(text),
+    },
+    {
+      title: "",
+      dataIndex: "actions",
+      key: "actions",
+      render: (text, record) => (
+        <div className="flex gap-2">
+          <ModalToggle
+            button={{
+              size: "small",
+              type: "text",
+              icon: <FaPen />,
+            }}
+            modal={{
+              title: "Sửa số lượng",
+            }}
+          >
+            <UpdateAmountOrderItemForm
+              orderId={order?.id}
+              item={record}
+              onSuccess={getData}
+            />
+          </ModalToggle>
+          <ModalToggle
+            button={{
+              size: "small",
+              type: "text",
+              icon: <FaStar />,
+            }}
+            modal={{
+              title: "Đánh giá",
+            }}
+          >
+            <div className="flex flex-col">
+              <Rate value={record?.rating} disabled allowHalf={true}/>
+              <p>{record?.review}</p>
+            </div>
+          </ModalToggle>
+          <Button
+            type="text"
+            icon={<FaTrash />}
+            size="small"
+            onClick={() => {
+              // setLoading(true);
+              deleteOrderItem(order?.id, record?.id).then(() => getData()).catch((err) => {
+                notification.error({
+                  message: "Lỗi",
+                  description: err?.response?.data?.message || err.message,
+                });
+              }).finally(() => {
+                // setLoading(false);
+              });
+            }}
+          />
+        </div>
+      ),
+    },
+  ];
 
   const items = [
     {
@@ -92,16 +175,53 @@ export default function OrderDetail() {
               children: order?.employee_id || "Admin",
             },
             {
-              label: "Hình thức mua hàng",
-              children: order?.payment_method,
+              label: "Phương thức thanh toán",
+              children: PAYMENT_METHOD[order?.payment_method],
             },
             {
-              label: "Trạng thái mua hàng",
+              label: "Trạng thái thanh toán",
               children: PAYMENT_STATE[order?.payment_state],
             },
             {
-              label: "Trạng thái",
+              label: "Trạng thái đơn hàng",
               children: ORDER_STATE[order?.state],
+            },
+            {
+              label: "Thông tin giao hàng",
+              children: order?.address ? (
+                <>
+                  {order?.address?.name} | {order?.address?.phone} <br />
+                  {order?.address?.address_line} <br />
+                  {
+                    PROVINCES[order?.address?.province]?.districts
+                      ?.find((d) => d?.id == order?.address?.district)
+                      ?.wards?.find((w) => w?.id == order?.address?.ward)?.name
+                  }
+                  ,{" "}
+                  {
+                    PROVINCES[order?.address?.province]?.districts?.find(
+                      (d) => d?.id == order?.address?.district
+                    )?.name
+                  }
+                  , {PROVINCES[order?.address?.province]?.name},
+                </>
+              ) : (
+                "Nhận tại cửa hàng"
+              ),
+            },
+            {
+              label: "Mã vận đơn",
+              children: order?.tracking_no || "Chưa có",
+            },
+            {
+              label: "Ghi chú",
+              children: order?.note || "Không có",
+            },
+            {
+              label: "Ngày tạo",
+              children: order?.created_at
+                ? new Date(order?.created_at).toLocaleString()
+                : "",
             },
           ],
         },
@@ -109,7 +229,7 @@ export default function OrderDetail() {
     },
     {
       key: "detail-order-info",
-      label: "Chi tiết đơn hàng",
+      label: "Giỏ hàng",
       children: [
         {
           type: "table",
@@ -123,7 +243,7 @@ export default function OrderDetail() {
                 buttonIcon: <FaPen />,
                 title: "Thêm mới",
                 children: (
-                  <NewProductVariantForm
+                  <NewOrderForm
                     onSuccess={getData}
                     // customerId={customer?.id}
                   />
@@ -157,23 +277,244 @@ export default function OrderDetail() {
     },
   ];
 
-  const actions = [
-    {
-      key: "edit-order",
-      buttonLabel: "Sửa",
-      buttonType: "default",
-      buttonIcon: <FaPen />,
-      title: "Cập nhật đơn hàng",
-      children: <EditOrderForm />,
-      modalProps: {
-        centered: true,
-      },
-    },
-  ];
-
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (order) {
+      var temp = [];
+      if (
+        [
+          ORDER_STATE.refunded,
+          ORDER_STATE.cancelled,
+          ORDER_STATE.failed,
+        ].includes(ORDER_STATE[order?.state])
+      ) {
+        setActions(temp);
+        return;
+      }
+      temp.push({
+        key: "edit-order",
+        buttonLabel: "Sửa",
+        buttonType: "default",
+        buttonIcon: <FaPen />,
+        title: "Cập nhật đơn hàng",
+        children: <EditOrderForm order={order} onSuccess={getData} />,
+      });
+      if (
+        [PAYMENT_STATE.unpaid, PAYMENT_STATE.partially_paid].includes(
+          PAYMENT_STATE[order?.payment_state]
+        )
+      )
+        temp.push({
+          key: "confirm-payment",
+          buttonLabel: "Xác nhận thanh toán",
+          buttonType: "primary",
+          type: "button",
+          onClick: () => {
+            confirm({
+              onOk: () => {
+                setLoading(true);
+                updateOrder(order?.id, { payment_state: "paid" })
+                  .then(() => {
+                    getData();
+                  })
+                  .catch((err) => {
+                    notification.error({
+                      message: "Lỗi",
+                      description: err?.response?.data?.message || err.message,
+                    });
+                  })
+                  .finally(() => {});
+              },
+              title: "Xác nhận thanh toán",
+              content: "Bạn có chắc chắn muốn xác nhận thanh toán?",
+            });
+          },
+        });
+      //chuyển trạng thái đơn tương ứng
+      switch (order?.state) {
+        case "cancelled":
+        case "refunded":
+        case "failed":
+          break;
+        case "draft":
+        case "pending":
+          if (order?.items?.length > 0)
+            temp.push({
+              key: "confirm-order",
+              buttonLabel: "Xác nhận đơn hàng",
+              buttonType: "primary",
+              type: "button",
+              onClick: () => {
+                confirm({
+                  title: "Xác nhận đơn hàng",
+                  content:
+                    "Hãy chắc chắn rằng bạn đã xác nhận đơn hàng này với khách hàng",
+                  onOk: () => {
+                    setLoading(true);
+                    updateOrder(order?.id, { state: "confirmed" })
+                      .then(() => {
+                        getData();
+                      })
+                      .catch((err) => {
+                        notification.error({
+                          message: "Lỗi",
+                          description:
+                            err?.response?.data?.message || err.message,
+                        });
+                      })
+                      .finally(() => {});
+                  },
+                });
+              },
+            });
+          break;
+        case "confirmed":
+          temp.push({
+            key: "delivering-order",
+            buttonLabel: "Giao hàng",
+            buttonType: "primary",
+            type: "button",
+            onClick: () => {
+              confirm({
+                title: "Xác nhận giao hàng?",
+                content:
+                  order?.address_id && !order?.tracking_no
+                    ? "Lưu ý: Đơn hàng này chưa được cập nhật mã vận đơn"
+                    : "",
+                onOk: () => {
+                  setLoading(true);
+                  updateOrder(order?.id, { state: "delivering" })
+                    .then(() => {
+                      getData();
+                    })
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                },
+              });
+            },
+          });
+          break;
+        case "delivering":
+          temp.push({
+            key: "delivered-order",
+            buttonLabel: "Hoàn tất đơn hàng",
+            buttonType: "primary",
+            type: "button",
+            onClick: () => {
+              confirm({
+                title: "Xác nhận đã giao hàng?",
+                onOk: () => {
+                  setLoading(true);
+                  updateOrder(order?.id, { state: "delivered" })
+                    .then(() => {
+                      getData();
+                    })
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                },
+              });
+            },
+          });
+          break;
+        case "delivered":
+          temp.push({
+            key: "refunded-order",
+            buttonLabel: "Hoàn tiền",
+            buttonType: "default",
+            type: "button",
+            onClick: () => {
+              confirm({
+                title: "Xác nhận hoàn tiền?",
+                content: "Đơn hàng sẽ được chuyển sang trạng thái đã hoàn tiền",
+                onOk: () => {
+                  setLoading(true);
+                  updateOrder(order?.id, { state: "refunded" })
+                    .then(() => {
+                      getData();
+                    })
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                },
+              });
+            },
+          });
+          break;
+      }
+      // hủy đơn
+      switch (order?.state) {
+        case "delivered":
+        case "cancelled":
+        case "refunded":
+        case "failed":
+          break;
+        default:
+          temp.push({
+            key: "cancel-order",
+            buttonLabel: "Hủy đơn hàng",
+            type: "button",
+            className: "text-white bg-red-500",
+            onClick: () => {
+              confirm({
+                onOk: () => {
+                  setLoading(true);
+                  updateOrder(order?.id, {
+                    state:
+                      order?.payment_state == "paid" ? "refunded" : "cancelled",
+                  })
+                    .then(() => {
+                      getData();
+                    })
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {});
+                },
+                title: "Xác nhận hủy đơn",
+                content:
+                  "Bạn có chắc chắn muốn hủy đơn hàng này?" +
+                  (order?.payment_state == "paid"
+                    ? " Đơn hàng đã được thanh toán, đơn sẽ được chuyển sang trạng thái đã hoàn tiền"
+                    : ""),
+              });
+            },
+          });
+          break;
+      }
+      setActions(temp);
+    }
+  }, [order]);
+
   return (
     <DefaultLayout
       title={"Chi tiết đơn hàng"}
@@ -184,7 +525,7 @@ export default function OrderDetail() {
         },
         {
           href: `/orders/${id}`,
-          title: order?.name || "Chi tiết đơn hàng",
+          title: order?.id ? "Đơn hàng #" + order?.id : "Chi tiết đơn hàng",
         },
       ]}
       activeKey={"order-list"}
@@ -193,7 +534,7 @@ export default function OrderDetail() {
         loading={loading}
         items={items}
         actions={actions}
-        title={order?.name}
+        title={"Đơn hàng #" + id}
       />
     </DefaultLayout>
   );

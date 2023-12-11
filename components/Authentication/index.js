@@ -1,22 +1,25 @@
-import { useAuth } from "../Provider/AuthProvider";
-import { Button, Form, Input } from "antd";
+import { useUser } from "../Provider/AuthProvider";
+import { Button, Drawer, Form, Input } from "antd";
 import Link from "next/link";
 import { AiOutlineLaptop } from "react-icons/ai";
 import { useState } from "react";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login } = useUser();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const onFinish = (values) => {
     setLoading(true);
     login(values)
       .catch((error) => {
         console.log(error);
-        form.setFields([{
-          name: "password",
-          errors: ["Tên đăng nhập hoặc mật khẩu không đúng"],
-        }]);
+        form.setFields([
+          {
+            name: "password",
+            errors: ["Tên đăng nhập hoặc mật khẩu không đúng"],
+          },
+        ]);
       })
       .finally(() => {
         setLoading(false);
@@ -37,7 +40,7 @@ export default function Login() {
           className="flex flex-col w-full gap-2"
           disabled={loading}
         >
-          <Form.ErrorList/>
+          <Form.ErrorList />
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium" htmlFor="username">
               Tên đăng nhập
@@ -79,7 +82,22 @@ export default function Login() {
             </Form.Item>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-3 mt-2">
-            <Link href="#forgot-password">Quên mật khẩu?</Link>
+            <Button
+              size="small"
+              type="link"
+              className="text-primary"
+              onClick={() => setOpenForgotPassword(true)}
+            >
+              Quên mật khẩu?
+            </Button>
+            <Drawer
+              open={openForgotPassword}
+              title="Quên mật khẩu"
+              onClose={() => setOpenForgotPassword(false)}
+              placement="bottom"
+            >
+              <ForgotPassword />
+            </Drawer>
             <Form.Item className="m-0 p-0">
               <Button htmlType="submit" className="bg-primary text-white">
                 Xác thực
@@ -90,4 +108,8 @@ export default function Login() {
       </div>
     </div>
   );
+}
+
+export function ForgotPassword() {
+  return;
 }
