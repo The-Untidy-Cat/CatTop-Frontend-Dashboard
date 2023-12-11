@@ -63,7 +63,7 @@ const filterOptions = [
   },
 ];
 
-export default function CustomerList() {
+export  function CustomerList() {
   const router = useRouter();
   const limit = 5;
   const [customers, setCustomers] = useState([]);
@@ -134,16 +134,7 @@ export default function CustomerList() {
   }, [keyword, offset]);
 
   return (
-    <DefaultLayout
-      title={"Khách hàng"}
-      breadcrumb={[
-        {
-          href: "/customers",
-          title: "Khách hàng",
-        },
-      ]}
-      activeKey={"customer-list"}
-    >
+    
       <TableView
         title="Danh sách khách hàng"
         actions={actions}
@@ -171,6 +162,22 @@ export default function CustomerList() {
           onChange: onPaginationChange,
         }}
       />
+  );
+}
+
+export default function CustomerListPage() {
+  return (
+    <DefaultLayout
+      title={"Khách hàng"}
+      breadcrumb={[
+        {
+          href: "/customers",
+          title: "Khách hàng",
+        },
+      ]}
+      activeKey={"customer-list"}
+    >
+      <CustomerList />
     </DefaultLayout>
   );
 }

@@ -2,14 +2,16 @@ import { CUSTOMER_GENDER, CUSTOMER_STATE } from "@/app.config";
 import { createCustomer, updateCustomer } from "@/services/customer";
 import { Button, Checkbox, DatePicker, Form, Input, Select } from "antd";
 import { useRouter } from "next/router";
+import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { searchRead } from "@/services/search_read";
 import dayjs from "dayjs";
+import TableView from "@/components/View/table";
 
 export function EditCustomerForm({ data, onSuccess, onClose }) {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const router = useRouter();
-  
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -17,7 +19,10 @@ export function EditCustomerForm({ data, onSuccess, onClose }) {
       ...values,
       email: values.email != data?.email ? values.email : undefined,
       date_of_birth: dayjs(values.date_of_birth).format("YYYY-MM-DD"),
-      date_of_birth: values.date_of_birth != data?.date_of_birth ? values.date_of_birth : undefined,
+      date_of_birth:
+        values.date_of_birth != data?.date_of_birth
+          ? values.date_of_birth
+          : undefined,
     })
       .then((res) => {
         onSuccess && onSuccess();
@@ -362,6 +367,162 @@ export function NewCustomerForm({ onSuccess, onClose }) {
         </Button>
       </Form.Item>
     </Form>
+  );
+}
+
+const columns = [
+  {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Tên khách hàng",
+    dataIndex: "name",
+    key: "name",
+    render: (_, record) => {
+      return <>{record.first_name + " " + record.last_name}</>;
+    },
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Số điện thoại",
+    dataIndex: "phone_number",
+    key: "phone_number",
+  },
+  {
+    title: "Đã đặt",
+    dataIndex: "order_count",
+    key: "order_count",
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "state",
+    key: "state",
+  },
+];
+
+const filterOptions = [
+  {
+    label: "ID",
+    value: "id",
+  },
+  {
+    label: "Tên khách hàng",
+    value: "first_name",
+  },
+  {
+    label: "Email",
+    value: "email",
+  },
+  {
+    label: "Số điện thoại",
+    value: "phone_number",
+  },
+];
+
+export function SearchCustomer({ onSuccess, onClose }) {
+  const router = useRouter();
+  const limit = 5;
+  const [customers, setCustomers] = useState([]);
+  const [filter, setFilter] = useState([]);
+  const [keyword, setKeyword] = useState(null);
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const response = await searchRead({
+        model: "Customer",
+        domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
+        fields: [
+          "id",
+          "first_name",
+          "last_name",
+          "state",
+          "email",
+          "phone_number",
+        ],
+        limit,
+        offset,
+      });
+      setCustomers(
+        response?.records.map((item) => ({
+          ...item,
+          key: item.id,
+        }))
+      );
+      setLength(response?.length);
+      setOffset(response?.offset);
+    } catch (error) {
+      console.log("error", error);
+    }
+    setLoading(false);
+  };
+
+  const onSearch = (value) => {
+    setKeyword(value);
+  };
+
+  const onPaginationChange = (page, pageSize) => {
+    setOffset((page - 1) * pageSize);
+  };
+  const onSelectedRow = (data) => {
+    onSuccess && onSuccess(data);
+    onClose && onClose();
+  };
+
+  const actions = [
+    {
+      key: "add",
+      buttonLabel: "Thêm",
+      buttonType: "primary",
+      buttonIcon: <FaPlus />,
+      title: "Thêm mới",
+      children: <NewCustomerForm onSuccess={getData} />,
+      modalProps: {
+        centered: true,
+      },
+    },
+  ];
+
+  useEffect(() => {
+    getData();
+  }, [keyword, offset]);
+
+  return (
+      <TableView
+        title="Danh sách khách hàng"
+        actions={actions}
+        filter={{
+          show: true,
+          options: filterOptions,
+          onChange: (value) => setFilter(value),
+        }}
+        table={{
+          bordered: true,
+          loading: loading,
+          data: customers,
+          columns: columns,
+          onSelectedRow: onSelectedRow,
+        }}
+        search={{
+          show: true,
+          placeholder: "Tìm kiếm",
+          onSearch: onSearch,
+        }}
+        pagination={{
+          length,
+          pageSize: limit,
+          current: offset / limit + 1,
+          onChange: onPaginationChange,
+        }}
+      />
   );
 }
 

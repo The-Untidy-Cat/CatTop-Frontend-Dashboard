@@ -1,5 +1,9 @@
 import { PRODUCT_VARIANT_STATE } from "@/app.config";
-import { createProductVariant, getProductVariant, updateProductVariant } from "@/services/product_variant";
+import {
+  createProductVariant,
+  getProductVariant,
+  updateProductVariant,
+} from "@/services/product_variant";
 import {
   Button,
   Checkbox,
@@ -11,7 +15,11 @@ import {
   Tabs,
   notification,
 } from "antd";
+import { useRouter } from "next/router";
+import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { searchRead } from "@/services/search_read";
+import TableView from "@/components/View/table";
 
 const filterOption = (input, option) =>
   (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -1188,7 +1196,11 @@ export function EditProductVariantForm({
         data?.specifications != specifications ? specifications : undefined,
     };
     setLoading(true);
-    updateProductVariant({ data: formData, productId: productId, variantId: variantId })
+    updateProductVariant({
+      data: formData,
+      productId: productId,
+      variantId: variantId,
+    })
       .then((res) => {
         onSuccess && onSuccess();
         notification.success({
@@ -1260,4 +1272,123 @@ export function EditProductVariantForm({
   );
 }
 
+const columns = [
+  {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Tên",
+    dataIndex: "name",
+    key: "name"
+  },
+  {
+    title: "SKU",
+    dataIndex: "SKU",
+    key: "email",
+  },
+];
+
+const filterOptions = [
+  {
+    label: "ID",
+    value: "id",
+  },
+  {
+    label: "Tên biến thể",
+    value: "name",
+  },
+  {
+    label: "SKU",
+    value: "SKU",
+  },
+];
+
+export function SearchProductVariant({ onSuccess, onClose }) {
+  const limit = 5;
+  const [variants, setVariants] = useState([]);
+  const [filter, setFilter] = useState([]);
+  const [keyword, setKeyword] = useState(null);
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const response = await searchRead({
+        model: "ProductVariant",
+        domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
+        fields: [
+          "id",
+          "name",
+          "image",
+          "SKU",
+          "sale_price",
+          "product_id"
+        ],
+        limit,
+        offset,
+        relation: ["product:id,name"]
+      });
+      setVariants(
+        response?.records.map((item) => ({
+          ...item,
+          key: item.id,
+        }))
+      );
+      setLength(response?.length);
+      setOffset(response?.offset);
+    } catch (error) {
+      console.log("error", error);
+    }
+    setLoading(false);
+  };
+
+  const onSearch = (value) => {
+    setKeyword(value);
+  };
+
+  const onPaginationChange = (page, pageSize) => {
+    setOffset((page - 1) * pageSize);
+  };
+  const onSelectedRow = (data) => {
+    onSuccess && onSuccess(data);
+    onClose && onClose();
+  };
+
+  useEffect(() => {
+    getData();
+  }, [keyword, offset]);
+
+  return (
+    <TableView
+      title="Danh sách biến thể"
+      filter={{
+        show: true,
+        options: filterOptions,
+        onChange: (value) => setFilter(value),
+      }}
+      table={{
+        bordered: true,
+        loading: loading,
+        data: variants,
+        columns: columns,
+        onSelectedRow: onSelectedRow,
+      }}
+      search={{
+        show: true,
+        placeholder: "Tìm kiếm",
+        onSearch: onSearch,
+      }}
+      pagination={{
+        length,
+        pageSize: limit,
+        current: offset / limit + 1,
+        onChange: onPaginationChange,
+      }}
+    />
+  );
+}
 // export  NewProductVariantForm;

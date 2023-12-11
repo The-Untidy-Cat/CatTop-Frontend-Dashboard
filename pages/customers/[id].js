@@ -55,7 +55,8 @@ export default function Customer() {
   const { id } = router.query;
   const [customer, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [length, setLength] = useState(0);
+  const [offset, setOffset] = useState(0);
   const getData = async () => {
     setLoading(true);
     getCustomer(id)
@@ -95,6 +96,10 @@ export default function Customer() {
       },
     },
   ];
+
+  const onPaginationChange = (page, pageSize) => {
+    setOffset((page - 1) * pageSize);
+  };
 
   const items = [
     {
@@ -181,6 +186,7 @@ export default function Customer() {
               length: customer.orders?.length,
               pageSize: 10,
               current: 1,
+              onChange: onPaginationChange,
             },
           },
         },

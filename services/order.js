@@ -69,6 +69,19 @@ const getOrder = async (id) => {
   }
 };
 
+const updateOrder = async (id, data) => {
+  try {
+    const response = await api.put(`/dashboard/orders/${id}`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+};
+
 const getStatistic = async ({ dateRange }) => {
   try {
     const response = await api.get(`/dashboard/statistics/orders`, {
@@ -88,4 +101,39 @@ const getStatistic = async ({ dateRange }) => {
   }
 };
 
-export { getAllOrder, createOrder, getUnlimitAllOrder, getStatistic, getOrder };
+const addOrderItem = async (id, data) => {
+  try {
+    const response = await api.post(`/dashboard/orders/${id}/items`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
+const updateOrderItem = async (orderId, itemId, data) => {
+  try {
+    const response = await api.put(`/dashboard/orders/${id}/items/${itemId}`, data);
+    return response?.data?.data;
+  } catch (error) {
+    notification.error({
+      message: "Error",
+      description: error.message,
+    });
+    return null;
+  }
+}
+
+export {
+  getAllOrder,
+  createOrder,
+  getUnlimitAllOrder,
+  getStatistic,
+  getOrder,
+  updateOrder,
+  addOrderItem,
+  updateOrderItem,
+};

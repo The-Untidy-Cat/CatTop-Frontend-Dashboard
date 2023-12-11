@@ -39,7 +39,7 @@ export const ModalToggle = ({
         open={visible}
         onCancel={() => setVisible(false)}
         footer={null}
-        className={modal.className}
+        className={"lg:min-w-[60%] modal.className"}
         centered
       >
         {clonedChildren}
