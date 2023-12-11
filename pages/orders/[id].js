@@ -175,6 +175,10 @@ export default function OrderDetail() {
               children: order?.employee_id || "Admin",
             },
             {
+              label: "Tổng tiền",
+              children: formatCurrency(order?.items?.reduce((a, b) => a + b?.total, 0) || 0),
+            },
+            {
               label: "Phương thức thanh toán",
               children: PAYMENT_METHOD[order?.payment_method],
             },
@@ -225,6 +229,13 @@ export default function OrderDetail() {
                 ? new Date(order?.created_at).toLocaleString()
                 : "",
             },
+            {
+              label: "Ngày cập nhật",
+              children: order?.updated_at
+                ? new Date(order?.updated_at).toLocaleString()
+                : "",
+            },
+            
           ],
         },
       ],

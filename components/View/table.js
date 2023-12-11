@@ -67,7 +67,11 @@ export default function TableView({
         {addonBefore}
         <div className="flex flex-col gap-2 md:flex-row justify-between items-center align-center">
           {datePicker?.show && (
-            <RangePicker onChange={datePicker?.onChange} className="w-full" format={"DD/MM/YYYY"}/>
+            <RangePicker
+              onChange={datePicker?.onChange}
+              className="w-full"
+              format={"DD/MM/YYYY"}
+            />
           )}
           <div className="flex flex-row w-full gap-1">
             {filter?.show && (
@@ -118,8 +122,8 @@ export default function TableView({
           className="w-full h-full min-h-full"
           // footer={table?.footer}
         />
+        {addonAfter}
       </div>
-      {addonAfter && addonAfter}
     </>
   );
 }
