@@ -273,25 +273,24 @@ export default function OrderDetail() {
           type: "table",
           key: "order-list",
           items: {
-            actions: [ORDER_STATE.draft, ORDER_STATE.pending].includes(
-              ORDER_STATE[order?.state]
-            )
-              ? [
-                  {
-                    key: "add",
-                    buttonLabel: "Thêm sản phẩm",
-                    buttonType: "primary",
-                    buttonIcon: <FaPen />,
-                    title: "Thêm sản phẩm",
-                    children: (
-                      <AddOrderItemForm order={order} onSuccess={getData} />
-                    ),
-                    modalProps: {
-                      centered: true,
-                    },
-                  },
-                ]
-              : [],
+            actions: [
+              {
+                key: "add",
+                buttonLabel: "Thêm",
+                buttonType: "primary",
+                buttonIcon: <FaPen />,
+                title: "Thêm mới",
+                children: (
+                  <NewOrderForm
+                    onSuccess={getData}
+                    // customerId={customer?.id}
+                  />
+                ),
+                modalProps: {
+                  centered: true,
+                },
+              },
+            ],
             table: {
               bordered: true,
               loading: loading,

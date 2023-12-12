@@ -41,7 +41,7 @@ const columns = [
     dataIndex: "employee_name",
     key: "employee_name",
     render: (_, record) => {
-      return <>{record.employee?.first_name || "Không có"}</>;
+      return <>{record.employee?.first_name || "Admin"}</>;
     },
   },
   {
