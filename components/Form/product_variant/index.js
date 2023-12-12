@@ -1192,8 +1192,7 @@ export function EditProductVariantForm({
       extra_fee:
         data?.extra_fee != values.extra_fee ? values.extra_fee : undefined,
       state: data?.state != values.state ? values.state : undefined,
-      specifications:
-        data?.specifications != specifications ? specifications : undefined,
+      specifications: specifications,
     };
     setLoading(true);
     updateProductVariant({
@@ -1281,7 +1280,7 @@ const columns = [
   {
     title: "Tên",
     dataIndex: "name",
-    key: "name"
+    key: "name",
   },
   {
     title: "SKU",
@@ -1320,17 +1319,10 @@ export function SearchProductVariant({ onSuccess, onClose }) {
       const response = await searchRead({
         model: "ProductVariant",
         domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
-        fields: [
-          "id",
-          "name",
-          "image",
-          "SKU",
-          "sale_price",
-          "product_id"
-        ],
+        fields: ["id", "name", "image", "SKU", "sale_price", "product_id"],
         limit,
         offset,
-        relation: ["product:id,name"]
+        relation: ["product:id,name"],
       });
       setVariants(
         response?.records.map((item) => ({

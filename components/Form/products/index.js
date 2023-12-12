@@ -131,32 +131,6 @@ export function NewProductForm({ onSuccess, onClose }) {
           filterOption={filterOption}
         />
       </Form.Item>
-      <p className="m-0">Giá</p>
-      <Form.Item
-        name="product_price"
-        rules={[
-          {
-            required: true,
-            message: "Giá không hợp lệ!",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
-      <p className="m-0">Mô tả</p>
-      <Form.Item
-        name="description"
-        rules={[
-          {
-            required: true,
-            message: "Vui lòng nhập mô tả sản phẩm!",
-          },
-        ]}
-        className="m-0"
-      >
-        <Input />
-      </Form.Item>
       <Form.Item name="view_on_create" valuePropName="checked" className="m-0">
         <Checkbox>Xem sau khi tạo</Checkbox>
       </Form.Item>

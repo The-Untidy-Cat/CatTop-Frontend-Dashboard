@@ -3,7 +3,12 @@ import { useRouter } from "next/router";
 import TableView from "../../components/View/table";
 import { Button, Modal, Rate, Table, notification } from "antd";
 import { useEffect, useState } from "react";
-import { deleteOrderItem, getOrder, updateOrder, updateOrderItem } from "@/services/order";
+import {
+  deleteOrderItem,
+  getOrder,
+  updateOrder,
+  updateOrderItem,
+} from "@/services/order";
 import {
   ORDER_STATE,
   PAYMENT_METHOD,
@@ -100,53 +105,66 @@ export default function OrderDetail() {
       key: "actions",
       render: (text, record) => (
         <div className="flex gap-2">
-          <ModalToggle
-            button={{
-              size: "small",
-              type: "text",
-              icon: <FaPen />,
-            }}
-            modal={{
-              title: "Sửa số lượng",
-            }}
-          >
-            <UpdateAmountOrderItemForm
-              orderId={order?.id}
-              item={record}
-              onSuccess={getData}
-            />
-          </ModalToggle>
-          <ModalToggle
-            button={{
-              size: "small",
-              type: "text",
-              icon: <FaStar />,
-            }}
-            modal={{
-              title: "Đánh giá",
-            }}
-          >
-            <div className="flex flex-col">
-              <Rate value={record?.rating} disabled allowHalf={true}/>
-              <p>{record?.review}</p>
-            </div>
-          </ModalToggle>
-          <Button
-            type="text"
-            icon={<FaTrash />}
-            size="small"
-            onClick={() => {
-              // setLoading(true);
-              deleteOrderItem(order?.id, record?.id).then(() => getData()).catch((err) => {
-                notification.error({
-                  message: "Lỗi",
-                  description: err?.response?.data?.message || err.message,
-                });
-              }).finally(() => {
-                // setLoading(false);
-              });
-            }}
-          />
+          {record?.rating && (
+            <ModalToggle
+              button={{
+                size: "small",
+                type: "text",
+                icon: <FaStar />,
+              }}
+              modal={{
+                title: "Đánh giá",
+              }}
+            >
+              <div className="flex flex-col">
+                <Rate value={record?.rating} disabled allowHalf={true} />
+                <p>{record?.review}</p>
+              </div>
+            </ModalToggle>
+          )}
+
+          {order?.state == "draft" || order?.state == "pending" ? (
+            <>
+              <ModalToggle
+                button={{
+                  size: "small",
+                  type: "text",
+                  icon: <FaPen />,
+                }}
+                modal={{
+                  title: "Sửa số lượng",
+                }}
+              >
+                <UpdateAmountOrderItemForm
+                  orderId={order?.id}
+                  item={record}
+                  onSuccess={getData}
+                />
+              </ModalToggle>
+              <Button
+                type="text"
+                icon={<FaTrash />}
+                size="small"
+                onClick={() => {
+                  // setLoading(true);
+                  deleteOrderItem(order?.id, record?.id)
+                    .then(() => getData())
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {
+                      // setLoading(false);
+                    });
+                }}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       ),
     },
@@ -175,6 +193,12 @@ export default function OrderDetail() {
               children: order?.employee_id || "Admin",
             },
             {
+              label: "Tổng tiền",
+              children: formatCurrency(
+                order?.items?.reduce((a, b) => a + b?.total, 0) || 0
+              ),
+            },
+            {
               label: "Phương thức thanh toán",
               children: PAYMENT_METHOD[order?.payment_method],
             },
@@ -188,22 +212,30 @@ export default function OrderDetail() {
             },
             {
               label: "Thông tin giao hàng",
-              children: order?.address ? (
+              children: order?.address_id ? (
                 <>
                   {order?.address?.name} | {order?.address?.phone} <br />
                   {order?.address?.address_line} <br />
                   {
-                    PROVINCES[order?.address?.province]?.districts
-                      ?.find((d) => d?.id == order?.address?.district)
-                      ?.wards?.find((w) => w?.id == order?.address?.ward)?.name
+                    PROVINCES.find((p) => p?.code ==order?.address?.province)
+                      ?.districts?.find(
+                        (d) => d?.code ==order?.address?.district
+                      )
+                      ?.wards?.find((w) => w?.code ==order?.address?.ward)?.name
                   }
                   ,{" "}
                   {
-                    PROVINCES[order?.address?.province]?.districts?.find(
-                      (d) => d?.id == order?.address?.district
-                    )?.name
+                    PROVINCES?.find(
+                      (p) => p?.code ==order?.address?.province
+                    )?.districts?.find((d) => d?.code ==order?.address?.district)
+                      ?.name
                   }
-                  , {PROVINCES[order?.address?.province]?.name},
+                  ,{" "}
+                  {
+                    PROVINCES?.find((p) => p?.code ==order?.address?.province)
+                      ?.name
+                  }
+                  ,
                 </>
               ) : (
                 "Nhận tại cửa hàng"
@@ -221,6 +253,12 @@ export default function OrderDetail() {
               label: "Ngày tạo",
               children: order?.created_at
                 ? new Date(order?.created_at).toLocaleString()
+                : "",
+            },
+            {
+              label: "Ngày cập nhật",
+              children: order?.updated_at
+                ? new Date(order?.updated_at).toLocaleString()
                 : "",
             },
           ],
@@ -262,6 +300,9 @@ export default function OrderDetail() {
               })),
               columns: columns,
               onSelectedRow: (data) => {},
+              addonAfter: (
+                <div>Tổng tiền: {formatCurrency(order?.total || 0)}</div>
+              ),
             },
             search: {
               show: false,
@@ -272,6 +313,21 @@ export default function OrderDetail() {
               current: 1,
             },
           },
+        },
+        {
+          key: "cart-summary",
+          items: (
+            <div className="flex flex-col mt-2">
+              <p className="text-end font-semibold">
+                Tổng tiền:{" "}
+                <span className="text-lg text-red-500">
+                  {formatCurrency(
+                    order?.items?.reduce((a, b) => a + b?.total, 0) || 0
+                  )}
+                </span>
+              </p>
+            </div>
+          ),
         },
       ],
     },

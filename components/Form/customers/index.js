@@ -1,6 +1,7 @@
 import { CUSTOMER_GENDER, CUSTOMER_STATE } from "@/app.config";
 import { createCustomer, updateCustomer } from "@/services/customer";
 import { Button, Checkbox, DatePicker, Form, Input, Select, notification } from "antd";
+import { Button, Checkbox, DatePicker, Form, Input, Select, notification } from "antd";
 import { useRouter } from "next/router";
 import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -211,7 +212,7 @@ export function NewCustomerForm({ onSuccess, onClose }) {
   const router = useRouter();
   const handleSubmit = async (values) => {
     setLoading(true);
-    console.log(values);
+    // console.log(values);
     createCustomer({
       ...values,
       gender: Number(values.gender),
@@ -219,7 +220,9 @@ export function NewCustomerForm({ onSuccess, onClose }) {
       view_on_create: undefined,
     })
       .then((res) => {
+        Modal.destroyAll();
         form.resetFields();
+        onClose && onClose();
         if (values.view_on_create) {
           router.push(`/customers/${res.id}`);
         } else {
@@ -228,11 +231,7 @@ export function NewCustomerForm({ onSuccess, onClose }) {
           onClose && onClose();
         }
       })
-      .catch((err) => {console.log(err);
-        notification.error({
-          message: "Có lỗi xảy ra",
-          description: err?.response?.data?.message || err?.message,
-        });})
+      .catch((err) => {})
       .finally(() => {
         setLoading(false);
       });
