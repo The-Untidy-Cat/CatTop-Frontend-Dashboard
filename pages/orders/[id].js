@@ -550,7 +550,7 @@ export default function OrderDetail() {
                     .then((response) => {
                       response?.new?.id &&
                         router.push(`/orders/${response?.new?.id}`);
-                      getData();
+                      router.reload();
                     })
                     .catch((err) => {
                       notification.error({
