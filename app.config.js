@@ -38,7 +38,7 @@ const ORDER_STATE = {
   delivered: "Đã giao",
   cancelled: "Đã hủy",
   refunded: "Đã hoàn tiền",
-  failed: "Thất bại",
+  failed: "Đổi trả hàng",
 };
 
 const PAYMENT_STATE = {

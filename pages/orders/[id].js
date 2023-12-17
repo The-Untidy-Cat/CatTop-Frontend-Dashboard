@@ -19,12 +19,13 @@ import { FaPen, FaStar, FaTrash } from "react-icons/fa";
 import NewOrderForm, {
   EditOrderForm,
   AddOrderItemForm,
-  UpdateAmountOrderItemForm,
+  EditOrderItemForm,
 } from "@/components/Form/orders";
 import FormView from "@/components/View/form";
 import { formatCurrency } from "@/utils/currency";
 import { ModalToggle } from "@/components/Modal";
 import { MdStarRate } from "react-icons/md";
+import Link from "next/link";
 
 const confirm = ({
   onOk,
@@ -69,7 +70,11 @@ export default function OrderDetail() {
       title: "Sản phẩm",
       dataIndex: "product_name",
       key: "product_name",
-      render: (text, record) => record?.variant?.product?.name,
+      render: (text, record) => (
+        <Link href={`/products/${record?.variant?.product?.id}`}>
+          {record?.variant?.product?.name}
+        </Link>
+      ),
     },
     {
       title: "Biến thể",
@@ -103,6 +108,7 @@ export default function OrderDetail() {
       title: "",
       dataIndex: "actions",
       key: "actions",
+      fixed: "right",
       render: (text, record) => (
         <div className="flex gap-2">
           {record?.rating && (
@@ -135,7 +141,7 @@ export default function OrderDetail() {
                   title: "Sửa số lượng",
                 }}
               >
-                <UpdateAmountOrderItemForm
+                <EditOrderItemForm
                   orderId={order?.id}
                   item={record}
                   onSuccess={getData}
@@ -185,8 +191,13 @@ export default function OrderDetail() {
             },
             {
               label: "Khách hàng",
-              children:
-                order?.customer?.last_name + " " + order?.customer?.first_name,
+              children: (
+                <Link href={`/customers/${order?.customer?.id}`}>
+                  {order?.customer?.last_name +
+                    " " +
+                    order?.customer?.first_name}
+                </Link>
+              ),
             },
             {
               label: "Nhân viên",
@@ -217,22 +228,24 @@ export default function OrderDetail() {
                   {order?.address?.name} | {order?.address?.phone} <br />
                   {order?.address?.address_line} <br />
                   {
-                    PROVINCES.find((p) => p?.code ==order?.address?.province)
+                    PROVINCES.find((p) => p?.code == order?.address?.province)
                       ?.districts?.find(
-                        (d) => d?.code ==order?.address?.district
+                        (d) => d?.code == order?.address?.district
                       )
-                      ?.wards?.find((w) => w?.code ==order?.address?.ward)?.name
-                  }
-                  ,{" "}
-                  {
-                    PROVINCES?.find(
-                      (p) => p?.code ==order?.address?.province
-                    )?.districts?.find((d) => d?.code ==order?.address?.district)
+                      ?.wards?.find((w) => w?.code == order?.address?.ward)
                       ?.name
                   }
                   ,{" "}
                   {
-                    PROVINCES?.find((p) => p?.code ==order?.address?.province)
+                    PROVINCES?.find(
+                      (p) => p?.code == order?.address?.province
+                    )?.districts?.find(
+                      (d) => d?.code == order?.address?.district
+                    )?.name
+                  }
+                  ,{" "}
+                  {
+                    PROVINCES?.find((p) => p?.code == order?.address?.province)
                       ?.name
                   }
                   ,
@@ -507,6 +520,37 @@ export default function OrderDetail() {
                   updateOrder(order?.id, { state: "refunded" })
                     .then(() => {
                       getData();
+                    })
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                },
+              });
+            },
+          });
+          temp.push({
+            key: "failed-order",
+            buttonLabel: "Đổi trả hàng",
+            buttonType: "default",
+            type: "button",
+            onClick: () => {
+              confirm({
+                title: "Xác nhận đổi hàng?",
+                content: "Đơn hàng sẽ được chuyển sang trạng thái đổi trả",
+                onOk: () => {
+                  setLoading(true);
+                  updateOrder(order?.id, { state: "failed" })
+                    .then((response) => {
+                      response?.new?.id &&
+                        router.push(`/orders/${response?.new?.id}`);
+                      // getData();
                     })
                     .catch((err) => {
                       notification.error({

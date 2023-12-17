@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { searchRead } from "@/services/search_read";
 import { ModalToggle } from "@/components/Modal";
 import NewCustomerForm from "@/components/Form/customers";
+import { CUSTOMER_STATE } from "@/app.config";
 
 const columns = [
   {
@@ -41,6 +42,7 @@ const columns = [
     title: "Trạng thái",
     dataIndex: "state",
     key: "state",
+    render: (text) => CUSTOMER_STATE[text],
   },
 ];
 

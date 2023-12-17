@@ -216,7 +216,7 @@ export default function Products() {
           },
         },
       ],
-    },
+    }
   ];
 
   useEffect(() => {

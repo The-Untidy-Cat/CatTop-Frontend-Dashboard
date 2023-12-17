@@ -1,5 +1,6 @@
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
+const dayjs = require("dayjs");
 
 const getAllProduct = async () => {
   try {
@@ -45,4 +46,23 @@ const getProduct = async (id) => {
   }
 }
 
-export { getAllProduct, createProduct, getProduct, updateProduct };
+const getStatistic = async ({ dateRange }) => {
+  try {
+    const response = await api.get(`/dashboard/statistics/products`, {
+      params: {
+        start_date: dateRange?.[0]
+          ? dayjs(dateRange?.[0]).startOf("day").toISOString()
+          : undefined,
+        end_date: dateRange?.[1]
+          ? dayjs(dateRange?.[1]).endOf("day").toISOString()
+          : undefined,
+      },
+    });
+    return response?.data?.data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export { getAllProduct, createProduct, getProduct, updateProduct, getStatistic };

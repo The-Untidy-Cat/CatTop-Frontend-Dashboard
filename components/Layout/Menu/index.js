@@ -84,6 +84,12 @@ const SIDEBAR_MENU = [
         path: "/products/brands",
         type: "sub-menu",
       },
+      {
+        key: "product-statistic",
+        name: "Thống kê sản phẩm",
+        path: "/products/statistic",
+        type: "sub-menu",
+      },
     ],
   },
   // {
@@ -125,7 +131,7 @@ const MenuItem = ({ item, activeKey }) => {
     case "link":
       return (
         <Link
-          className={`flex items-center align-center w-full gap-2 text-sm hover:text-secondary transition-all duration-300 px-3 py-2 font-medium ${
+          className={`flex items-center align-center w-full gap-2 text-sm text-gray-600 hover:text-secondary transition-all duration-300 px-3 py-2 font-medium ${
             activeKey === item.key ? "text-primary font-medium" : ""
           }`}
           key={item.key}
