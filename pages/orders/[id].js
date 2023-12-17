@@ -549,8 +549,9 @@ export default function OrderDetail() {
                   updateOrder(order?.id, { state: "failed" })
                     .then((response) => {
                       response?.new?.id &&
-                        router.push(`/orders/${response?.new?.id}`);
-                      router.reload();
+                        router.push(`/orders/${response?.new?.id}`).then(() => {
+                          router.reload();
+                        });
                     })
                     .catch((err) => {
                       notification.error({
