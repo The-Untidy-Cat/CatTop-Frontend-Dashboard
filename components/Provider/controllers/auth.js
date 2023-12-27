@@ -142,6 +142,7 @@ export const useUserController = () => {
     loadingAuth,
     login,
     logout,
+    setLoadingAuth,
     getUser,
     changePassword,
     forgotPassword,

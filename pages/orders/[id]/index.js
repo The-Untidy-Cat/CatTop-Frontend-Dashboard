@@ -1,6 +1,6 @@
 import DefaultLayout from "@/components/Layout";
 import { useRouter } from "next/router";
-import TableView from "../../components/View/table";
+import TableView from "../../../components/View/table";
 import { Button, Modal, Rate, Table, notification } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -12,6 +12,7 @@ import {
 import {
   ORDER_STATE,
   PAYMENT_METHOD,
+  SHOPPING_METHOD,
   PAYMENT_STATE,
   PROVINCES,
 } from "@/app.config";
@@ -22,9 +23,9 @@ import NewOrderForm, {
   UpdateAmountOrderItemForm,
 } from "@/components/Form/orders";
 import FormView from "@/components/View/form";
-import { formatCurrency } from "@/utils/currency";
 import { ModalToggle } from "@/components/Modal";
 import { MdStarRate } from "react-icons/md";
+import { formatCurrency, readMoney } from "@/utils/currency";
 
 const confirm = ({
   onOk,
@@ -217,22 +218,24 @@ export default function OrderDetail() {
                   {order?.address?.name} | {order?.address?.phone} <br />
                   {order?.address?.address_line} <br />
                   {
-                    PROVINCES.find((p) => p?.code ==order?.address?.province)
+                    PROVINCES.find((p) => p?.code == order?.address?.province)
                       ?.districts?.find(
-                        (d) => d?.code ==order?.address?.district
+                        (d) => d?.code == order?.address?.district
                       )
-                      ?.wards?.find((w) => w?.code ==order?.address?.ward)?.name
-                  }
-                  ,{" "}
-                  {
-                    PROVINCES?.find(
-                      (p) => p?.code ==order?.address?.province
-                    )?.districts?.find((d) => d?.code ==order?.address?.district)
+                      ?.wards?.find((w) => w?.code == order?.address?.ward)
                       ?.name
                   }
                   ,{" "}
                   {
-                    PROVINCES?.find((p) => p?.code ==order?.address?.province)
+                    PROVINCES?.find(
+                      (p) => p?.code == order?.address?.province
+                    )?.districts?.find(
+                      (d) => d?.code == order?.address?.district
+                    )?.name
+                  }
+                  ,{" "}
+                  {
+                    PROVINCES?.find((p) => p?.code == order?.address?.province)
                       ?.name
                   }
                   ,
@@ -348,6 +351,15 @@ export default function OrderDetail() {
           ORDER_STATE.failed,
         ].includes(ORDER_STATE[order?.state])
       ) {
+        temp.push({
+          key: "print-invoice",
+          buttonLabel: "In hóa đơn",
+          buttonType: "default",
+          type: "button",
+          onClick: () => {
+            window.open(`/orders/${order?.id}/invoice`, "_blank");
+          },
+        });
         setActions(temp);
         return;
       }
@@ -358,6 +370,15 @@ export default function OrderDetail() {
         buttonIcon: <FaPen />,
         title: "Cập nhật đơn hàng",
         children: <EditOrderForm order={order} onSuccess={getData} />,
+      });
+      temp.push({
+        key: "print-invoice",
+        buttonLabel: "In hóa đơn",
+        buttonType: "default",
+        type: "button",
+        onClick: () => {
+          window.open(`/orders/${order?.id}/invoice`, "_blank");
+        },
       });
       if (
         [PAYMENT_STATE.unpaid, PAYMENT_STATE.partially_paid].includes(
