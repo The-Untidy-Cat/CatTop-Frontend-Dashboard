@@ -543,6 +543,38 @@ export default function OrderDetail() {
               });
             },
           });
+          temp.push({
+            key: "failed-order",
+            buttonLabel: "Đổi trả hàng",
+            buttonType: "default",
+            type: "button",
+            onClick: () => {
+              confirm({
+                title: "Xác nhận đổi hàng?",
+                content: "Đơn hàng sẽ được chuyển sang trạng thái đổi trả",
+                onOk: () => {
+                  setLoading(true);
+                  updateOrder(order?.id, { state: "failed" })
+                    .then((response) => {
+                      response?.new?.id &&
+                        router.push(`/orders/${response?.new?.id}`).then(() => {
+                          router.reload();
+                        });
+                    })
+                    .catch((err) => {
+                      notification.error({
+                        message: "Lỗi",
+                        description:
+                          err?.response?.data?.message || err.message,
+                      });
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                },
+              });
+            },
+          });
           break;
       }
       // hủy đơn
