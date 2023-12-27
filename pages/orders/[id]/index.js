@@ -494,6 +494,14 @@ export default function OrderDetail() {
                 title: "Xác nhận đã giao hàng?",
                 onOk: () => {
                   setLoading(true);
+                  if (order?.payment_state == "unpaid"){
+                    notification.error({
+                      message: "Lỗi",
+                      description:
+                        "Đơn hàng chưa được thanh toán",
+                    });
+                    return;
+                  }
                   updateOrder(order?.id, { state: "delivered" })
                     .then(() => {
                       getData();
