@@ -500,6 +500,7 @@ export default function OrderDetail() {
                       description:
                         "Đơn hàng chưa được thanh toán",
                     });
+                    setLoading(false);
                     return;
                   }
                   updateOrder(order?.id, { state: "delivered" })
