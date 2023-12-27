@@ -20,7 +20,7 @@ import { FaPen, FaStar, FaTrash } from "react-icons/fa";
 import NewOrderForm, {
   EditOrderForm,
   AddOrderItemForm,
-  UpdateAmountOrderItemForm,
+  EditOrderItemForm,
 } from "@/components/Form/orders";
 import FormView from "@/components/View/form";
 import { ModalToggle } from "@/components/Modal";
@@ -136,7 +136,7 @@ export default function OrderDetail() {
                   title: "Sửa số lượng",
                 }}
               >
-                <UpdateAmountOrderItemForm
+                <EditOrderItemForm
                   orderId={order?.id}
                   item={record}
                   onSuccess={getData}
