@@ -161,7 +161,9 @@ export default function Customer() {
                 buttonType: "primary",
                 buttonIcon: <FaPlus />,
                 title: "Tạo đơn hàng",
-                children: <NewOrderForm onSuccess={getData} />,
+                children: <NewOrderForm onSuccess={getData} data={{
+                  customer: customer
+                }} />,
               },
             ],
             table: {

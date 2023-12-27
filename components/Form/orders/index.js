@@ -27,7 +27,7 @@ import { formatCurrency } from "@/utils/currency";
 
 const { TextArea } = Input;
 
-export default function NewOrderForm({ onSuccess, onClose, customerId }) {
+export default function NewOrderForm({ onSuccess, onClose, data }) {
   const [form] = Form.useForm();
   const router = useRouter();
   const [customer, setCustomer] = useState(null);
@@ -74,6 +74,14 @@ export default function NewOrderForm({ onSuccess, onClose, customerId }) {
     setTotal(total || 0);
   };
 
+  useEffect(() => {
+    if (data?.customer) {
+      setCustomer(data?.customer);
+      form.setFieldsValue({
+        customer_id: data?.customer?.id,
+      });
+    }
+  }, [data]);
   return (
     <Form
       onFinish={handleSubmit}
@@ -124,6 +132,7 @@ export default function NewOrderForm({ onSuccess, onClose, customerId }) {
             ),
             className:
               "w-full h-fit hover:bg-transparent p-0 absolute top-0 left-0",
+            disabled: data?.customer,
           }}
         >
           <SearchCustomer onSuccess={selectedCustomer} />
@@ -539,12 +548,7 @@ export function AddOrderItemForm({ onSuccess, onClose, order }) {
   );
 }
 
-export function UpdateAmountOrderItemForm({
-  onSuccess,
-  onClose,
-  orderId,
-  item,
-}) {
+export function EditOrderItemForm({ onSuccess, onClose, orderId, item }) {
   const [form] = Form.useForm();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -571,9 +575,8 @@ export function UpdateAmountOrderItemForm({
   };
 
   useEffect(() => {
-    form.setFieldValue({
-      amount: item?.amount,
-    });
+    console.log("item", item);
+    form.setFieldsValue(item);
   }, [item]);
 
   return (
@@ -587,6 +590,10 @@ export function UpdateAmountOrderItemForm({
       <p className="m-0">Số lượng</p>
       <Form.Item className="m-0" name="amount">
         <InputNumber className="w-full" min={0} max={10} step={1} />
+      </Form.Item>
+      <p className="m-0">SN (phân tách bằng dấu ;)</p>
+      <Form.Item className="m-0" name="serial_number">
+        <Input className="w-full" />
       </Form.Item>
       <Form.Item className="m-0 mt-2">
         <Button

@@ -47,6 +47,7 @@ export default function FormView({
             case "button":
               return (
                 <Button
+                  key={action?.key || Math.random(0, 1000)}
                   type={action.buttonType}
                   icon={action.icon}
                   className={`flex items-center align-center font-medium ${

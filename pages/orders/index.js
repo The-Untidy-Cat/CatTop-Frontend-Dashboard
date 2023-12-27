@@ -10,17 +10,49 @@ import DefaultLayout from "@/components/Layout";
 //   Button,
 // } from "antd";
 import { FaPlus } from "react-icons/fa";
-import { RiPencilFill } from "react-icons/ri";
+import { FaCartShopping } from "react-icons/fa6";
 import TableView from "../../components/View/table";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { searchRead } from "@/services/search_read";
-import { api } from "@/utils/axios";
-import { getAllOrder, getUnlimitAllOrder } from "@/services/order";
 import { ORDER_STATE, PAYMENT_STATE } from "@/app.config";
-import { Tabs } from "antd";
+import { Popover, Tabs } from "antd";
 import dayjs from "dayjs";
 import NewOrderForm from "@/components/Form/orders";
+import { formatCurrency } from "@/utils/currency";
+
+const ItemList = ({ items }) => {
+  return (
+    <div className="flex flex-col divide-y">
+      {items.map((item) => (
+        <div className="flex flex-row gap-1 py-1" key={Math.random(1000, 9999)}>
+          <div className="flex flex-col items-start w-2/3 grow-0">
+            <p className="font-medium">{item?.variant?.product?.name}</p>
+            <p className="text-gray-400">{item?.variant?.name}</p>
+          </div>
+          <div className="flex flex-col items-end justify-end w-1/3">
+            <p className="font-medium">
+              {item.amount} x {formatCurrency(item.sale_price)}
+            </p>
+            <p className="font-semibold">
+              {formatCurrency(item.amount * item.sale_price)}
+            </p>
+          </div>
+        </div>
+      ))}
+      <div className="flex flex-row justify-between py-1">
+        <p className="font-medium">Tổng cộng</p>
+        <p className="font-semibold">
+          {formatCurrency(
+            items.reduce((total, item) => {
+              return total + item.amount * item.sale_price;
+            }, 0)
+          )}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const columns = [
   {
@@ -64,6 +96,22 @@ const columns = [
     key: "state",
     render: (text) => ORDER_STATE[text],
   },
+  {
+    title: "",
+    dataIndex: "",
+    key: "action",
+    render: (_, record) => {
+      return (
+        <Popover
+          content={<ItemList items={record?.items} />}
+          title="Giỏ hàng"
+          trigger="hover"
+        >
+          <FaCartShopping />
+        </Popover>
+      );
+    },
+  },
 ];
 
 const filterOptions = [
@@ -91,6 +139,10 @@ const filterOptions = [
     label: "SĐT khách hàng",
     value: "customers.phone_number",
   },
+  {
+    label: "Serial number",
+    value: "order_items.serial_number",
+  }
 ];
 
 export function OrderList() {
@@ -147,6 +199,7 @@ export function OrderList() {
       joins: [
         ["customers", "orders.customer_id", "=", "customers.id"],
         ["employees", "orders.employee_id", "=", "employees.id"],
+        ["order_items", "order_items.order_id", "=", "orders.id"],
         // ["product_variants", "items.variant_id", "=", "product_variants.id"],
       ],
       limit: limit,
@@ -234,7 +287,6 @@ export function OrderList() {
             {
               key: "failed",
               label: "Thất bại",
-              
             },
             {
               key: "draft",
