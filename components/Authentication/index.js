@@ -3,6 +3,7 @@ import { Button, Drawer, Form, Input } from "antd";
 import Link from "next/link";
 import { AiOutlineLaptop } from "react-icons/ai";
 import { useState } from "react";
+import ForgotPassword from "./forgot";
 
 export default function Login() {
   const { login } = useUser();
@@ -95,6 +96,7 @@ export default function Login() {
               title="Quên mật khẩu"
               onClose={() => setOpenForgotPassword(false)}
               placement="bottom"
+              height="fit-content"
             >
               <ForgotPassword />
             </Drawer>
@@ -110,6 +112,3 @@ export default function Login() {
   );
 }
 
-export function ForgotPassword() {
-  return;
-}
