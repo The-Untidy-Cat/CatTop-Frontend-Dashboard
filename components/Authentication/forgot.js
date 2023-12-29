@@ -1,6 +1,5 @@
 import { Form, Input, Button, Space, notification } from "antd";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useUser } from "../Provider/AuthProvider";
 
 export default function ForgotPassword() {
@@ -12,14 +11,26 @@ export default function ForgotPassword() {
   const sendOTP = async () => {
     setLoading(true);
     try {
-      const email = await resetPasswordForm.validateFields(["email"]);
+      const email = await resetPasswordForm.validateFields(["email"]).catch((e) => {
+        console.log(e);
+      }).then((e) => e);
       if (!email) {
         return;
       }
+      resetPasswordForm.setFields([
+        {
+          name: "email",
+          errors: null,
+        },
+        {
+          name: "code",
+          errors: null,
+        }
+      ]);
       if (remainingTime > 0) {
         notification.error({
           message: "Lỗi",
-          description: "Vui lòng đợi 5 phút để gửi lại mã OTP",
+          description: `Vui lòng đợi ${remainingTime} giây để gửi lại mã OTP`,
         });
         return;
       }
@@ -27,14 +38,20 @@ export default function ForgotPassword() {
       if (response.code === 200) {
         notification.success({
           message: "Thành công",
-          description: "Gửi mã OTP thành công. Vui lòng kiểm tra hộp thư",
+          description: `Gửi mã OTP thành công. Vui lòng kiểm tra hộp thư. Mã OTP có hiệu lực trong ${response?.data?.max_age} giây`,
         });
         setRemainingTime(response?.data?.max_age || 300);
       }
       setLoading(false);
     } catch (e) {
       setLoading(false);
-      throw e;
+      resetPasswordForm.setFields([
+        {
+          name: "email",
+          errors: ["Email không tồn tại"],
+        },
+      ]);
+      console.log(e);
     }
   };
 
@@ -50,11 +67,16 @@ export default function ForgotPassword() {
         ]);
         return;
       }
-      resetPassword(email, code, values.password).catch((e) => {
-        notification.error({
-          message: "Lỗi",
-          description: e?.message || "Lỗi không xác định",
-        });
+      resetPassword(values.email, values.code, values.password).catch((e) => {
+        resetPasswordForm.setFields([
+          {
+            name: "code",
+            errors: [e?.response?.data?.message || "Mã OTP không hợp lệ"],
+          },
+        ]);
+      }).then((e) => {
+        setLoading(false);
+        resetPasswordForm.resetFields();  
       });
     } catch (error) {
       console.log(error);
@@ -81,11 +103,12 @@ export default function ForgotPassword() {
             <p className="m-0">Email</p>
             <Form.Item
               label=""
-              name="password"
+              name="email"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập email",
+                  message: "Vui lòng nhập email hợp lệ",
+                  type: "email",
                 },
               ]}
               className="m-0 w-full"
@@ -97,7 +120,7 @@ export default function ForgotPassword() {
             <p className="m-0">Mã OTP</p>
             <Form.Item
               label=""
-              name="password"
+              name="code"
               rules={[
                 {
                   required: true,
@@ -105,10 +128,11 @@ export default function ForgotPassword() {
                 },
               ]}
               className="m-0 w-full"
+              messageVariables={remainingTime ? `Thử lại sau ${remainingTime} giây` : ""}
             >
               <Input
                 addonBefore={
-                  <Button onClick={sendOTP} disabled={remainingTime > 0} type='text' size="small">
+                  <Button onClick={sendOTP} type='text' size="small">
                     Gửi mã OTP
                   </Button>
                 }

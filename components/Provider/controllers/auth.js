@@ -17,7 +17,7 @@ export const useUserController = () => {
     }
     return;
   };
-  
+
   const changePassword = async (account) => {
     setLoadingAuth(true);
     try {
@@ -63,9 +63,7 @@ export const useUserController = () => {
 
   const forgotPassword = async (email) => {
     try {
-      const response = await api.post(`/auth/forgot-password`, {
-        email,
-      });
+      const response = await api.post(`/auth/forgot-password`, email);
       return response.data;
     } catch (e) {
       throw (
@@ -104,10 +102,6 @@ export const useUserController = () => {
         notification.success({
           message: "Thành công",
           description: data?.message || "Đổi mật khẩu thành công",
-        });
-        router.push({
-          pathname: "/login",
-          query: { ...router.query },
         });
       }
     } catch (e) {
