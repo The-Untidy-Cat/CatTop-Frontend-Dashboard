@@ -4,18 +4,32 @@ import { api } from "@/utils/axios";
 import { notification } from "antd";
 
 const getAllOrder = async ({
+  filter = null,
   keyword = null,
   limit = 10,
   offset = 0,
   state = undefined,
+  sort = "id",
+  order = "asc",
+  start_date = undefined,
+  end_date = undefined,
 }) => {
   try {
     const response = await api.get(`/dashboard/orders`, {
       params: {
+        filter,
         keyword,
         limit,
         offset,
         state: state ? state : undefined,
+        sort,
+        order,
+        start_date: start_date
+          ? dayjs(start_date).startOf("day").toISOString()
+          : undefined,
+        end_date: end_date
+          ? dayjs(end_date).endOf("day").toISOString()
+          : undefined,
       },
     });
     return response?.data?.data;

@@ -20,6 +20,7 @@ import { Popover, Tabs } from "antd";
 import dayjs from "dayjs";
 import NewOrderForm from "@/components/Form/orders";
 import { formatCurrency } from "@/utils/currency";
+import { getAllOrder } from "@/services/order";
 
 const ItemList = ({ items }) => {
   return (
@@ -159,54 +160,17 @@ export function OrderList() {
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    setLoading(true);
-    const domain = [];
-    if (state !== "all") {
-      domain.push(["orders.state", "=", state]);
-    }
-    if (keyword) {
-      domain.push([filter, "like", `%${keyword}%`]);
-    }
-    if (date) {
-      domain.push([
-        "orders.created_at",
-        ">=",
-        dayjs(date[0]).startOf("day").toISOString(),
-      ]);
-      domain.push([
-        "orders.created_at",
-        "<=",
-        dayjs(date[1]).endOf("day").toISOString(),
-      ]);
-    }
-    searchRead({
-      model: "Order",
-      fields: [
-        "orders.id",
-        "customer_id",
-        "employee_id",
-        "payment_state",
-        "orders.state",
-        "orders.created_at",
-      ],
-      domain: domain,
-      relation: [
-        "customer:id,first_name,last_name",
-        "employee:id,first_name,last_name",
-        "items:order_id,variant_id,amount,sale_price",
-        "items.variant.product:id,name",
-      ],
-      joins: [
-        ["customers", "orders.customer_id", "=", "customers.id"],
-        ["employees", "orders.employee_id", "=", "employees.id"],
-        ["order_items", "order_items.order_id", "=", "orders.id"],
-        // ["product_variants", "items.variant_id", "=", "product_variants.id"],
-      ],
+    setLoading(true);d
+    getAllOrder({
+      filter: filter ?? "orders.id",
+      keyword: keyword ?? "",
       limit: limit,
       offset: offset,
-      order_by: "orders.created_at",
-      sort: "asc",
-      count: ["orders.id"],
+      state: state !== "all" ? state : null,
+      start_date: date ? dayjs(date[0]).startOf("day").toISOString() : null,
+      end_date: date ? dayjs(date[1]).endOf("day").toISOString() : null,
+      sort: "orders.created_at",
+      order: ["draft", "pending"] ? "acs" : "desc"
     })
       .then((response) => {
         setOrders(response?.records.map((item) => ({ ...item, key: item.id })));
