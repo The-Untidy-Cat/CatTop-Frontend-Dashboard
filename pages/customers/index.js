@@ -8,6 +8,7 @@ import { searchRead } from "@/services/search_read";
 import { ModalToggle } from "@/components/Modal";
 import NewCustomerForm from "@/components/Form/customers";
 import { CUSTOMER_STATE } from "@/app.config";
+import { getAllCustomer } from "@/services/customer";
 
 const columns = [
   {
@@ -65,7 +66,7 @@ const filterOptions = [
   },
 ];
 
-export  function CustomerList() {
+export function CustomerList() {
   const router = useRouter();
   const limit = 5;
   const [customers, setCustomers] = useState([]);
@@ -77,33 +78,28 @@ export  function CustomerList() {
 
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await searchRead({
-        model: "Customer",
-        domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
-        fields: [
-          "id",
-          "first_name",
-          "last_name",
-          "state",
-          "email",
-          "phone_number",
-        ],
-        limit,
-        offset,
+    getAllCustomer({
+      filter,
+      keyword,
+      limit,
+      offset,
+    })
+      .then((response) => {
+        setCustomers(
+          response?.records.map((item) => ({
+            ...item,
+            key: item.id,
+          }))
+        );
+        setLength(response?.length);
+        setOffset(response?.offset);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      setCustomers(
-        response?.records.map((item) => ({
-          ...item,
-          key: item.id,
-        }))
-      );
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setLoading(false);
   };
 
   const onSearch = (value) => {
@@ -136,34 +132,33 @@ export  function CustomerList() {
   }, [keyword, offset]);
 
   return (
-    
-      <TableView
-        title="Danh sách khách hàng"
-        actions={actions}
-        filter={{
-          show: true,
-          options: filterOptions,
-          onChange: (value) => setFilter(value),
-        }}
-        table={{
-          bordered: true,
-          loading: loading,
-          data: customers,
-          columns: columns,
-          onSelectedRow: onSelectedRow,
-        }}
-        search={{
-          show: true,
-          placeholder: "Tìm kiếm",
-          onSearch: onSearch,
-        }}
-        pagination={{
-          length,
-          pageSize: limit,
-          current: offset / limit + 1,
-          onChange: onPaginationChange,
-        }}
-      />
+    <TableView
+      title="Danh sách khách hàng"
+      actions={actions}
+      filter={{
+        show: true,
+        options: filterOptions,
+        onChange: (value) => setFilter(value),
+      }}
+      table={{
+        bordered: true,
+        loading: loading,
+        data: customers,
+        columns: columns,
+        onSelectedRow: onSelectedRow,
+      }}
+      search={{
+        show: true,
+        placeholder: "Tìm kiếm",
+        onSearch: onSearch,
+      }}
+      pagination={{
+        length,
+        pageSize: limit,
+        current: offset / limit + 1,
+        onChange: onPaginationChange,
+      }}
+    />
   );
 }
 

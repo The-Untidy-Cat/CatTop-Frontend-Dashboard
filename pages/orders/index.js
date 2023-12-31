@@ -118,15 +118,15 @@ const columns = [
 const filterOptions = [
   {
     label: "ID",
-    value: "orders.id",
+    value: "id",
   },
   {
     label: "Tên khách hàng",
-    value: "customers.first_name",
+    value: "customer_name",
   },
   {
     label: "Tên nhân viên",
-    value: "employees.first_name",
+    value: "employee_name",
   },
   {
     label: "Trạng thái thanh toán",
@@ -138,7 +138,7 @@ const filterOptions = [
   },
   {
     label: "SĐT khách hàng",
-    value: "customers.phone_number",
+    value: "customers_phone_number",
   },
   {
     label: "Serial number",
@@ -160,17 +160,17 @@ export function OrderList() {
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    setLoading(true);d
+    setLoading(true);
     getAllOrder({
-      filter: filter ?? "orders.id",
+      filter: filter ?? "id",
       keyword: keyword ?? "",
       limit: limit,
       offset: offset,
       state: state !== "all" ? state : null,
       start_date: date ? dayjs(date[0]).startOf("day").toISOString() : null,
       end_date: date ? dayjs(date[1]).endOf("day").toISOString() : null,
-      sort: "orders.created_at",
-      order: ["draft", "pending"] ? "acs" : "desc"
+      sort: "created_at",
+      order: ["draft", "pending"] ? "asc" : "desc"
     })
       .then((response) => {
         setOrders(response?.records.map((item) => ({ ...item, key: item.id })));

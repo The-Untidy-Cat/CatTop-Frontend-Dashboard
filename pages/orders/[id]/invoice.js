@@ -8,7 +8,7 @@ import { PAYMENT_METHOD, SHOPPING_METHOD } from "@/app.config";
 
 // Create Document Component
 const Invoice = ({ order }) => (
-  <div className="w-full h-full">
+  <div className="w-full h-full p-5">
     <div className="flex items-center align-center gap-4">
       <Image src="/logo.png" width={50} height={50} preview={false} />
       <div className="flex flex-col justify-center gap-0.5">
