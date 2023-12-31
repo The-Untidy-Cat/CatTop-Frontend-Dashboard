@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import NewProductForm from "@/components/Form/products";
 import { searchRead } from "@/services/search_read";
 import { PRODUCT_STATE } from "@/app.config";
+import { getAllProduct } from "@/services/product";
 
 const columns = [
   {
@@ -53,44 +54,29 @@ export default function ProductList() {
 
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await searchRead({
-        model: "Product",
-        domain: keyword
-          ? [
-              "||",
-              ["products.name", "like", `%${keyword}%`],
-              ["products.state", "like", `%${keyword}%`],
-              ["product_variants.name", "like", `%${keyword}%`],
-            ]
-          : [],
-        fields: ["products.id", "products.name", "brand_id", "products.state"],
-        limit,
-        offset,
-        relation: ["brand:id,name"],
-        joins: [
-          [
-            "product_variants",
-            "products.id",
-            "=",
-            "product_variants.product_id",
-          ],
-        ],
-        count: ["products.id"],
+    getAllProduct({
+      limit,
+      offset,
+      keyword,
+      filter: "name",
+    })
+      .catch((error) => {
+        console.log(error);
+      })
+      .then((response) => {
+        setProducts(
+          response?.records.map((item) => ({
+            ...item,
+            key: item.id,
+            brand_name: item.brand.name,
+          }))
+        );
+        setLength(response?.length);
+        setOffset(response?.offset);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      setProducts(
-        response?.records.map((item) => ({
-          ...item,
-          key: item.id,
-          brand_name: item.brand.name,
-        }))
-      );
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setLoading(false);
   };
 
   const onSearch = (value) => {

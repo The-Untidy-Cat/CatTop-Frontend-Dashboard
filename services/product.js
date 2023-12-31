@@ -2,9 +2,21 @@ const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 const dayjs = require("dayjs");
 
-const getAllProduct = async () => {
+const getAllProduct = async ({
+  filter = "name",
+  keyword = "",
+  limit = 10,
+  offset = 0,
+}) => {
   try {
-    const response = await api.get(`/dashboard/products`);
+    const response = await api.get(`/dashboard/products`, {
+      params: {
+        filter,
+        keyword,
+        limit,
+        offset,
+      }
+    });
     return response?.data?.data;
   } catch (error) {
     notification.error({

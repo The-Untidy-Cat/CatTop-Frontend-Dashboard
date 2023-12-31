@@ -1,9 +1,21 @@
 const { api } = require("@/utils/axios");
 const { notification } = require("antd");
 
-const getAllBrand = async () => {
+const getAllBrand = async ({
+  filter = "name",
+  keyword = "",
+  limit = 5,
+  offset = 0,
+}) => {
   try {
-    const response = await api.get(`/dashboard/brands`);
+    const response = await api.get(`/dashboard/brands`, {
+      params: {
+        filter,
+        keyword,
+        limit,
+        offset,
+      },
+    });
     return response?.data?.data;
   } catch (error) {
     notification.error({

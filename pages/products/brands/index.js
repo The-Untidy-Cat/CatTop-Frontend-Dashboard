@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { searchRead } from "@/services/search_read";
 import NewBrandForm from "@/components/Form/brands";
 import { BRAND_STATE } from "@/app.config";
+import { getAllBrand } from "@/services/brand";
 
 const columns = [
   {
@@ -40,22 +41,19 @@ export default function brandList() {
 
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await searchRead({
-        model: "Brand",
-        domain: keyword ? [["name", "=", keyword]] : [],
-        fields: ["id", "name", "state"],
-        limit,
-        offset,
-      });
-      console.log(response);
-      setBrands(response?.records.map((item) => ({ ...item, key: item.id })));
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setLoading(false);
+    getAllBrand({
+      filter: "name",
+      keyword: keyword,
+      limit: limit,
+      offset: offset,
+    })
+      .then((response) => {
+        setBrands(response?.records.map((item) => ({ ...item, key: item.id })));
+        setLength(response?.length);
+        setOffset(response?.offset);
+      })
+      .finally(() => setLoading(false))
+      .catch((error) => console.log(error));
   };
 
   const onSearch = (value) => {
