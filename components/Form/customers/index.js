@@ -1,6 +1,14 @@
 import { CUSTOMER_GENDER, CUSTOMER_STATE } from "@/app.config";
 import { createCustomer, updateCustomer } from "@/services/customer";
-import { Button, Checkbox, DatePicker, Form, Input, Select, notification } from "antd";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  Select,
+  notification,
+} from "antd";
 import { useRouter } from "next/router";
 import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
@@ -233,6 +241,13 @@ export function NewCustomerForm({ onSuccess, onClose }) {
         setLoading(false);
       });
   };
+  useEffect(() => {
+    if (router.isReady)
+      form.setFieldsValue({
+        view_on_create: true,
+        date_of_birth: dayjs().add(-18, "year"),
+      });
+  }, [router]);
   return (
     <Form
       onFinish={handleSubmit}
@@ -293,7 +308,6 @@ export function NewCustomerForm({ onSuccess, onClose }) {
       >
         <Input />
       </Form.Item>
-
       <div className="flex flex-row justify-between gap-2">
         <div className="flex flex-col gap-2 w-1/3">
           <p className="m-0">Số điện thoại</p>
@@ -327,7 +341,12 @@ export function NewCustomerForm({ onSuccess, onClose }) {
             ]}
             className="m-0"
           >
-            <DatePicker format={"YYYY-MM-DD"} />
+            <DatePicker
+              format={"YYYY-MM-DD"}
+              disabledDate={(date) => date >= dayjs().add(-18, "year") || date <= dayjs().add(-100, "year")}
+              defaultValue={dayjs().add(-18, "year")}
+              className="w-full"
+            />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-2 w-1/3">
@@ -496,33 +515,33 @@ export function SearchCustomer({ onSuccess, onClose }) {
   }, [keyword, offset]);
 
   return (
-      <TableView
-        title="Danh sách khách hàng"
-        actions={actions}
-        filter={{
-          show: true,
-          options: filterOptions,
-          onChange: (value) => setFilter(value),
-        }}
-        table={{
-          bordered: true,
-          loading: loading,
-          data: customers,
-          columns: columns,
-          onSelectedRow: onSelectedRow,
-        }}
-        search={{
-          show: true,
-          placeholder: "Tìm kiếm",
-          onSearch: onSearch,
-        }}
-        pagination={{
-          length,
-          pageSize: limit,
-          current: offset / limit + 1,
-          onChange: onPaginationChange,
-        }}
-      />
+    <TableView
+      title="Danh sách khách hàng"
+      actions={actions}
+      filter={{
+        show: true,
+        options: filterOptions,
+        onChange: (value) => setFilter(value),
+      }}
+      table={{
+        bordered: true,
+        loading: loading,
+        data: customers,
+        columns: columns,
+        onSelectedRow: onSelectedRow,
+      }}
+      search={{
+        show: true,
+        placeholder: "Tìm kiếm",
+        onSearch: onSearch,
+      }}
+      pagination={{
+        length,
+        pageSize: limit,
+        current: offset / limit + 1,
+        onChange: onPaginationChange,
+      }}
+    />
   );
 }
 

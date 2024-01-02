@@ -98,7 +98,7 @@ const updateOrder = async (id, data) => {
 
 const getStatistic = async ({ dateRange }) => {
   try {
-    const response = await api.get(`/dashboard/statistics/orders`, {
+    const response = await api.get(`/dashboard/orders/statistics`, {
       params: {
         start_date: dateRange?.[0]
           ? dayjs(dateRange?.[0]).startOf("day").toISOString()

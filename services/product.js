@@ -60,7 +60,7 @@ const getProduct = async (id) => {
 
 const getStatistic = async ({ dateRange }) => {
   try {
-    const response = await api.get(`/dashboard/statistics/products`, {
+    const response = await api.get(`/dashboard/products/statistics`, {
       params: {
         start_date: dateRange?.[0]
           ? dayjs(dateRange?.[0]).startOf("day").toISOString()

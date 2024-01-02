@@ -1,4 +1,5 @@
 import { PRODUCT_STATE } from "@/app.config";
+import { getAllBrand } from "@/services/brand";
 import { createProduct, updateProduct } from "@/services/product";
 import { searchRead } from "@/services/search_read";
 import {
@@ -33,7 +34,23 @@ export function NewProductForm({ onSuccess, onClose }) {
           onSuccess && onSuccess();
         }
       })
-      .catch((err) => {})
+      .catch((err) => {
+        if (err?.response?.data?.errors) {
+          form.setFields(
+            Object.entries(err?.response?.data?.errors).map(([key, value]) => {
+              return {
+                name: key,
+                errors: [value],
+              };
+            })
+          );
+        } else {
+          notification.error({
+            message: "Tạo sản phẩm thất bại",
+            description: err.message,
+          });
+        }
+      })
       .finally(() => {
         setLoading(false);
       });
@@ -45,16 +62,16 @@ export function NewProductForm({ onSuccess, onClose }) {
 
   const handleSearchBrand = async (value) => {
     try {
-      const response = await searchRead({
-        model: "Brand",
-        domain: [["name", "like", `%${value}%`]],
-        fields: ["id", "name"],
+      getAllBrand({
+        filter: "name",
+        keyword: value ?? undefined,
+      }).then((response) => {
+        setBrandList(
+          response?.records.map((item) => {
+            return { value: item.id, label: item.name };
+          })
+        );
       });
-      setBrandList(
-        response?.records.map((item) => {
-          return { value: item.id, label: item.name };
-        })
-      );
     } catch (e) {
       console.log(e);
     }
@@ -157,7 +174,6 @@ export function EditProductForm({ data, onSuccess, onClose }) {
     setLoading(true);
     updateProduct(data?.id, {
       ...values,
-      slug: data?.slug !== values?.slug ? values?.slug : undefined,
     })
       .then((res) => {
         onSuccess && onSuccess();
@@ -185,23 +201,21 @@ export function EditProductForm({ data, onSuccess, onClose }) {
       });
   };
 
-  const handleSearchBrand = async (value = "") => {
-    setLoading(true);
+  const handleSearchBrand = async (value) => {
     try {
-      const response = await searchRead({
-        model: "Brand",
-        domain: [["name", "like", `%${value}%`]],
-        fields: ["id", "name"],
+      getAllBrand({
+        filter: "name",
+        keyword: value ?? undefined,
+      }).then((response) => {
+        setBrandList(
+          response?.records.map((item) => {
+            return { value: item.id, label: item.name };
+          })
+        );
       });
-      setBrandList(
-        response?.records.map((item) => {
-          return { value: item.id, label: item.name };
-        })
-      );
     } catch (e) {
       console.log(e);
     }
-    setLoading(false);
   };
   useEffect(() => {
     handleSearchBrand().then(() => {

@@ -47,6 +47,7 @@ export default function ProductList() {
   const router = useRouter();
   const limit = 5;
   const [products, setProducts] = useState([]);
+  const [filter, setFilter] = useState(null);
   const [keyword, setKeyword] = useState(null);
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -58,7 +59,7 @@ export default function ProductList() {
       limit,
       offset,
       keyword,
-      filter: "name",
+      filter,
     })
       .catch((error) => {
         console.log(error);
@@ -133,6 +134,39 @@ export default function ProductList() {
           show: true,
           placeholder: "Tìm kiếm",
           onSearch: onSearch,
+        }}
+        filter={{
+          show: true,
+          options: [
+            {
+              key: "id",
+              value: "id",
+              label: "ID",
+            },
+            {
+              key: "name",
+              value: "name",
+              label: "Tên sản phẩm",
+            },
+            {
+              key: "brand",
+              value: "brand",
+              label: "Thương hiệu",
+            },
+            {
+              key: "SKU",
+              value: "SKU",
+              label: "SKU",
+            },
+            {
+              key: "state",
+              value: "state",
+              label: "Trạng thái",
+            },
+          ],
+          onChange: (value) => {
+            setFilter(value);
+          }
         }}
         pagination={{
           length,

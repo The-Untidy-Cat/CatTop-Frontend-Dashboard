@@ -1,7 +1,7 @@
 import { createBrand, updateBrand } from "@/services/brand";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function NewBrandForm({ onSuccess, onClose }) {
   const [loading, setLoading] = useState(false);
@@ -94,6 +94,9 @@ export function EditBrandForm({ data, onSuccess, onClose }) {
         setLoading(false);
       });
   };
+  useEffect(() => {
+    form.setFieldsValue(data);
+  }, [data]);
   return (
     <Form
       onFinish={handleSubmit}
