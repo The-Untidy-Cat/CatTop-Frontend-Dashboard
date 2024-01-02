@@ -1,6 +1,7 @@
 import { PRODUCT_VARIANT_STATE } from "@/app.config";
 import {
   createProductVariant,
+  getAllProductVariant,
   getProductVariant,
   updateProductVariant,
 } from "@/services/product_variant";
@@ -746,6 +747,7 @@ function ProductVariantForm({
     if (!data) return;
     const fields = {
       ...data,
+      "SKU": data?.sku ?? null,
       "specifications.cpu.name": data?.specifications?.cpu?.name ?? null,
       "specifications.cpu.cores": data?.specifications?.cpu?.cores ?? null,
       "specifications.cpu.threads": data?.specifications?.cpu?.threads ?? null,
@@ -1284,8 +1286,8 @@ const columns = [
   },
   {
     title: "SKU",
-    dataIndex: "SKU",
-    key: "email",
+    dataIndex: "sku",
+    key: "sku",
   },
 ];
 
@@ -1307,7 +1309,7 @@ const filterOptions = [
 export function SearchProductVariant({ onSuccess, onClose }) {
   const limit = 5;
   const [variants, setVariants] = useState([]);
-  const [filter, setFilter] = useState([]);
+  const [filter, setFilter] = useState(null);
   const [keyword, setKeyword] = useState(null);
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
@@ -1315,27 +1317,28 @@ export function SearchProductVariant({ onSuccess, onClose }) {
 
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await searchRead({
-        model: "ProductVariant",
-        domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
-        fields: ["id", "name", "image", "SKU", "sale_price", "product_id"],
-        limit,
-        offset,
-        relation: ["product:id,name"],
+    getAllProductVariant({
+      limit,
+      offset,
+      filter,
+      keyword,
+    })
+      .then((response) => {
+        setVariants(
+          response?.records.map((item) => ({
+            ...item,
+            key: item.id,
+          }))
+        );
+        setLength(response?.length);
+        setOffset(response?.offset);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      setVariants(
-        response?.records.map((item) => ({
-          ...item,
-          key: item.id,
-        }))
-      );
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setLoading(false);
   };
 
   const onSearch = (value) => {

@@ -158,7 +158,14 @@ export default function NewOrderForm({ onSuccess, onClose, data }) {
         </Radio.Group>
       </Form.Item>
       <div className="flex flex-col gap-2 w-full">
-        <Form.List name="items">
+        <Form.List name="items" rules={
+          [
+            {
+              required: true,
+              message: "Vui lòng thêm sản phẩm",
+            },
+          ]
+        }>
           {(fields, { add, remove }) => (
             <>
               <div className="flex items-center align-center justify-between">

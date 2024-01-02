@@ -1,5 +1,9 @@
 import { CUSTOMER_GENDER, CUSTOMER_STATE } from "@/app.config";
-import { createCustomer, updateCustomer } from "@/services/customer";
+import {
+  createCustomer,
+  getAllCustomer,
+  updateCustomer,
+} from "@/services/customer";
 import {
   Button,
   Checkbox,
@@ -343,7 +347,10 @@ export function NewCustomerForm({ onSuccess, onClose }) {
           >
             <DatePicker
               format={"YYYY-MM-DD"}
-              disabledDate={(date) => date >= dayjs().add(-18, "year") || date <= dayjs().add(-100, "year")}
+              disabledDate={(date) =>
+                date >= dayjs().add(-18, "year") ||
+                date <= dayjs().add(-100, "year")
+              }
               defaultValue={dayjs().add(-18, "year")}
               className="w-full"
             />
@@ -448,40 +455,32 @@ export function SearchCustomer({ onSuccess, onClose }) {
   const router = useRouter();
   const limit = 5;
   const [customers, setCustomers] = useState([]);
-  const [filter, setFilter] = useState([]);
+  const [filter, setFilter] = useState(null);
   const [keyword, setKeyword] = useState(null);
   const [length, setLength] = useState(0);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const getData = async () => {
     setLoading(true);
-    try {
-      const response = await searchRead({
-        model: "Customer",
-        domain: keyword ? [[filter, "like", `%${keyword}%`]] : [],
-        fields: [
-          "id",
-          "first_name",
-          "last_name",
-          "state",
-          "email",
-          "phone_number",
-        ],
-        limit,
-        offset,
+    getAllCustomer({
+      filter,
+      keyword,
+      limit,
+      offset,
+    })
+      .then((response) => {
+        setCustomers(
+          response?.records.map((item) => ({
+            ...item,
+            key: item.id,
+          }))
+        );
+        setLength(response?.length);
+        setOffset(response?.offset);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      setCustomers(
-        response?.records.map((item) => ({
-          ...item,
-          key: item.id,
-        }))
-      );
-      setLength(response?.length);
-      setOffset(response?.offset);
-    } catch (error) {
-      console.log("error", error);
-    }
-    setLoading(false);
   };
 
   const onSearch = (value) => {
