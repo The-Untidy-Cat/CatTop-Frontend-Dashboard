@@ -1,5 +1,6 @@
+import { BRAND_STATE } from "@/app.config";
 import { createBrand, updateBrand } from "@/services/brand";
-import { Button, Checkbox, Form, Input, Modal } from "antd";
+import { Button, Checkbox, Form, Input, Modal, Select } from "antd";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -131,6 +132,26 @@ export function EditBrandForm({ data, onSuccess, onClose }) {
         className="m-0"
       >
         <Input />
+      </Form.Item>
+      <p className="m-0">Trạng thái</p>
+      <Form.Item
+        name="state"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng chọn giá trị hợp lệ!",
+          },
+        ]}
+        className="m-0"
+      >
+        <Select
+          options={Object.keys(BRAND_STATE).map((value) => ({
+            value,
+            label: BRAND_STATE[value],
+          }))}
+          className="w-full"
+          placeholder="Trống"
+        />
       </Form.Item>
       <Form.Item name="view_on_create" valuePropName="checked" className="m-0">
         <Checkbox>Xem sau khi tạo</Checkbox>
