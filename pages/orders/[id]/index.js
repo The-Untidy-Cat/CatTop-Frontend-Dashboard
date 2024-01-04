@@ -565,8 +565,8 @@ export default function OrderDetail() {
                   setLoading(true);
                   updateOrder(order?.id, { state: "failed" })
                     .then((response) => {
-                      response?.new?.id &&
-                        router.push(`/orders/${response?.new?.id}`).then(() => {
+                      response?.new_order?.id &&
+                        router.push(`/orders/${response?.new_order?.id}`).then(() => {
                           router.reload();
                         });
                     })

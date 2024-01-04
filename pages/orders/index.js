@@ -143,7 +143,7 @@ const filterOptions = [
   {
     label: "Serial number",
     value: "order_items.serial_number",
-  }
+  },
 ];
 
 export function OrderList() {
@@ -170,7 +170,7 @@ export function OrderList() {
       start_date: date ? dayjs(date[0]).startOf("day").toISOString() : null,
       end_date: date ? dayjs(date[1]).endOf("day").toISOString() : null,
       sort: "created_at",
-      order: ["draft", "pending"] ? "asc" : "desc"
+      order: ["draft", "pending"] ? "asc" : "desc",
     })
       .then((response) => {
         setOrders(response?.records.map((item) => ({ ...item, key: item.id })));
@@ -217,7 +217,10 @@ export function OrderList() {
       addonBefore={
         <Tabs
           defaultActiveKey="pending"
-          onChange={(key) => setState(key)}
+          onChange={(key) => {
+            setState(key);
+            setOffset(0);
+          }}
           className="p-0"
           items={[
             {
